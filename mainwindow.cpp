@@ -10,14 +10,10 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-<<<<<<< Updated upstream
-    connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), ui->lcdNumber, SLOT(display(int)));
-=======
     //connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), ui->lcdNumber, SLOT(display(int)));
 
     //connect(ui->pushButton, &QPushButton::clicked, this, &MainWindow::lcd_up);
     //connect()
->>>>>>> Stashed changes
 }
 
 MainWindow::~MainWindow()
@@ -25,8 +21,6 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-<<<<<<< Updated upstream
-=======
 void MainWindow::mouseMoveEvent(QMouseEvent *event)
 {
     qDebug() << event->buttons();
@@ -58,4 +52,3 @@ void MainWindow::lcd_up()
 
 }
 */
->>>>>>> Stashed changes
