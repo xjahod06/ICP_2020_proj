@@ -20,17 +20,20 @@ private slots:
     void lcd_up();
 */
 
-private:
-    void init_scene();
+private slots:
     void zoom_in();
     void zoom_out();
     void zoom_slide(int val);
 
+private:
+    void init_scene();
+
     Ui::MainWindow *ui;
 
 protected:
-    virtual void mouseMoveEvent(QMouseEvent *event) override;
     virtual void wheelEvent(QWheelEvent *event) override;
+
+
 
 };
 #endif // MAINWINDOW_H

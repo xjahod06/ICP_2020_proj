@@ -1,10 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QDebug>
-#include <QMouseEvent>
 #include <QWheelEvent>
 #include <QGraphicsScene>
-#include <QGraphicsLineItem>
 #include "graphic_scene.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -31,13 +29,6 @@ void MainWindow::init_scene()
 {
     auto scene = new graphic_scene(ui->view);
     ui->view->setScene(scene);
-
-    auto line = scene->addLine(0,0,100,100);
-    line->setPen(QPen({Qt::red},3));
-
-    auto point = scene->addRect(5,5,5,5);
-    point->setPen(QPen({Qt::black},5));
-
     ui->view->setRenderHint(QPainter::Antialiasing);
 }
 
@@ -60,23 +51,17 @@ void MainWindow::zoom_slide(int val)
     ui->view->setTransform(QTransform(scale, org.m12(), org.m21(), scale, org.dx(), org.dy()));
 }
 
-void MainWindow::mouseMoveEvent(QMouseEvent *event)
-{
-    qDebug() << event->buttons();
-}
-
 void MainWindow::wheelEvent(QWheelEvent *event)
 {
     if(event->delta() > 0)
         {
-            //emit mouseWheelZoom(true);
-            qDebug() << "zoom in" << ui->zoom_slider->value();
+            //qDebug() << "zoom in" << ui->zoom_slider->value();
             ui->zoom_slider->setSliderPosition(ui->zoom_slider->value()+ui->zoom_slider->singleStep());
         }
         else
         {
-            //emit mouseWheelZoom(false);
-            qDebug() << "zoom out" << ui->zoom_slider->value();
+
+            //qDebug() << "zoom out" << ui->zoom_slider->value();
             ui->zoom_slider->setSliderPosition(ui->zoom_slider->value()-ui->zoom_slider->singleStep());
         }
 }
