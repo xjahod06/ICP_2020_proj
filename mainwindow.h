@@ -15,6 +15,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void lcd_up();
+
 private:
     Ui::MainWindow *ui;
 };
