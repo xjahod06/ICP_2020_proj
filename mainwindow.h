@@ -21,6 +21,11 @@ private slots:
 */
 
 private:
+    void init_scene();
+    void zoom_in();
+    void zoom_out();
+    void zoom_slide(int val);
+
     Ui::MainWindow *ui;
 
 protected:

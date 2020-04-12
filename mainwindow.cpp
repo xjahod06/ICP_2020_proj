@@ -3,6 +3,9 @@
 #include <QDebug>
 #include <QMouseEvent>
 #include <QWheelEvent>
+#include <QGraphicsScene>
+#include <QGraphicsLineItem>
+#include "graphic_scene.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -10,15 +13,51 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    //connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), ui->lcdNumber, SLOT(display(int)));
+    init_scene();
 
-    //connect(ui->pushButton, &QPushButton::clicked, this, &MainWindow::lcd_up);
-    //connect()
+    connect(ui->zoom_in_button, &QPushButton::clicked, this, &MainWindow::zoom_in);
+    connect(ui->zoom_out_button, &QPushButton::clicked, this, &MainWindow::zoom_out);
+
+    connect(ui->zoom_slider, &QSlider::valueChanged, this, &MainWindow::zoom_slide);
+
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::init_scene()
+{
+    auto scene = new graphic_scene(ui->view);
+    ui->view->setScene(scene);
+
+    auto line = scene->addLine(0,0,100,100);
+    line->setPen(QPen({Qt::red},3));
+
+    auto point = scene->addRect(5,5,5,5);
+    point->setPen(QPen({Qt::black},5));
+
+    ui->view->setRenderHint(QPainter::Antialiasing);
+}
+
+void MainWindow::zoom_in()
+{
+    //ui->view->scale(1.25,1.25);
+    ui->zoom_slider->setSliderPosition(ui->zoom_slider->value()*1.25);
+}
+
+void MainWindow::zoom_out()
+{
+    //ui->view->scale(0.8,0.8);
+    ui->zoom_slider->setSliderPosition(ui->zoom_slider->value()/1.25);
+}
+
+void MainWindow::zoom_slide(int val)
+{
+    auto org = ui->view->transform();
+    qreal scale = val/10.0;
+    ui->view->setTransform(QTransform(scale, org.m12(), org.m21(), scale, org.dx(), org.dy()));
 }
 
 void MainWindow::mouseMoveEvent(QMouseEvent *event)
@@ -31,24 +70,13 @@ void MainWindow::wheelEvent(QWheelEvent *event)
     if(event->delta() > 0)
         {
             //emit mouseWheelZoom(true);
-            qDebug() << "zoom in";
+            qDebug() << "zoom in" << ui->zoom_slider->value();
             ui->zoom_slider->setSliderPosition(ui->zoom_slider->value()+ui->zoom_slider->singleStep());
         }
         else
         {
             //emit mouseWheelZoom(false);
-            qDebug() << "zoom out";
+            qDebug() << "zoom out" << ui->zoom_slider->value();
             ui->zoom_slider->setSliderPosition(ui->zoom_slider->value()-ui->zoom_slider->singleStep());
         }
 }
-
-/*
-void MainWindow::lcd_up()
-{
-    auto org = ui->lcdNumber->value();
-    qDebug() << "value: " << org;
-    ui->lcdNumber->display(org+10);
-    ui->horizontalSlider->setSliderPosition(org+10);
-
-}
-*/
