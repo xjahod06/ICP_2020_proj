@@ -10,7 +10,7 @@ custom_line::custom_line(QGraphicsItem *parent, QColor color):
 {
     setPen(QPen({color},3));
     //setFlag(QGraphicsItem::ItemIsSelectable);
-    //setFlag(QGraphicsItem::ItemIsMovable);
+    setFlag(QGraphicsItem::ItemIsMovable);
     anim = new QVariantAnimation(this);
     anim->setDuration(500);
     connect(anim, &QVariantAnimation::valueChanged, this, &custom_line::on_animation);

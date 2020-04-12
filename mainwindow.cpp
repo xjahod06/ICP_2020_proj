@@ -47,7 +47,7 @@ void MainWindow::zoom_out()
 void MainWindow::zoom_slide(int val)
 {
     auto org = ui->view->transform();
-    qreal scale = val/10.0;
+    qreal scale = val/50.0;
     ui->view->setTransform(QTransform(scale, org.m12(), org.m21(), scale, org.dx(), org.dy()));
 }
 
