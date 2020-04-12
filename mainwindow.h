@@ -14,8 +14,20 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+<<<<<<< Updated upstream
 
+=======
+/*
+private slots:
+    void lcd_up();
+*/
+>>>>>>> Stashed changes
 private:
     Ui::MainWindow *ui;
+
+protected:
+    virtual void mouseMoveEvent(QMouseEvent *event) override;
+    virtual void wheelEvent(QWheelEvent *event) override;
+
 };
 #endif // MAINWINDOW_H
