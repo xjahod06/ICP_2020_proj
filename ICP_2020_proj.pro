@@ -23,6 +23,7 @@ SOURCES += \
     mainwindow.cpp
 
 HEADERS += \
+    graphic_scene.h \
     custom_graphics_view.h \
     custom_line.h \
     graphic_scene.h \

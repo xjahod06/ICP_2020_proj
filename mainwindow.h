@@ -22,6 +22,12 @@ public slots:
     void zoom_slide(int val);
 
 private:
+    void init_scene();
+
     Ui::MainWindow *ui;
+
+protected:
+    virtual void wheelEvent(QWheelEvent *event) override;
+
 };
 #endif // MAINWINDOW_H
