@@ -76,7 +76,8 @@ QRectF custom_line::boundingRect() const
 
 void custom_line::time_line()
 {
-    //anim->setStartValue((qreal)abs(start_anim));
+    anim->setStartValue((qreal)abs(start_anim));
+    /*
     anim->setStartValue(move);
 
     if(move == 0.0)
@@ -85,10 +86,10 @@ void custom_line::time_line()
     }else{
         anim->setEndValue(0.0);
     }
-
-    //anim->setEndValue((qreal)abs(start_anim-1));
+    */
+    anim->setEndValue((qreal)abs(start_anim-1));
     //anim->setEasingCurve(QEasingCurve::InOutQuart);
-    qDebug() << anim->endValue() << anim->startValue();
+    //qDebug() << anim->endValue() << anim->startValue();
     anim->start();
 }
 
@@ -110,7 +111,7 @@ void custom_line::on_animation(const QVariant &value)
     update();
 
     if(move == anim->endValue()){
-        qDebug() << "end of anim";
+        //qDebug() << "end of anim";
         active = false;
     }else{
         active = true;

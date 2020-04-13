@@ -61,5 +61,5 @@ void graphic_scene::line()
         forward = true;
         start = 0;
     }
-    st_dict[active_line]->active = false;
+
 }
