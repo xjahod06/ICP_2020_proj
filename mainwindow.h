@@ -15,6 +15,12 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+
+public slots:
+    void zoom_in();
+    void zoom_out();
+    void zoom_slide(int val);
+
 private:
     Ui::MainWindow *ui;
 };

@@ -16,10 +16,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    custom_graphics_view.cpp \
+    custom_line.cpp \
+    graphic_scene.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
+    custom_graphics_view.h \
+    custom_line.h \
+    graphic_scene.h \
     mainwindow.h
 
 FORMS += \
