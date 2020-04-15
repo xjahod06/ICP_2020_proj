@@ -20,13 +20,15 @@ SOURCES += \
     custom_line.cpp \
     graphic_scene.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    vehicle.cpp
 
 HEADERS += \
     custom_graphics_view.h \
     custom_line.h \
     graphic_scene.h \
-    mainwindow.h
+    mainwindow.h \
+    vehicle.h
 
 FORMS += \
     mainwindow.ui

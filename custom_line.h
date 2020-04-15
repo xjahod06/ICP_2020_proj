@@ -16,6 +16,8 @@ public:
     bool active{false};
     int start_anim{0};
     int duration{1000};
+    qreal station{-1};
+    QVariantAnimation *anim{nullptr};
 
 protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
@@ -23,11 +25,10 @@ protected:
     virtual QRectF boundingRect() const override;
 
 private:
-    QVariantAnimation *anim{nullptr};
-    qreal station{0.0};
     qreal move{0.0};
     QTimer *timer;
     void set_anim();
+    bool anim_set{false};
 
 
 private slots:

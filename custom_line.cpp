@@ -42,14 +42,13 @@ void custom_line::mousePressEvent(QGraphicsSceneMouseEvent *event)
     }
     */
     //anim->setEasingCurve(QEasingCurve::InOutCirc);
-    anim->start();
+    //anim->start();
 
     QGraphicsLineItem::mousePressEvent(event);
 }
 
 void custom_line::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    static bool anim_set = false;
     painter->setPen(pen());
     painter->drawLine(line());
     if(active == true)
@@ -57,7 +56,10 @@ void custom_line::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
         painter->drawEllipse(line().pointAt(move),10,10);
     }
     painter->setPen(QPen({Qt::black},5));
-    painter->drawEllipse(line().pointAt(0.5),2,2);
+    if(station != -1)
+    {
+        painter->drawEllipse(line().pointAt(station),2,2);
+    }
     if(anim_set == false)
     {
         anim_set = true;
@@ -76,7 +78,7 @@ QRectF custom_line::boundingRect() const
 
 void custom_line::time_line()
 {
-    anim->setStartValue((qreal)abs(start_anim));
+    //anim->setStartValue((qreal)abs(start_anim));
     /*
     anim->setStartValue(move);
 
@@ -87,16 +89,19 @@ void custom_line::time_line()
         anim->setEndValue(0.0);
     }
     */
-    anim->setEndValue((qreal)abs(start_anim-1));
+    //anim->setEndValue((qreal)abs(start_anim-1));
     //anim->setEasingCurve(QEasingCurve::InOutQuart);
     //qDebug() << anim->endValue() << anim->startValue();
+    active = true;
     anim->start();
 }
 
 void custom_line::set_anim()
 {
     duration = line().length()*5.16;
+    //qDebug() << line().length() << duration;
     anim->setDuration(duration);
+    //qDebug() << anim->duration();
     /*
     if(m_pen.color() == Qt::blue){
         timer->setInterval(duration*2);
@@ -110,7 +115,7 @@ void custom_line::on_animation(const QVariant &value)
     move = value.toReal();
     update();
 
-    if(move == anim->endValue()){
+    if((move == 0.0) || (move == 1.0)){
         //qDebug() << "end of anim";
         active = false;
     }else{
