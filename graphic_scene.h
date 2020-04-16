@@ -10,9 +10,13 @@ class graphic_scene : public QGraphicsScene
 public:
     explicit graphic_scene(QObject *parent = nullptr);
 
+public slots:
+    void speed_change(int val);
+
 private:
     QMap<int, custom_line*> st_dict;
     QTimer *timer;
+    qreal speed{1.0};
 
 private slots:
     void line();

@@ -32,6 +32,7 @@ void MainWindow::init_scene()
     auto scene = new graphic_scene(ui->view);
     ui->view->setScene(scene);
     ui->view->setRenderHint(QPainter::Antialiasing);
+    connect(ui->speedSlider, &QSlider::valueChanged, scene, &graphic_scene::speed_change);
 
 }
 
