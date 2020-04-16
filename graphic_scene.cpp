@@ -19,31 +19,42 @@ graphic_scene::graphic_scene(QObject *parent) :
     addItem(st_dict[2]);
 
     st_dict[3] = new custom_line(Qt::green);
-    st_dict[3]->setLine(200,150,200,0);
+    st_dict[3]->setLine(200,150,300,300);
     st_dict[3]->station = 0.5;
     addItem(st_dict[3]);
+
+    st_dict[4] = new custom_line(Qt::magenta);
+    st_dict[4]->setLine(300,300,500,300);
+    st_dict[4]->station = 0.75;
+    addItem(st_dict[4]);
+
+    st_dict[5] = new custom_line(Qt::cyan);
+    st_dict[5]->setLine(500,300,500,0);
+    st_dict[5]->station = 0.1;
+    addItem(st_dict[5]);
 
     st_dict[0] = new custom_line(Qt::blue);
     st_dict[0]->setLine(200,0,0,0);
     st_dict[0]->station = 0.8;
     addItem(st_dict[0]);
 
+    /*
     auto line = new custom_line(Qt::magenta);
     line->setLine(250,0,0,-250);
     addItem(line);
-
+    */
 
     timer = new QTimer(this);
     timer->setInterval(1000);
     timer->start();
 
     connect(timer, &QTimer::timeout, this, &graphic_scene::line);
-
+    /*
     qDebug() << st_dict.count();
     foreach (line, st_dict) {
         qDebug() << line->duration << line->m_pen;
     }
-
+    */
 }
 
 void graphic_scene::line()
@@ -59,17 +70,17 @@ void graphic_scene::line()
 
     line->anim->setEndValue(end);
     line->anim->setStartValue(start);
-    timer->setInterval(line->duration+10);
+    timer->setInterval(line->duration+20);
     line->anim->setDuration(line->duration);
 
-    qDebug() << start << end << line->duration << same << timer->interval();
+   // qDebug() << start << end << line->duration << same << timer->interval();
 
     if((line->station != -1) && (same == false)){
         line->anim->setEndValue(line->station);
-        timer->setInterval( std::abs((line->duration*line->station)-start)+pause);
-        line->anim->setDuration(std::abs((line->duration*line->station)-start));
+        timer->setInterval((line->duration*(std::abs(start-line->station)))+pause);
+        line->anim->setDuration(line->duration*(std::abs(start-line->station)));
         same = true;
-        qDebug() << line->duration << line->station << line->duration*line->station;
+        //qDebug() << line->duration << std::abs(start-line->station) << line->duration*line->station;
         if(forward == true){
             active_line--;
         }else{
@@ -78,18 +89,18 @@ void graphic_scene::line()
 
     }else if(same == true){
         line->anim->setStartValue(line->station);
-        timer->setInterval((line->duration - (std::abs((line->duration*line->station)-start)))+10);
-        line->anim->setDuration(line->duration - (std::abs((line->duration*line->station)-start)));
+        timer->setInterval((line->duration - (line->duration*(std::abs(start-line->station))))+20);
+        line->anim->setDuration(line->duration - (line->duration*(std::abs(start-line->station))));
         same = false;
     }
 
-    qDebug() << line->anim->startValue() << line->anim->endValue() << line->duration << same << timer->interval();
+    //qDebug() << line->anim->duration() << timer->interval();
 
     //line->active = true;
 
     line->time_line();
 
-    qDebug() << active_line;
+    //qDebug() << active_line;
 
     if(forward == true){
         active_line++;
@@ -101,11 +112,14 @@ void graphic_scene::line()
         active_line--;
         start = 1.0;
         end = 0.0;
+        timer->setInterval(timer->remainingTime() + pause);
+        qDebug() << timer->remainingTime(); //<< timer->remainingTimeAsDuration();
     }else if(active_line == -1){
         active_line++;
         forward = true;
         start = 0.0;
         end = 1.0;
+        timer->setInterval(timer->remainingTime() + pause);
     }
 
 }

@@ -41,8 +41,12 @@ void custom_line::mousePressEvent(QGraphicsSceneMouseEvent *event)
         anim->setEndValue(0.0);
     }
     */
+
     //anim->setEasingCurve(QEasingCurve::InOutCirc);
-    //anim->start();
+    anim->setStartValue(0.0);
+    anim->setEndValue(1.0);
+    anim->setDuration(duration);
+    anim->start();
 
     QGraphicsLineItem::mousePressEvent(event);
 }
