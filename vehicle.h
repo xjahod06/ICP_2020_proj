@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QPen>
+#include <QVariantAnimation>
 
 class vehicle : public QObject
 {
@@ -12,6 +13,7 @@ public:
     QPen m_pen{QPen({Qt::red},3)};
     int size{15};
     qreal position{0.0};
+    QVariantAnimation *anim{nullptr};
 
 signals:
 
