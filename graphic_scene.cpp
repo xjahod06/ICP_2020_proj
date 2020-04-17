@@ -57,15 +57,27 @@ graphic_scene::graphic_scene(QObject *parent) :
     path_dict[1]->st_dict[1] = st_dict[5];
     path_dict[1]->m_vehicle = vehicle_dict[1];
 
+    /*
     for (int i = 0 ; i < vehicle_dict.count(); i++) {
         for (int j = 0 ; j < st_dict.count(); j++) {
             st_dict[j]->vehicle_dict[i] = vehicle_dict[i];
             st_dict[j]->time_line(i);
         }
     }
+    */
+    qDebug() << &(path_dict[0]->m_vehicle) << &(vehicle_dict[0]);
 
-    path_dict[0]->timer->start();
-    path_dict[1]->timer->start();
+    //path_dict[0]->timer->start();
+    //path_dict[1]->timer->start();
+
+    /*
+    path_dict[0]->m_vehicle->anim->setDuration(3000);
+    path_dict[0]->m_vehicle->active = true;
+    path_dict[0]->m_vehicle->anim->setStartValue(0.0);
+    path_dict[0]->m_vehicle->anim->setEndValue(1.0);
+    path_dict[0]->m_vehicle->anim->start();
+    */
+
 
     /*
     auto line = new custom_line(Qt::magenta);

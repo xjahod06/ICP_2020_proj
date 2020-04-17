@@ -5,3 +5,4 @@ vehicle::vehicle(QObject *parent) : QObject(parent)
 {
 
 }
+

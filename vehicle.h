@@ -16,6 +16,7 @@ public:
     bool active{false};
     QVariantAnimation *anim{nullptr};
 
+
 signals:
 
 };
