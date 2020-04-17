@@ -9,7 +9,7 @@ class vehicle : public QObject
     Q_OBJECT
 public:
     explicit vehicle(QObject *parent = nullptr);
-    QPen m_pen{QPen({Qt::red},3)};
+    QPen m_pen_color{QPen({Qt::red},3)};
     int size{15};
     qreal position{0.0};
 

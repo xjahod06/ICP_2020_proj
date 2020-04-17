@@ -8,7 +8,8 @@
 
 class custom_line :public QObject, public QGraphicsLineItem
 {
-    Q_OBJECT
+    Q_OBJECT   
+
 public:
     explicit custom_line(QColor m_color = Qt::red, QGraphicsItem *parent = nullptr);
     void time_line();
@@ -29,6 +30,10 @@ private:
     QTimer *timer;
     void set_anim();
     bool anim_set{false};
+    qreal move_1{0.0};
+    bool active_1{false};
+    QVariantAnimation *anim_1{nullptr};
+    void test_anim(QVariantAnimation *animation, bool *active_anim, qreal *anim_move);
 
 
 private slots:
