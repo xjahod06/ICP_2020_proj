@@ -34,7 +34,7 @@ private:
     qreal move_1{0.0};
     bool active_1{false};
     QVariantAnimation *anim_1{nullptr};
-    void test_anim(QVariantAnimation *animation, bool *active_anim, qreal *anim_move);
+    void test_anim(QVariantAnimation *animation, bool *active_anim, qreal *anim_move, vehicle *veh);
 
 
 private slots:

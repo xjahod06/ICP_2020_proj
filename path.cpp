@@ -15,7 +15,7 @@ void path::move()
     auto line = st_dict[active_line];
     //auto veh_pos = m_vehicle->pos_in_dict;
 
-    line->time_line(m_vehicle->pos_in_dict);
+    //line->time_line(m_vehicle->pos_in_dict);
 
     m_vehicle->anim->setEndValue(end);
     m_vehicle->anim->setStartValue(start);
