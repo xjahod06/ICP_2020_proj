@@ -13,16 +13,19 @@ path::path(QObject *parent) : QObject(parent)
 void path::move()
 {
     auto line = st_dict[active_line];
+    //auto veh_pos = m_vehicle->pos_in_dict;
 
-    line->anim->setEndValue(end);
-    line->anim->setStartValue(start);
+    line->time_line(m_vehicle->pos_in_dict);
+
+    m_vehicle->anim->setEndValue(end);
+    m_vehicle->anim->setStartValue(start);
     timer->setInterval((line->duration+20)*speed);
-    line->anim->setDuration(line->duration*speed);
+    m_vehicle->anim->setDuration(line->duration*speed);
 
     if((line->station != -1) && (same == false)){
-        line->anim->setEndValue(line->station);
-        timer->setInterval(((line->duration*(std::abs(start-line->station)))+pause)*speed);
-        line->anim->setDuration((line->duration*(std::abs(start-line->station)))*speed);
+        m_vehicle->anim->setEndValue(line->station);
+        timer->setInterval(((line->duration * (std::abs(start - line->station)))+pause)*speed);
+        m_vehicle->anim->setDuration((line->duration * (std::abs(start - line->station)))*speed);
         same = true;
         if(forward == true){
             active_line--;
@@ -31,14 +34,14 @@ void path::move()
         }
 
     }else if(same == true){
-        line->anim->setStartValue(line->station);
-        timer->setInterval(((line->duration - (line->duration*(std::abs(start-line->station))))+20)*speed);
-        line->anim->setDuration((line->duration - (line->duration*(std::abs(start-line->station))))*speed);
+        m_vehicle->anim->setStartValue(line->station);
+        timer->setInterval(((line->duration - (line->duration*(std::abs(start - line->station))))+20)*speed);
+        m_vehicle->anim->setDuration((line->duration - (line->duration*(std::abs(start - line->station))))*speed);
         same = false;
     }
 
-    line->active = true;
-    line->anim->start();
+    m_vehicle->active = true;
+    m_vehicle->anim->start();
 
     if(forward == true){
         active_line++;

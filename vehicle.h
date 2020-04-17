@@ -11,10 +11,11 @@ class vehicle : public QObject
 public:
     explicit vehicle(QObject *parent = nullptr);
     QPen m_pen{QPen({Qt::red},3)};
-    int size{15};
+    int size{10};
     qreal position{0.0};
     bool active{false};
     QVariantAnimation *anim{nullptr};
+    int pos_in_dict;
 
 
 signals:
