@@ -3,6 +3,8 @@
 
 #include <QGraphicsScene>
 #include "custom_line.h"
+#include "path.h"
+#include "vehicle.h"
 
 class graphic_scene : public QGraphicsScene
 {
@@ -15,11 +17,9 @@ public slots:
 
 private:
     QMap<int, custom_line*> st_dict;
-    QTimer *timer;
+    QMap<int, path*> path_dict;
+    QMap<int, vehicle*> vehicle_dict;
     qreal speed{1.0};
-
-private slots:
-    void line();
 
 signals:
 

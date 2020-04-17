@@ -14,39 +14,14 @@ custom_line::custom_line(QColor m_color, QGraphicsItem *parent):
     //setFlag(QGraphicsItem::ItemIsMovable);
     anim = new QVariantAnimation(this);
     anim->setDuration(duration);
-    //connect(anim, &QVariantAnimation::valueChanged, this, &custom_line::on_animation);
     connect(anim, &QVariantAnimation::valueChanged, [this](){ test_anim(anim,&active,&move); });
+    //connect(anim, &QVariantAnimation::valueChanged, this, &custom_line::on_animation);
     anim_1 = new QVariantAnimation(this);
     connect(anim_1, &QVariantAnimation::valueChanged, [this](){ test_anim(anim_1,&active_1,&move_1); });
-
-    /*
-    if(m_pen.color() == Qt::blue){
-        timer = new QTimer(this);
-        timer->setInterval(duration*2);
-        timer->start();
-
-        connect(timer, &QTimer::timeout, this, &custom_line::time_line);
-    }
-    */
 }
 
 void custom_line::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    //qDebug() << event->pos() << event->scenePos() << event->screenPos();
-
-    //qDebug() << line().length()*5.16 << line().length()*5.16*2;
-    /*
-    anim->setStartValue(move);
-    if(move == 0.0)
-    {
-        anim->setEndValue(1.0);
-    }else{
-        anim->setEndValue(0.0);
-    }
-    */
-
-    //anim->setEasingCurve(QEasingCurve::InOutCirc)
-
     anim_1->setStartValue(0.0);
     anim_1->setEndValue(1.0);
     anim_1->setDuration(duration);
@@ -100,24 +75,12 @@ QRectF custom_line::boundingRect() const
     return pp.boundingRect();
 }
 
-void custom_line::time_line()
+void custom_line::time_line(int dict_pos)
 {
-    //anim->setStartValue((qreal)abs(start_anim));
-    /*
-    anim->setStartValue(move);
-
-    if(move == 0.0)
-    {
-        anim->setEndValue(1.0);
-    }else{
-        anim->setEndValue(0.0);
-    }
-    */
-    //anim->setEndValue((qreal)abs(start_anim-1));
-    //anim->setEasingCurve(QEasingCurve::InOutQuart);
-    //qDebug() << anim->endValue() << anim->startValue();
-    active = true;
-    anim->start();
+    qDebug() << vehicle_dict[dict_pos]->position;
+    vehicle_dict[dict_pos]->anim = new QVariantAnimation(this);
+    vehicle_dict[dict_pos]->anim->setDuration(duration);
+    //connect(vehicle_dict[dict_pos]->anim, &QVariantAnimation::valueChanged, [this, vehicle*](){ test_anim(vehicle_dict[dict_pos]->anim,&active,&move); });
 }
 
 void custom_line::set_anim()

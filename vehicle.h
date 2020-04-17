@@ -13,6 +13,7 @@ public:
     QPen m_pen{QPen({Qt::red},3)};
     int size{15};
     qreal position{0.0};
+    bool active{false};
     QVariantAnimation *anim{nullptr};
 
 signals:

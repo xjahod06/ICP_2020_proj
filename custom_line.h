@@ -12,7 +12,7 @@ class custom_line :public QObject, public QGraphicsLineItem
     Q_OBJECT
 public:
     explicit custom_line(QColor m_color = Qt::red, QGraphicsItem *parent = nullptr);
-    void time_line();
+    void time_line(int dict_pos);
     QPen m_pen{QPen({Qt::red},3)};
     bool active{false};
     int start_anim{0};
