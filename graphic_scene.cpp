@@ -67,62 +67,16 @@ graphic_scene::graphic_scene(QObject *parent) :
     path_dict[2]->st_dict[0] = st_dict[3];
     path_dict[2]->m_vehicle = vehicle_dict[2];
 
-    /*
-    for (int i = 0 ; i < vehicle_dict.count(); i++) {
-        for (int j = 0 ; j < st_dict.count(); j++) {
-            st_dict[j]->vehicle_dict[i] = vehicle_dict[i];
-            st_dict[j]->vehicle_dict[i]->anim = new QVariantAnimation(st_dict[j]);
-            st_dict[j]->time_line(i);
-        }
-    }
-    */
-    //qDebug() << &(path_dict[0]->m_vehicle) << &(vehicle_dict[0]);
-
     path_dict[0]->timer->start();
     path_dict[1]->timer->start();
     path_dict[2]->timer->start();
 
-    /*
-    st_dict[0]->time_line(1);
-    path_dict[1]->m_vehicle->anim->setDuration(3000);
-    path_dict[1]->m_vehicle->active = true;
-    path_dict[1]->m_vehicle->anim->setStartValue(0.0);
-    path_dict[1]->m_vehicle->anim->setEndValue(1.0);
-    path_dict[1]->m_vehicle->anim->start();
-
-    st_dict[0]->time_line(0);
-    path_dict[0]->m_vehicle->anim->setDuration(2000);
-    path_dict[0]->m_vehicle->active = true;
-    path_dict[0]->m_vehicle->anim->setStartValue(0.0);
-    path_dict[0]->m_vehicle->anim->setEndValue(1.0);
-    path_dict[0]->m_vehicle->anim->start();
-    */
-
-
-    /*
-    auto line = new custom_line(Qt::magenta);
-    line->setLine(250,0,0,-250);
-    addItem(line);
-    */
-    /*
-    timer = new QTimer(this);
-    timer->setInterval(1000);
-    timer->start();
-
-    connect(timer, &QTimer::timeout, this, &graphic_scene::line);
-    */
-    /*
-    qDebug() << st_dict.count();
-    foreach (line, st_dict) {
-        qDebug() << line->duration << line->m_pen;
-    }
-    */
 }
 
 void graphic_scene::speed_change(int val)
 {
     speed = abs(val-25)/15.0;
-    qDebug() << "speed" <<speed;
+    qDebug() << "speed" << speed << abs(val-25);
     foreach (auto path, path_dict) {
        path->speed = speed;
     }
