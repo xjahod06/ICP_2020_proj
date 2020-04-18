@@ -84,14 +84,25 @@ QRectF custom_line::boundingRect() const
     }
     return pp.boundingRect();
 }
-
-void custom_line::time_line(int dict_pos)
+/*
+//qDebug() << vehicle_dict[dict_pos]->position;
+//vehicle_dict[dict_pos]->anim = new QVariantAnimation(this);
+//vehicle_dict[dict_pos]->anim->setDuration(duration);
+//auto *actual_vehicle = vehicle_dict[dict_pos];
+//connect(vehicle_dict[dict_pos]->anim, &QVariantAnimation::valueChanged, [this, dict_pos](){ test_anim(vehicle_dict[dict_pos]->anim,&(vehicle_dict[dict_pos]->active),&(vehicle_dict[dict_pos]->position)); });
+*/
+void custom_line::add_vehicle(vehicle *new_vehicle, int pos)
 {
-    //qDebug() << vehicle_dict[dict_pos]->position;
-    //vehicle_dict[dict_pos]->anim = new QVariantAnimation(this);
-    //vehicle_dict[dict_pos]->anim->setDuration(duration);
-    //auto *actual_vehicle = vehicle_dict[dict_pos];
-    connect(vehicle_dict[dict_pos]->anim, &QVariantAnimation::valueChanged, [this, dict_pos](){ test_anim(vehicle_dict[dict_pos]->anim,&(vehicle_dict[dict_pos]->active),&(vehicle_dict[dict_pos]->position),vehicle_dict[dict_pos]); });
+    vehicle_dict[pos] = new_vehicle;
+    vehicle_dict[pos]->anim = new QVariantAnimation(this);
+    connect(vehicle_dict[pos]->anim, &QVariantAnimation::valueChanged, [this, pos](){test_anim(vehicle_dict[pos]->anim, &vehicle_dict[pos]->active, &vehicle_dict[pos]->position);});
+
+}
+
+void custom_line::remove_vehicle(int pos)
+{
+    disconnect(vehicle_dict[pos]->anim);
+    vehicle_dict.remove(pos);
 }
 
 void custom_line::set_anim()
@@ -109,7 +120,7 @@ void custom_line::set_anim()
 
 }
 
-void custom_line::test_anim(QVariantAnimation *animation, bool *active_anim, qreal *anim_move, vehicle *veh)
+void custom_line::test_anim(QVariantAnimation *animation, bool *active_anim, qreal *anim_move)
 {
     //qDebug() << animation->currentValue() << animation->currentTime() << animation->duration() << animation->currentValue().toReal();
     *anim_move = animation->currentValue().toReal();
@@ -121,11 +132,6 @@ void custom_line::test_anim(QVariantAnimation *animation, bool *active_anim, qre
     }
 
     update();
-    if(*anim_move == animation->endValue()){
-        qDebug() << "disconnect";
-        disconnect(this);
-
-    }
 }
 
 void custom_line::on_animation(const QVariant &value)

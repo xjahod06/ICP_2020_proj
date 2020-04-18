@@ -12,7 +12,7 @@ class custom_line :public QObject, public QGraphicsLineItem
     Q_OBJECT
 public:
     explicit custom_line(QColor m_color = Qt::red, QGraphicsItem *parent = nullptr);
-    void time_line(int dict_pos);
+    //void time_line(int dict_pos);
     QPen m_pen{QPen({Qt::red},3)};
     bool active{false};
     int start_anim{0};
@@ -20,6 +20,8 @@ public:
     qreal station{-1};
     QVariantAnimation *anim{nullptr};
     QMap<int, vehicle*> vehicle_dict;
+    void add_vehicle(vehicle* new_vehicle,int pos);
+    void remove_vehicle(int pos);
 
 protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
@@ -34,7 +36,7 @@ private:
     qreal move_1{0.0};
     bool active_1{false};
     QVariantAnimation *anim_1{nullptr};
-    void test_anim(QVariantAnimation *animation, bool *active_anim, qreal *anim_move, vehicle *veh);
+    void test_anim(QVariantAnimation *animation, bool *active_anim, qreal *anim_move);
 
 
 private slots:

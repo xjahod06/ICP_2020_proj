@@ -17,6 +17,15 @@ void path::move()
 
     //line->time_line(m_vehicle->pos_in_dict);
 
+    if(prev_line != -1){
+        st_dict[prev_line]->remove_vehicle(m_vehicle->pos_in_dict);
+    }
+
+    prev_line = active_line;
+
+    //line->vehicle_dict[m_vehicle->pos_in_dict] = m_vehicle;
+    line->add_vehicle(m_vehicle,m_vehicle->pos_in_dict);
+
     m_vehicle->anim->setEndValue(end);
     m_vehicle->anim->setStartValue(start);
     timer->setInterval((line->duration+20)*speed);

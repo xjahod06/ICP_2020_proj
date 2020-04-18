@@ -23,6 +23,7 @@ private:
     qreal end{1.0};
     int pause{750};
     bool same{false};
+    int prev_line{-1};
 
 private slots:
     void move();

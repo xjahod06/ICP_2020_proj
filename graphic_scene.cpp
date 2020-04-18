@@ -39,14 +39,17 @@ graphic_scene::graphic_scene(QObject *parent) :
     st_dict[0]->station = 0.8;
     addItem(st_dict[0]);
 
-    vehicle_dict[0] = new vehicle();
+    vehicle_dict[0] = new vehicle(this);
     vehicle_dict[0]->m_pen = QPen({Qt::blue},3);
     vehicle_dict[0]->pos_in_dict = 0;
-    vehicle_dict[1] = new vehicle();
+    vehicle_dict[1] = new vehicle(this);
     vehicle_dict[1]->m_pen = QPen({Qt::red},3);
     vehicle_dict[1]->pos_in_dict = 1;
+    vehicle_dict[2] = new vehicle(this);
+    vehicle_dict[2]->m_pen = QPen({Qt::green},3);
+    vehicle_dict[2]->pos_in_dict = 2;
 
-    path_dict[0] = new path();
+    path_dict[0] = new path(this);
     path_dict[0]->st_dict[0] = st_dict[0];
     path_dict[0]->st_dict[1] = st_dict[1];
     path_dict[0]->st_dict[2] = st_dict[2];
@@ -54,13 +57,17 @@ graphic_scene::graphic_scene(QObject *parent) :
     path_dict[0]->a = 100;
     path_dict[0]->m_vehicle = vehicle_dict[0];
 
-    path_dict[1] = new path();
+    path_dict[1] = new path(this);
     path_dict[1]->st_dict[0] = st_dict[3];
     path_dict[1]->st_dict[1] = st_dict[4];
     path_dict[1]->st_dict[2] = st_dict[5];
     path_dict[1]->m_vehicle = vehicle_dict[1];
 
+    path_dict[2] = new path(this);
+    path_dict[2]->st_dict[0] = st_dict[3];
+    path_dict[2]->m_vehicle = vehicle_dict[2];
 
+    /*
     for (int i = 0 ; i < vehicle_dict.count(); i++) {
         for (int j = 0 ; j < st_dict.count(); j++) {
             st_dict[j]->vehicle_dict[i] = vehicle_dict[i];
@@ -68,11 +75,13 @@ graphic_scene::graphic_scene(QObject *parent) :
             st_dict[j]->time_line(i);
         }
     }
-
+    */
     //qDebug() << &(path_dict[0]->m_vehicle) << &(vehicle_dict[0]);
 
-    //path_dict[0]->timer->start();
+    path_dict[0]->timer->start();
     path_dict[1]->timer->start();
+    path_dict[2]->timer->start();
+
     /*
     st_dict[0]->time_line(1);
     path_dict[1]->m_vehicle->anim->setDuration(3000);
