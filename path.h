@@ -14,7 +14,7 @@ public:
     vehicle *m_vehicle{nullptr};
     QTimer *timer;
     qreal speed{1.0};
-    int a{0};
+    void find_corr_way();
 
 private:
     int active_line{0};
@@ -24,6 +24,7 @@ private:
     int pause{750};
     bool same{false};
     int prev_line{-1};
+    std::list<int> wrong_direction_dict;
 
 private slots:
     void move();

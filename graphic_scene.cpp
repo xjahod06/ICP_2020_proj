@@ -25,7 +25,7 @@ graphic_scene::graphic_scene(QObject *parent) :
     addItem(st_dict[2]);
 
     st_dict[3] = new custom_line(def_road_color);
-    st_dict[3]->setLine(200,150,300,300);
+    st_dict[3]->setLine(300,300,200,150);
     st_dict[3]->station = 0.5;
     addItem(st_dict[3]);
 
@@ -35,7 +35,7 @@ graphic_scene::graphic_scene(QObject *parent) :
     addItem(st_dict[4]);
 
     st_dict[5] = new custom_line(def_road_color);
-    st_dict[5]->setLine(500,300,500,0);
+    st_dict[5]->setLine(500,0,500,300);
     st_dict[5]->station = 0.35;
     addItem(st_dict[5]);
 
@@ -48,6 +48,11 @@ graphic_scene::graphic_scene(QObject *parent) :
     st_dict[7]->setLine(300,300,0,300);
     st_dict[7]->station = 0.45;
     addItem(st_dict[7]);
+
+    st_dict[8] = new custom_line(def_road_color);
+    st_dict[8]->setLine(200,150,500,0);
+    st_dict[8]->station = 0.2;
+    addItem(st_dict[8]);
 
     vehicle_dict[0] = new vehicle();
     vehicle_dict[0]->setPen(QPen({Qt::blue},3));
@@ -75,24 +80,28 @@ graphic_scene::graphic_scene(QObject *parent) :
     path_dict[0]->st_dict[1] = st_dict[1];
     path_dict[0]->st_dict[2] = st_dict[2];
     path_dict[0]->st_dict[3] = st_dict[3];
-    path_dict[0]->a = 100;
+    path_dict[0]->st_dict[4] = st_dict[7];
+    path_dict[0]->find_corr_way();
     path_dict[0]->m_vehicle = vehicle_dict[0];
 
     path_dict[1] = new path(this);
     path_dict[1]->st_dict[0] = st_dict[3];
     path_dict[1]->st_dict[1] = st_dict[4];
     path_dict[1]->st_dict[2] = st_dict[5];
+    path_dict[1]->st_dict[3] = st_dict[8];
+    path_dict[1]->find_corr_way();
     path_dict[1]->m_vehicle = vehicle_dict[1];
 
     path_dict[2] = new path(this);
     path_dict[2]->st_dict[0] = st_dict[6];
     path_dict[2]->st_dict[1] = st_dict[3];
     path_dict[2]->st_dict[2] = st_dict[7];
+    path_dict[2]->find_corr_way();
     path_dict[2]->m_vehicle = vehicle_dict[2];
 
     path_dict[0]->timer->start();
-    //path_dict[1]->timer->start();
-    //path_dict[2]->timer->start();
+    path_dict[1]->timer->start();
+    path_dict[2]->timer->start();
 
 }
 

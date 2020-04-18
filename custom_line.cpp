@@ -72,8 +72,7 @@ void custom_line::remove_vehicle(int pos)
 void custom_line::set_anim()
 {
     duration = line().length()*10.32;
-    //qDebug() << line().p1() << line().p2() << line().p1() - line().p2() << line().normalVector();
-    set_direction();
+    //set_direction();
 }
 
 void custom_line::test_anim(QVariantAnimation *animation, bool *active_anim, qreal *anim_move, vehicle* veh)
@@ -87,17 +86,6 @@ void custom_line::test_anim(QVariantAnimation *animation, bool *active_anim, qre
 
     update();
     veh->move_yourself_lazy_circle(line().pointAt(veh->position));
-    //qDebug() << "outside:" <<line().pointAt(veh->position);
-    /*
-    foreach (auto m_vehicle, vehicle_dict) {
-        if(m_vehicle->active == true)
-        {
-            //painter->setPen(m_vehicle->m_pen);
-            //painter->drawEllipse(line().pointAt(m_vehicle->position),m_vehicle->size,m_vehicle->size);
-            m_vehicle->move_yourself_lazy_circle(line().pointAt(m_vehicle->position));
-        }
-    }
-    */
 }
 
 void custom_line::set_direction()
@@ -106,30 +94,20 @@ void custom_line::set_direction()
     if(decision_point.x() == 0){
         if(decision_point.y() < 0)
         {
-            //qDebug() << "veritical down" << line().p1() << line().p2();
-            setPen(QPen({Qt::yellow},3));
             direction = "down";
         }else{
-            //qDebug() << "veritical up" << line().p1() << line().p2();
-            setPen(QPen({Qt::cyan},3));
             direction = "up";
         }
     }else if(decision_point.y() == 0){
         if(decision_point.x() > 0)
         {
-            //qDebug() << "horizontal left" << line().p1() << line().p2();
-            setPen(QPen({Qt::darkMagenta},3));
             direction = "LR";
         }else{
-            //qDebug() << "horizontal right" << line().p1() << line().p2();
-            setPen(QPen({Qt::darkGreen},3));
             direction = "RL";
         }
     }else if(decision_point.x() < 0){
-        setPen(QPen({Qt::darkGreen},3));
         direction = "RL";
     }else if(decision_point.x() > 0){
-        setPen(QPen({Qt::darkMagenta},3));
         direction = "LR";
     }
 }
