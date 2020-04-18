@@ -19,6 +19,7 @@ public:
     QMap<int, vehicle*> vehicle_dict;
     void add_vehicle(vehicle* new_vehicle,int pos);
     void remove_vehicle(int pos);
+    QString direction;
 
 protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
@@ -30,6 +31,7 @@ private:
     void set_anim();
     bool anim_set{false};
     void test_anim(QVariantAnimation *animation, bool *active_anim, qreal *anim_move, vehicle* veh);
+    void set_direction();
 
 };
 

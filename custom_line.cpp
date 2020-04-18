@@ -72,6 +72,8 @@ void custom_line::remove_vehicle(int pos)
 void custom_line::set_anim()
 {
     duration = line().length()*10.32;
+    //qDebug() << line().p1() << line().p2() << line().p1() - line().p2() << line().normalVector();
+    set_direction();
 }
 
 void custom_line::test_anim(QVariantAnimation *animation, bool *active_anim, qreal *anim_move, vehicle* veh)
@@ -96,4 +98,38 @@ void custom_line::test_anim(QVariantAnimation *animation, bool *active_anim, qre
         }
     }
     */
+}
+
+void custom_line::set_direction()
+{
+    auto decision_point = line().p1() - line().p2();
+    if(decision_point.x() == 0){
+        if(decision_point.y() < 0)
+        {
+            //qDebug() << "veritical down" << line().p1() << line().p2();
+            setPen(QPen({Qt::yellow},3));
+            direction = "down";
+        }else{
+            //qDebug() << "veritical up" << line().p1() << line().p2();
+            setPen(QPen({Qt::cyan},3));
+            direction = "up";
+        }
+    }else if(decision_point.y() == 0){
+        if(decision_point.x() > 0)
+        {
+            //qDebug() << "horizontal left" << line().p1() << line().p2();
+            setPen(QPen({Qt::darkMagenta},3));
+            direction = "LR";
+        }else{
+            //qDebug() << "horizontal right" << line().p1() << line().p2();
+            setPen(QPen({Qt::darkGreen},3));
+            direction = "RL";
+        }
+    }else if(decision_point.x() < 0){
+        setPen(QPen({Qt::darkGreen},3));
+        direction = "RL";
+    }else if(decision_point.x() > 0){
+        setPen(QPen({Qt::darkMagenta},3));
+        direction = "LR";
+    }
 }

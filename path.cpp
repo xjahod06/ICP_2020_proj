@@ -19,22 +19,27 @@ void path::move()
 
     if(prev_line != -1){
         st_dict[prev_line]->remove_vehicle(m_vehicle->pos_in_dict);
+        qDebug() <<st_dict[prev_line]->line().p1() - st_dict[prev_line]->line().p2() << line->line().p1() - line->line().p2() <<(st_dict[prev_line]->line().p1() - st_dict[prev_line]->line().p2()) - (line->line().p1() - line->line().p2());
     }
 
     prev_line = active_line;
 
+    auto tmp_start = start;
+    auto tmp_end = end;
+
     //line->vehicle_dict[m_vehicle->pos_in_dict] = m_vehicle;
     line->add_vehicle(m_vehicle,m_vehicle->pos_in_dict);
 
-    m_vehicle->anim->setEndValue(end);
-    m_vehicle->anim->setStartValue(start);
+
+    m_vehicle->anim->setEndValue(tmp_end);
+    m_vehicle->anim->setStartValue(tmp_start);
     timer->setInterval((line->duration+20)*speed);
     m_vehicle->anim->setDuration(line->duration*speed);
 
     if((line->station != -1) && (same == false)){
         m_vehicle->anim->setEndValue(line->station);
-        timer->setInterval(((line->duration * (std::abs(start - line->station))) + pause) * speed);
-        m_vehicle->anim->setDuration((line->duration * (std::abs(start - line->station))) * speed);
+        timer->setInterval(((line->duration * (std::abs(tmp_start - line->station))) + pause) * speed);
+        m_vehicle->anim->setDuration((line->duration * (std::abs(tmp_start - line->station))) * speed);
         same = true;
         if(forward == true){
             active_line--;
@@ -44,8 +49,8 @@ void path::move()
 
     }else if(same == true){
         m_vehicle->anim->setStartValue(line->station);
-        timer->setInterval(((line->duration - (line->duration * (std::abs(start - line->station)))) + 20) * speed);
-        m_vehicle->anim->setDuration((line->duration - (line->duration * (std::abs(start - line->station)))) * speed);
+        timer->setInterval(((line->duration - (line->duration * (std::abs(tmp_start - line->station)))) + 20) * speed);
+        m_vehicle->anim->setDuration((line->duration - (line->duration * (std::abs(tmp_start - line->station)))) * speed);
         same = false;
     }
 

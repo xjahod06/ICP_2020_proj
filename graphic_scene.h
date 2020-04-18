@@ -23,6 +23,7 @@ private:
     bool change_rdy{true};
     void reset_click_on_lines(int pos);
     void check_clicked(int pos);
+    QColor def_road_color{Qt::darkGray};
 
 private slots:
 

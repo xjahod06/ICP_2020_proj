@@ -10,50 +10,48 @@
 graphic_scene::graphic_scene(QObject *parent) :
     QGraphicsScene(parent)
 {
-    st_dict[0] = new custom_line(Qt::magenta);
+    st_dict[0] = new custom_line(def_road_color);
     st_dict[0]->setLine(300,0,0,0);
     st_dict[0]->station = 0.8;
     addItem(st_dict[0]);
 
-    st_dict[1] = new custom_line(Qt::magenta);
+    st_dict[1] = new custom_line(def_road_color);
     st_dict[1]->setLine(0,0,0,150);
     st_dict[1]->station = 0.8;
     addItem(st_dict[1]);
 
-    st_dict[2] = new custom_line(Qt::magenta);
+    st_dict[2] = new custom_line(def_road_color);
     st_dict[2]->setLine(0,150,200,150);
     addItem(st_dict[2]);
 
-    st_dict[3] = new custom_line(Qt::magenta);
+    st_dict[3] = new custom_line(def_road_color);
     st_dict[3]->setLine(200,150,300,300);
     st_dict[3]->station = 0.5;
     addItem(st_dict[3]);
 
-    st_dict[4] = new custom_line(Qt::magenta);
+    st_dict[4] = new custom_line(def_road_color);
     st_dict[4]->setLine(300,300,500,300);
     st_dict[4]->station = 0.75;
     addItem(st_dict[4]);
 
-    st_dict[5] = new custom_line(Qt::magenta);
+    st_dict[5] = new custom_line(def_road_color);
     st_dict[5]->setLine(500,300,500,0);
     st_dict[5]->station = 0.35;
     addItem(st_dict[5]);
 
-    st_dict[6] = new custom_line(Qt::magenta);
+    st_dict[6] = new custom_line(def_road_color);
     st_dict[6]->setLine(200,-50,200,150);
     st_dict[6]->station = 0.1;
     addItem(st_dict[6]);
 
-    st_dict[7] = new custom_line(Qt::magenta);
+    st_dict[7] = new custom_line(def_road_color);
     st_dict[7]->setLine(300,300,0,300);
     st_dict[7]->station = 0.45;
     addItem(st_dict[7]);
 
-
     vehicle_dict[0] = new vehicle();
     vehicle_dict[0]->setPen(QPen({Qt::blue},3));
     vehicle_dict[0]->pos_in_dict = 0;
-    //vehicle_dict[0]->setPen(QPen({Qt::black},5));
     vehicle_dict[0]->setRect(0,0,0,0);
     addItem(vehicle_dict[0]);
     connect(vehicle_dict[0], &vehicle::circle_clicked, this, &graphic_scene::check_clicked);
@@ -61,7 +59,6 @@ graphic_scene::graphic_scene(QObject *parent) :
     vehicle_dict[1] = new vehicle();
     vehicle_dict[1]->setPen(QPen({Qt::red},3));
     vehicle_dict[1]->pos_in_dict = 1;
-    //vehicle_dict[1]->setPen(QPen({Qt::black},5));
     vehicle_dict[1]->setRect(0,0,0,0);
     addItem(vehicle_dict[1]);
     connect(vehicle_dict[1], &vehicle::circle_clicked, this, &graphic_scene::check_clicked);
@@ -69,7 +66,6 @@ graphic_scene::graphic_scene(QObject *parent) :
     vehicle_dict[2] = new vehicle();
     vehicle_dict[2]->setPen(QPen({Qt::green},3));
     vehicle_dict[2]->pos_in_dict = 2;
-    //vehicle_dict[2]->setPen(QPen({Qt::black},5));
     vehicle_dict[2]->setRect(0,0,0,0);
     addItem(vehicle_dict[2]);
     connect(vehicle_dict[2], &vehicle::circle_clicked, this, &graphic_scene::check_clicked);
@@ -95,8 +91,8 @@ graphic_scene::graphic_scene(QObject *parent) :
     path_dict[2]->m_vehicle = vehicle_dict[2];
 
     path_dict[0]->timer->start();
-    path_dict[1]->timer->start();
-    path_dict[2]->timer->start();
+    //path_dict[1]->timer->start();
+    //path_dict[2]->timer->start();
 
 }
 
@@ -115,7 +111,7 @@ void graphic_scene::reset_click_on_lines(int pos)
         if (i != pos){
             if(vehicle_dict[i]->cliked == true){
                 foreach (auto road, path_dict[i]->st_dict) {
-                    road->setPen(QPen({Qt::magenta},3));
+                    road->setPen(QPen({def_road_color},3));
                 }
                 vehicle_dict[i]->cliked = false;
             }
@@ -135,7 +131,7 @@ void graphic_scene::check_clicked(int pos)
     else if (vehicle_dict[pos]->cliked == false)
     {
         foreach (auto road, path_dict[pos]->st_dict) {
-            road->setPen(QPen({Qt::magenta},3));
+            road->setPen(QPen({def_road_color},3));
         }
     }
     //qDebug() << pos;
