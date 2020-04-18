@@ -71,3 +71,4 @@ void path::move()
         timer->setInterval(timer->remainingTime() + pause*speed);
     }
 }
+

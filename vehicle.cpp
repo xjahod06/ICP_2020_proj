@@ -4,6 +4,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QPen>
 #include <QPainter>
+#include "graphic_scene.h"
 
 vehicle::vehicle(QGraphicsItem *parent) :
     QObject(),
@@ -23,7 +24,11 @@ void vehicle::move_yourself_lazy_circle(QPointF paint_point)
 
 void vehicle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    qDebug() << "clicked on circle";
+    cliked == true ? cliked = false : cliked = true;
+
+    emit circle_clicked(pos_in_dict);
+
+    //qDebug() << "clicked on circle" << cliked;
 
     QGraphicsEllipseItem::mousePressEvent(event);
 }

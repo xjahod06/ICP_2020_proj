@@ -56,6 +56,7 @@ graphic_scene::graphic_scene(QObject *parent) :
     //vehicle_dict[0]->setPen(QPen({Qt::black},5));
     vehicle_dict[0]->setRect(0,0,0,0);
     addItem(vehicle_dict[0]);
+    connect(vehicle_dict[0], &vehicle::circle_clicked, this, &graphic_scene::check_clicked);
 
     vehicle_dict[1] = new vehicle();
     vehicle_dict[1]->setPen(QPen({Qt::red},3));
@@ -63,6 +64,7 @@ graphic_scene::graphic_scene(QObject *parent) :
     //vehicle_dict[1]->setPen(QPen({Qt::black},5));
     vehicle_dict[1]->setRect(0,0,0,0);
     addItem(vehicle_dict[1]);
+    connect(vehicle_dict[1], &vehicle::circle_clicked, this, &graphic_scene::check_clicked);
 
     vehicle_dict[2] = new vehicle();
     vehicle_dict[2]->setPen(QPen({Qt::green},3));
@@ -70,6 +72,7 @@ graphic_scene::graphic_scene(QObject *parent) :
     //vehicle_dict[2]->setPen(QPen({Qt::black},5));
     vehicle_dict[2]->setRect(0,0,0,0);
     addItem(vehicle_dict[2]);
+    connect(vehicle_dict[2], &vehicle::circle_clicked, this, &graphic_scene::check_clicked);
 
     path_dict[0] = new path(this);
     path_dict[0]->st_dict[0] = st_dict[0];
@@ -104,4 +107,36 @@ void graphic_scene::speed_change(int val)
     foreach (auto path, path_dict) {
        path->speed = speed;
     }
+}
+
+void graphic_scene::reset_click_on_lines(int pos)
+{
+    for (int i = 0; i < vehicle_dict.count(); i++) {
+        if (i != pos){
+            if(vehicle_dict[i]->cliked == true){
+                foreach (auto road, path_dict[i]->st_dict) {
+                    road->setPen(QPen({Qt::magenta},3));
+                }
+                vehicle_dict[i]->cliked = false;
+            }
+        }
+    }
+}
+
+void graphic_scene::check_clicked(int pos)
+{
+    reset_click_on_lines(pos);
+    if(vehicle_dict[pos]->cliked == true)
+    {
+        foreach (auto road, path_dict[pos]->st_dict) {
+            road->setPen(vehicle_dict[pos]->pen());
+        }
+    }
+    else if (vehicle_dict[pos]->cliked == false)
+    {
+        foreach (auto road, path_dict[pos]->st_dict) {
+            road->setPen(QPen({Qt::magenta},3));
+        }
+    }
+    //qDebug() << pos;
 }

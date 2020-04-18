@@ -65,13 +65,13 @@ void custom_line::add_vehicle(vehicle *new_vehicle, int pos)
 void custom_line::remove_vehicle(int pos)
 {
     //disconnect(vehicle_dict[pos]->anim);
-    vehicle_dict[pos]->disconnect();
+    this->disconnect();
     vehicle_dict.remove(pos);
 }
 
 void custom_line::set_anim()
 {
-    duration = line().length()*5.16;
+    duration = line().length()*10.32;
 }
 
 void custom_line::test_anim(QVariantAnimation *animation, bool *active_anim, qreal *anim_move, vehicle* veh)

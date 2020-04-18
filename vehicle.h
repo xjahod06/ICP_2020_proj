@@ -18,9 +18,11 @@ public:
     QVariantAnimation *anim{nullptr};
     int pos_in_dict;
     void move_yourself_lazy_circle(QPointF paint_point);
+    bool cliked{false};
 
 private:
     QPointF center;
+    QGraphicsScene *m_step_parent;
 
 protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
@@ -28,6 +30,7 @@ protected:
     virtual QRectF boundingRect() const override;
 
 signals:
+    void circle_clicked(int pos);
 
 };
 

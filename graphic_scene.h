@@ -20,6 +20,11 @@ private:
     QMap<int, path*> path_dict;
     QMap<int, vehicle*> vehicle_dict;
     qreal speed{1.0};
+    bool change_rdy{true};
+    void reset_click_on_lines(int pos);
+    void check_clicked(int pos);
+
+private slots:
 
 signals:
 
