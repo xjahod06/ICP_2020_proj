@@ -26,4 +26,6 @@ custom_graphics_view::custom_graphics_view(QWidget *parent) :
     horizontalLayout->addSpacerItem(new QSpacerItem(1, 1, QSizePolicy::Expanding));
     horizontalLayout->addItem(verticalLayout);
 
+    setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+
 }

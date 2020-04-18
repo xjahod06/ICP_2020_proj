@@ -29,7 +29,7 @@ private:
     QTimer *timer;
     void set_anim();
     bool anim_set{false};
-    void test_anim(QVariantAnimation *animation, bool *active_anim, qreal *anim_move);
+    void test_anim(QVariantAnimation *animation, bool *active_anim, qreal *anim_move, vehicle* veh);
 
 };
 

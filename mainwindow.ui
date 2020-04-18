@@ -43,7 +43,7 @@
       <item>
        <widget class="QSlider" name="speedSlider">
         <property name="minimum">
-         <number>0</number>
+         <number>-6</number>
         </property>
         <property name="maximum">
          <number>19</number>

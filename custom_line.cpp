@@ -4,6 +4,7 @@
 #include <QPen>
 #include <QPainter>
 #include <QMap>
+#include "vehicle.h"
 
 custom_line::custom_line(QColor m_color, QGraphicsItem *parent):
     QObject(),
@@ -24,15 +25,6 @@ void custom_line::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 {
     painter->setPen(pen());
     painter->drawLine(line());
-
-    foreach (auto m_vehicle, vehicle_dict) {
-        if(m_vehicle->active == true)
-        {
-            painter->setPen(m_vehicle->m_pen);
-            painter->drawEllipse(line().pointAt(m_vehicle->position),m_vehicle->size,m_vehicle->size);
-        }
-    }
-
     painter->setPen(QPen({Qt::black},5));
     if(station != -1)
     {
@@ -50,9 +42,9 @@ QRectF custom_line::boundingRect() const
 {
     QPainterPath pp;
     pp.addRect(QGraphicsLineItem::boundingRect());
-    foreach (auto m_vehicle, vehicle_dict) {
+    /*foreach (auto m_vehicle, vehicle_dict) {
         pp.addEllipse(line().pointAt(m_vehicle->position),m_vehicle->size+5,m_vehicle->size+5);
-    }
+    }*/
     return pp.boundingRect();
 }
 /*
@@ -66,13 +58,14 @@ void custom_line::add_vehicle(vehicle *new_vehicle, int pos)
 {
     vehicle_dict[pos] = new_vehicle;
     vehicle_dict[pos]->anim = new QVariantAnimation(this);
-    connect(vehicle_dict[pos]->anim, &QVariantAnimation::valueChanged, [this, pos](){test_anim(vehicle_dict[pos]->anim, &vehicle_dict[pos]->active, &vehicle_dict[pos]->position);});
+    connect(vehicle_dict[pos]->anim, &QVariantAnimation::valueChanged, [this, pos, new_vehicle](){test_anim(vehicle_dict[pos]->anim, &vehicle_dict[pos]->active, &vehicle_dict[pos]->position, new_vehicle);});
 
 }
 
 void custom_line::remove_vehicle(int pos)
 {
-    disconnect(vehicle_dict[pos]->anim);
+    //disconnect(vehicle_dict[pos]->anim);
+    vehicle_dict[pos]->disconnect();
     vehicle_dict.remove(pos);
 }
 
@@ -81,7 +74,7 @@ void custom_line::set_anim()
     duration = line().length()*5.16;
 }
 
-void custom_line::test_anim(QVariantAnimation *animation, bool *active_anim, qreal *anim_move)
+void custom_line::test_anim(QVariantAnimation *animation, bool *active_anim, qreal *anim_move, vehicle* veh)
 {
     *anim_move = animation->currentValue().toReal();
     if((*anim_move == 0.0) || (*anim_move == 1.0)){
@@ -91,4 +84,16 @@ void custom_line::test_anim(QVariantAnimation *animation, bool *active_anim, qre
     }
 
     update();
+    veh->move_yourself_lazy_circle(line().pointAt(veh->position));
+    //qDebug() << "outside:" <<line().pointAt(veh->position);
+    /*
+    foreach (auto m_vehicle, vehicle_dict) {
+        if(m_vehicle->active == true)
+        {
+            //painter->setPen(m_vehicle->m_pen);
+            //painter->drawEllipse(line().pointAt(m_vehicle->position),m_vehicle->size,m_vehicle->size);
+            m_vehicle->move_yourself_lazy_circle(line().pointAt(m_vehicle->position));
+        }
+    }
+    */
 }
