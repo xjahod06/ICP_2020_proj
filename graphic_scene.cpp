@@ -10,6 +10,11 @@
 graphic_scene::graphic_scene(QObject *parent) :
     QGraphicsScene(parent)
 {
+    st_dict[0] = new custom_line(Qt::magenta);
+    st_dict[0]->setLine(-200,0,0,0);
+    st_dict[0]->station = 0.8;
+    addItem(st_dict[0]);
+
     st_dict[1] = new custom_line(Qt::magenta);
     st_dict[1]->setLine(0,0,0,150);
     st_dict[1]->station = 0.8;
@@ -34,10 +39,16 @@ graphic_scene::graphic_scene(QObject *parent) :
     st_dict[5]->station = 0.35;
     addItem(st_dict[5]);
 
-    st_dict[0] = new custom_line(Qt::magenta);
-    st_dict[0]->setLine(200,0,0,0);
-    st_dict[0]->station = 0.8;
-    addItem(st_dict[0]);
+    st_dict[6] = new custom_line(Qt::magenta);
+    st_dict[6]->setLine(200,-50,200,150);
+    st_dict[6]->station = 0.1;
+    addItem(st_dict[6]);
+
+    st_dict[7] = new custom_line(Qt::magenta);
+    st_dict[7]->setLine(300,300,0,300);
+    st_dict[7]->station = 0.45;
+    addItem(st_dict[7]);
+
 
     vehicle_dict[0] = new vehicle(this);
     vehicle_dict[0]->m_pen = QPen({Qt::blue},3);
@@ -64,7 +75,9 @@ graphic_scene::graphic_scene(QObject *parent) :
     path_dict[1]->m_vehicle = vehicle_dict[1];
 
     path_dict[2] = new path(this);
-    path_dict[2]->st_dict[0] = st_dict[3];
+    path_dict[2]->st_dict[0] = st_dict[6];
+    path_dict[2]->st_dict[1] = st_dict[3];
+    path_dict[2]->st_dict[2] = st_dict[7];
     path_dict[2]->m_vehicle = vehicle_dict[2];
 
     path_dict[0]->timer->start();
