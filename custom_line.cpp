@@ -85,7 +85,10 @@ void custom_line::test_anim(QVariantAnimation *animation, bool *active_anim, qre
     }
 
     update();
-    veh->move_yourself_lazy_circle(line().pointAt(veh->position));
+    if(veh != nullptr)
+    {
+        veh->move_yourself_lazy_circle(line().pointAt(veh->position));
+    }
 }
 
 void custom_line::set_direction()

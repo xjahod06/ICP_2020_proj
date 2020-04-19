@@ -123,7 +123,6 @@ void graphic_scene::timer_reset()
     foreach (auto road, path_dict) {
         road->timer->stop();
         road->m_vehicle->anim->stop();
-        road->forward = false;
         road->same = false;
         road->forward = true;
         road->start = 0.0;
