@@ -33,6 +33,7 @@ void MainWindow::init_scene()
     ui->view->setScene(scene);
     ui->view->setRenderHint(QPainter::Antialiasing);
     connect(ui->speedSlider, &QSlider::valueChanged, scene, &graphic_scene::speed_change);
+    connect(ui->reset_timer_button, &QPushButton::clicked, scene, &graphic_scene::timer_reset);
 
 }
 
