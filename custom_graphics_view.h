@@ -6,6 +6,7 @@
 #include <QSlider>
 #include <QPushButton>
 #include <QLCDNumber>
+#include "clock.h"
 
 
 class custom_graphics_view : public QGraphicsView
@@ -17,7 +18,7 @@ public:
 public:
     QPushButton *buttonPlus{new QPushButton(this)};
     QPushButton *buttonMinus{new QPushButton(this)};
-    QLCDNumber *lcd_timer{new QLCDNumber(this)};
+    class clock *lcd_timer{new class clock(this)};
     QSlider *slider{new QSlider(this)};
 
 signals:

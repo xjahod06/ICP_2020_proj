@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QTime>
 #include <QString>
+#include "clock.h"
 
 custom_graphics_view::custom_graphics_view(QWidget *parent) :
     QGraphicsView(parent)
@@ -29,18 +30,11 @@ custom_graphics_view::custom_graphics_view(QWidget *parent) :
     verticalLayout->addWidget(buttonPlus);
     verticalLayout->addWidget(buttonMinus);
 
-    //lcd_timer->setSegmentStyle(QLCDNumber::Flat);
-    //lcd_timer->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-    lcd_timer->resize(150,60);
-    lcd_timer->display("00:00");
-
-    //qDebug() << lcd_timer->segmentStyle();
 
     verticalLayout_lcd->addSpacerItem(new QSpacerItem(1, 1, QSizePolicy::Maximum, QSizePolicy::Expanding));
     verticalLayout_lcd->addWidget(lcd_timer);
 
     horizontalLayout->addSpacerItem(new QSpacerItem(1, 1, QSizePolicy::Expanding));
-    //horizontalLayout->addItem(verticalLayout_lcd);
     horizontalLayout->addItem(verticalLayout);
 
     setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
