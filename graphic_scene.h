@@ -3,6 +3,8 @@
 
 #include <QGraphicsScene>
 #include "custom_line.h"
+#include "path.h"
+#include "vehicle.h"
 
 class graphic_scene : public QGraphicsScene
 {
@@ -12,14 +14,20 @@ public:
 
 public slots:
     void speed_change(int val);
+    void timer_reset();
 
 private:
     QMap<int, custom_line*> st_dict;
-    QTimer *timer;
+    QMap<int, path*> path_dict;
+    QMap<int, vehicle*> vehicle_dict;
     qreal speed{1.0};
+    bool change_rdy{true};
+    void reset_click_on_lines(int pos);
+    void check_clicked(int pos);
+    QColor def_road_color{Qt::darkGray};
 
 private slots:
-    void line();
+    void start_all_paths();
 
 signals:
 

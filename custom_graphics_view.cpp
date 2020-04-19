@@ -1,12 +1,19 @@
 #include "custom_graphics_view.h"
 #include <QBoxLayout>
 #include "mainwindow.h"
+#include <QDebug>
+#include <QTime>
+#include <QString>
+#include "clock.h"
 
 custom_graphics_view::custom_graphics_view(QWidget *parent) :
     QGraphicsView(parent)
 {
     auto horizontalLayout = new QHBoxLayout;
     viewport()->setLayout(horizontalLayout);
+
+    auto verticalLayout_lcd = new QHBoxLayout;
+    verticalLayout_lcd->setSpacing(6);
 
     auto verticalLayout = new QVBoxLayout;
     verticalLayout->setSpacing(6);
@@ -18,12 +25,18 @@ custom_graphics_view::custom_graphics_view(QWidget *parent) :
     slider->setSliderPosition(50);
     //buttonPlus->setText("+");
     //buttonMinus->setText("-");
+    verticalLayout->addSpacerItem(new QSpacerItem(1, 1, QSizePolicy::Minimum, QSizePolicy::Expanding));
     verticalLayout->addWidget(slider);
     verticalLayout->addWidget(buttonPlus);
     verticalLayout->addWidget(buttonMinus);
-    verticalLayout->addSpacerItem(new QSpacerItem(1, 1, QSizePolicy::Minimum, QSizePolicy::Expanding));
+
+
+    verticalLayout_lcd->addSpacerItem(new QSpacerItem(1, 1, QSizePolicy::Maximum, QSizePolicy::Expanding));
+    verticalLayout_lcd->addWidget(lcd_timer);
 
     horizontalLayout->addSpacerItem(new QSpacerItem(1, 1, QSizePolicy::Expanding));
     horizontalLayout->addItem(verticalLayout);
+
+    setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 
 }
