@@ -11,7 +11,7 @@ graphic_scene::graphic_scene(QObject *parent) :
     QGraphicsScene(parent)
 {
     st_dict[0] = new custom_line(def_road_color);
-    st_dict[0]->setLine(300,0,0,0);
+    st_dict[0]->setLine(200,-50,0,0);
     st_dict[0]->station = 0.8;
     addItem(st_dict[0]);
 
@@ -50,7 +50,7 @@ graphic_scene::graphic_scene(QObject *parent) :
     addItem(st_dict[7]);
 
     st_dict[8] = new custom_line(def_road_color);
-    st_dict[8]->setLine(200,150,500,0);
+    st_dict[8]->setLine(200,-50,500,0);
     st_dict[8]->station = 0.2;
     addItem(st_dict[8]);
 
@@ -114,6 +114,28 @@ void graphic_scene::speed_change(int val)
     }
 }
 
+void graphic_scene::timer_reset()
+{
+    auto timer = new QTimer(this);
+    timer->setSingleShot(500);
+    connect(timer, &QTimer::timeout, this, &graphic_scene::start_all_paths);
+
+    foreach (auto road, path_dict) {
+        road->timer->stop();
+        road->m_vehicle->anim->stop();
+        road->forward = false;
+        road->same = false;
+        road->forward = true;
+        road->start = 0.0;
+        road->end = 1.0;
+        road->active_line = 0;
+        road->prev_line = -1;
+        road->m_vehicle->position = 0.0;
+    }
+    timer->start();
+
+}
+
 void graphic_scene::reset_click_on_lines(int pos)
 {
     for (int i = 0; i < vehicle_dict.count(); i++) {
@@ -144,4 +166,11 @@ void graphic_scene::check_clicked(int pos)
         }
     }
     //qDebug() << pos;
+}
+
+void graphic_scene::start_all_paths()
+{
+    foreach (auto road, path_dict) {
+        road->timer->start();
+    }
 }

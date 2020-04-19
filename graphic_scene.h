@@ -14,6 +14,7 @@ public:
 
 public slots:
     void speed_change(int val);
+    void timer_reset();
 
 private:
     QMap<int, custom_line*> st_dict;
@@ -26,6 +27,7 @@ private:
     QColor def_road_color{Qt::darkGray};
 
 private slots:
+    void start_all_paths();
 
 signals:
 

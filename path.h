@@ -15,15 +15,15 @@ public:
     QTimer *timer;
     qreal speed{1.0};
     void find_corr_way();
-
-private:
-    int active_line{0};
+    bool same{false};
     bool forward{true};
     qreal start{0.0};
     qreal end{1.0};
-    int pause{750};
-    bool same{false};
+    int active_line{0};
     int prev_line{-1};
+
+private:
+    int pause{750};
     std::list<int> wrong_direction_dict;
 
 private slots:
