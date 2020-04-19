@@ -21,6 +21,7 @@ SOURCES += \
     graphic_scene.cpp \
     main.cpp \
     mainwindow.cpp \
+    path.cpp \
     vehicle.cpp
 
 HEADERS += \
@@ -28,6 +29,7 @@ HEADERS += \
     custom_line.h \
     graphic_scene.h \
     mainwindow.h \
+    path.h \
     vehicle.h
 
 FORMS += \
