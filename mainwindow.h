@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "progress_bar.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -23,11 +24,12 @@ public slots:
 
 private:
     void init_scene();
-
+    progress_bar *progress_scene;
     Ui::MainWindow *ui;
 
 protected:
     virtual void wheelEvent(QWheelEvent *event) override;
+    virtual void resizeEvent(QResizeEvent* event) override;
 
 };
 #endif // MAINWINDOW_H

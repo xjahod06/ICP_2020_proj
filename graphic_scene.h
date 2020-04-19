@@ -30,7 +30,8 @@ private slots:
     void start_all_paths();
 
 signals:
-
+    void circle_clicked(path *path);
+    void circle_unclicked();
 };
 
 #endif // GRAPHIC_SCENE_H

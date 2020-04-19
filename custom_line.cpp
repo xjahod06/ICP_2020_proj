@@ -71,7 +71,7 @@ void custom_line::remove_vehicle(int pos)
 
 void custom_line::set_anim()
 {
-    duration = line().length()*10.32;
+    duration = line().length()*20.64;
     //set_direction();
 }
 

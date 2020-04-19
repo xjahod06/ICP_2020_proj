@@ -6,6 +6,7 @@
 #include <QToolButton>
 #include "graphic_scene.h"
 #include "custom_graphics_view.h"
+#include "progress_bar.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -18,7 +19,16 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->view->buttonPlus, &QPushButton::clicked, this, &MainWindow::zoom_in);
     connect(ui->view->buttonMinus, &QPushButton::clicked, this, &MainWindow::zoom_out);
     connect(ui->view->slider, &QSlider::valueChanged, this, &MainWindow::zoom_slide);
+    //connect(this, &QMainWindow::, this, &MainWindow::resized);
+    qDebug() << height() << width();
 
+}
+
+void MainWindow::resizeEvent(QResizeEvent* event)
+{
+   QMainWindow::resizeEvent(event);
+   qDebug() << height() << width();
+   progress_scene->m_width = width();
 }
 
 MainWindow::~MainWindow()
@@ -29,6 +39,11 @@ MainWindow::~MainWindow()
 
 void MainWindow::init_scene()
 {
+    progress_scene = new progress_bar(ui->progress_bar);
+    ui->progress_bar->setScene(progress_scene);
+    ui->progress_bar->setRenderHint(QPainter::Antialiasing);
+    progress_scene->m_width = width();
+
     auto scene = new graphic_scene(ui->view);
     ui->view->setScene(scene);
     ui->view->setRenderHint(QPainter::Antialiasing);
@@ -36,6 +51,9 @@ void MainWindow::init_scene()
     connect(ui->speedSlider, &QSlider::valueChanged, ui->view->lcd_timer, &clock::speed_change);
     connect(ui->reset_timer_button, &QPushButton::clicked, scene, &graphic_scene::timer_reset);
     connect(ui->reset_timer_button, &QPushButton::clicked, ui->view->lcd_timer, &clock::reset_time);
+
+    connect(scene, &graphic_scene::circle_clicked, progress_scene, &progress_bar::show_path);
+    connect(scene, &graphic_scene::circle_unclicked, progress_scene, &progress_bar::reset_path);
 
 }
 

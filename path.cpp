@@ -16,13 +16,13 @@ void path::find_corr_way()
     int first = 1;
     for (int i = 1 ; i < st_dict.count();i++) {
         if(st_dict[i-1]->line().p2() != st_dict[i]->line().p1() && corrected == false){
-            qDebug() << "correcting way" << i;
+            //qDebug() << "correcting way" << i;
             wrong_direction_dict.push_back(i);
             corrected = true;
             first = 2;
         }else if(corrected == true){
             if(st_dict[i-1]->line().p1() != st_dict[i]->line().p1()){
-                qDebug() << "correcting way (before corrected)" << i;
+                //qDebug() << "correcting way (before corrected)" << i;
                 wrong_direction_dict.push_back(i);
             }
             corrected = false;
@@ -32,20 +32,20 @@ void path::find_corr_way()
         }
 
     }
-    qDebug() << wrong_direction_dict;
+    //qDebug() << wrong_direction_dict;
     if(first == 2){
         if(std::find(wrong_direction_dict.begin(),wrong_direction_dict.end(), 1) != wrong_direction_dict.end() && std::find(wrong_direction_dict.begin(),wrong_direction_dict.end(), 2) != wrong_direction_dict.end()){
             wrong_direction_dict.clear();
             wrong_direction_dict.push_back(0);
-            corrected = false;
-            for (int i = 2 ; i < st_dict.count();i++) {
+            corrected = true;
+            for (int i = 1 ; i < st_dict.count();i++) {
                 if(st_dict[i-1]->line().p2() != st_dict[i]->line().p1() && corrected == false){
-                    qDebug() << "correcting way" << i;
+                    //qDebug() << "correcting way" << i;
                     wrong_direction_dict.push_back(i);
                     corrected = true;
                 }else if(corrected == true){
                     if(st_dict[i-1]->line().p1() != st_dict[i]->line().p1()){
-                        qDebug() << "correcting way (before corrected)" << i;
+                        //qDebug() << "correcting way (before corrected)" << i;
                         wrong_direction_dict.push_back(i);
                     }
                     corrected = false;
@@ -54,7 +54,7 @@ void path::find_corr_way()
 
         }
     }
-    qDebug() << wrong_direction_dict;
+    //qDebug() << wrong_direction_dict;
 }
 
 void path::move()
