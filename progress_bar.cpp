@@ -27,6 +27,11 @@ void progress_bar::sync_self_clock(int hour, int min)
 void progress_bar::show_path(path *active_path)
 {
     clear();
+    def_hour = 0;
+    def_minute = 0;
+    total_path_duration = 0;
+    new_line = false;
+    st_dict.clear();
     if(m_connected == true){
         disconnect(*m_timer,&QTimer::timeout,this,&progress_bar::launch);
     }
@@ -57,11 +62,6 @@ void progress_bar::show_path(path *active_path)
         i++;
     }
 
-    get_duration_of_path();
-    guess_def_times();
-
-    if(m_vehicle == nullptr){
-    }
     m_vehicle = new vehicle();
     m_vehicle->setPen(active_path->m_vehicle->pen());
     m_vehicle->pos_in_dict = 1;
@@ -71,10 +71,16 @@ void progress_bar::show_path(path *active_path)
     m_vehicle->position = active_path->m_vehicle->position;
     same = active_path->same;
     forward = active_path->forward;
-    start = active_path->start;
-    end = active_path->end;
+    if(forward == true){
+        start = 0.0;
+        end = 1.0;
+    }else{
+        start = 1.0;
+        end = 0.0;
+    }
     active_line = active_path->active_line;
     prev_line = active_path->prev_line;
+    get_duration_of_path();
 
     speed = &active_path->speed;
 
@@ -83,6 +89,7 @@ void progress_bar::show_path(path *active_path)
     connect(*m_timer, &QTimer::timeout, this, &progress_bar::launch);
     m_connected = true;
     //launch();
+    guess_def_times();
     delay_to_station(forward);
 
 }
@@ -94,7 +101,12 @@ void progress_bar::reset_path()
     //disconnect(*m_timer, &QTimer::timeout, this, &progress_bar::launch);
     disconnect(*m_timer,&QTimer::timeout,this,&progress_bar::launch);
     qDebug() << "reseted";
+    def_hour = 0;
+    def_minute = 0;
+    total_path_duration = 0;
+    new_line = false;
     update();
+    st_dict.clear();
 }
 
 QString progress_bar::convert_to_time(qreal both)
@@ -184,6 +196,7 @@ void progress_bar::guess_def_times()
         if(guess_time >= actual_time){
             def_hour = div((int)(guess_time - total_path_duration) /1000,60).quot;
             def_minute = (int)((guess_time - total_path_duration) /1000)%60;
+            qDebug() << guess_time << actual_time << total_path_duration << def_hour << def_minute;
             break;
         }else{
             guess_time += total_path_duration;
