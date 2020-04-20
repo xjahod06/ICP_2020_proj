@@ -10,9 +10,6 @@ progress_bar::progress_bar(QObject *parent) :
 
 void progress_bar::show_path(path *active_path)
 {
-    foreach (auto road, active_path->st_dict) {
-        qDebug() << road->duration;
-    }
     clear();
     int i = 0;
     qreal start = 0.0;
@@ -21,7 +18,7 @@ void progress_bar::show_path(path *active_path)
         total_length += road->line().length();
     }
     //qDebug() << total_length << m_width << (m_width-30)/total_length;
-    qreal correcter = (m_width-30)/total_length;
+    qreal correcter = (m_width-30-(active_path->m_vehicle->size*2 + active_path->m_vehicle->size))/total_length;
     foreach (auto road, active_path->st_dict) {
         qreal end = start+(road->line().length()*correcter);
         //qDebug() << "start: " << start << "end" << end;
@@ -34,8 +31,8 @@ void progress_bar::show_path(path *active_path)
             st_dict[i]->station = road->station;
         }
         addItem(st_dict[i]);
-        st_dict[i]->duration = road->duration;
-        start = end+10;
+        //st_dict[i]->duration = road->duration;
+        start = end;
         i++;
     }
     if(m_vehicle != nullptr){
@@ -60,9 +57,6 @@ void progress_bar::show_path(path *active_path)
     m_timer = &active_path->timer;
 
     connect(*m_timer, &QTimer::timeout, this, &progress_bar::launch);
-    foreach (auto road, st_dict) {
-        qDebug() << road->duration;
-    }
     //launch();
 
 }
@@ -125,4 +119,5 @@ void progress_bar::launch()
         start = 0.0;
         end = 1.0;
     }
+    //qDebug() << "progress: " << m_vehicle->anim->duration();
 }
