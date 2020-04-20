@@ -6,17 +6,13 @@
 progress_bar::progress_bar(QObject *parent) :
     QGraphicsScene(parent)
 {
-
-    qDebug() << m_width;
-    st_dict[0] = new custom_line(def_road_color);
-    st_dict[0]->setLine(0,0,700,0);
-    st_dict[0]->station = 0.8;
-    addItem(st_dict[0]);
-    qDebug() << height() << width();
 }
 
 void progress_bar::show_path(path *active_path)
 {
+    foreach (auto road, active_path->st_dict) {
+        qDebug() << road->duration;
+    }
     clear();
     int i = 0;
     qreal start = 0.0;
@@ -24,18 +20,26 @@ void progress_bar::show_path(path *active_path)
     foreach (auto road, active_path->st_dict) {
         total_length += road->line().length();
     }
-    qDebug() << total_length << m_width << (m_width-30)/total_length;
+    //qDebug() << total_length << m_width << (m_width-30)/total_length;
     qreal correcter = (m_width-30)/total_length;
     foreach (auto road, active_path->st_dict) {
         qreal end = start+(road->line().length()*correcter);
-        qDebug() << "start: " << start << "end" << end;
+        //qDebug() << "start: " << start << "end" << end;
         st_dict[i] = new custom_line(active_path->m_vehicle->pen().color());
         st_dict[i]->setLine(start,0,start+road->line().length()*correcter,0);
-        st_dict[i]->station = road->station;
+        if(std::find(active_path->wrong_direction_dict.begin(),active_path->wrong_direction_dict.end(), i) != active_path->wrong_direction_dict.end()){
+            st_dict[i]->station = 1 - road->station;
+        }
+        else{
+            st_dict[i]->station = road->station;
+        }
         addItem(st_dict[i]);
         st_dict[i]->duration = road->duration;
         start = end+10;
         i++;
+    }
+    if(m_vehicle != nullptr){
+        delete m_vehicle;
     }
     m_vehicle = new vehicle();
     m_vehicle->setPen(active_path->m_vehicle->pen());
@@ -50,10 +54,15 @@ void progress_bar::show_path(path *active_path)
     end = active_path->end;
     active_line = active_path->active_line;
     prev_line = active_path->prev_line;
+
     speed = &active_path->speed;
+
     m_timer = &active_path->timer;
 
     connect(*m_timer, &QTimer::timeout, this, &progress_bar::launch);
+    foreach (auto road, st_dict) {
+        qDebug() << road->duration;
+    }
     //launch();
 
 }

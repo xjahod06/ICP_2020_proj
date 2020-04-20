@@ -86,8 +86,8 @@ void path::move()
 
     m_vehicle->anim->setEndValue(tmp_end);
     m_vehicle->anim->setStartValue(tmp_start);
-    timer->setInterval((line->duration+20)*speed);
-    m_vehicle->anim->setDuration(line->duration*speed);
+    timer->setInterval((line->duration + 20) * speed);
+    m_vehicle->anim->setDuration(line->duration * speed);
 
     if((line->station != -1) && (same == false)){
         m_vehicle->anim->setEndValue(line->station);
