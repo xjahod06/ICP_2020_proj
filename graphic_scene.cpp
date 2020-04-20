@@ -62,7 +62,7 @@ graphic_scene::graphic_scene(QObject *parent) :
     connect(vehicle_dict[0], &vehicle::circle_clicked, this, &graphic_scene::check_clicked);
 
     vehicle_dict[1] = new vehicle();
-    vehicle_dict[1]->setPen(QPen({Qt::red},3));
+    vehicle_dict[1]->setPen(QPen({Qt::cyan},3));
     vehicle_dict[1]->pos_in_dict = 1;
     vehicle_dict[1]->setRect(0,0,0,0);
     addItem(vehicle_dict[1]);
