@@ -56,6 +56,10 @@ void progress_bar::show_path(path *active_path)
         start = end;
         i++;
     }
+
+    get_duration_of_path();
+    guess_def_times();
+
     if(m_vehicle == nullptr){
     }
     m_vehicle = new vehicle();
@@ -79,7 +83,7 @@ void progress_bar::show_path(path *active_path)
     connect(*m_timer, &QTimer::timeout, this, &progress_bar::launch);
     m_connected = true;
     //launch();
-    delay_to_station(true);
+    delay_to_station(forward);
 
 }
 
@@ -95,8 +99,8 @@ void progress_bar::reset_path()
 
 QString progress_bar::convert_to_time(qreal both)
 {
-    int hour = (int)both / 60;
     int min = (int)both % 60;
+    int hour = div(both,60).quot;
     return convert_time(hour,min);
 }
 
@@ -133,18 +137,21 @@ int progress_bar::time_to_ms(int hour, int min)
 
 void progress_bar::delay_to_station(bool forward)
 {
+    if(def_hour == 0 && def_minute == 0){
+        def_minute = 1;
+    }
     int total_duration = time_to_ms(def_hour,def_minute);
-    qDebug() << total_duration;
+    ///qDebug() << total_duration;
     if(forward == true){
         foreach (auto road, st_dict) {
             if(road->station != -1){
                 total_duration += pause;
-                road->station_time = convert_to_time((total_duration+(road->station * road->duration)) / 1000 + 1);
+                road->station_time = convert_to_time((total_duration+(road->station * road->duration)) / 1000);
             }
             total_duration += road->duration+20;
         }
     }else{
-        qDebug() << st_dict.count() << convert_to_time(total_duration/1000);
+        //qDebug() << st_dict.count() << convert_to_time(total_duration/1000);
         for (int i = st_dict.count()-1; i >= 0 ;i--) {
             auto road = st_dict[i];
             if(road->station != -1){
@@ -166,6 +173,23 @@ void progress_bar::get_duration_of_path()
             dur += pause;
         }
     }
+    total_path_duration = dur + pause*2;
+}
+
+void progress_bar::guess_def_times()
+{
+    int guess_time = 0;
+    int actual_time = time_to_ms(m_hour,m_minute);
+    while(true){
+        if(guess_time >= actual_time){
+            def_hour = div((int)(guess_time - total_path_duration) /1000,60).quot;
+            def_minute = (int)((guess_time - total_path_duration) /1000)%60;
+            break;
+        }else{
+            guess_time += total_path_duration;
+        }
+    }
+    qDebug() << convert_to_time(total_path_duration/1000) << convert_time(def_hour,def_minute);
 }
 
 void progress_bar::launch()
