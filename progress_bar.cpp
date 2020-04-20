@@ -31,6 +31,7 @@ void progress_bar::show_path(path *active_path)
     def_minute = 0;
     total_path_duration = 0;
     new_line = false;
+    st_dict.clear();
     if(m_connected == true){
         disconnect(*m_timer,&QTimer::timeout,this,&progress_bar::launch);
     }
@@ -70,8 +71,13 @@ void progress_bar::show_path(path *active_path)
     m_vehicle->position = active_path->m_vehicle->position;
     same = active_path->same;
     forward = active_path->forward;
-    start = active_path->start;
-    end = active_path->end;
+    if(forward == true){
+        start = 0.0;
+        end = 1.0;
+    }else{
+        start = 1.0;
+        end = 0.0;
+    }
     active_line = active_path->active_line;
     prev_line = active_path->prev_line;
     get_duration_of_path();
@@ -100,6 +106,7 @@ void progress_bar::reset_path()
     total_path_duration = 0;
     new_line = false;
     update();
+    st_dict.clear();
 }
 
 QString progress_bar::convert_to_time(qreal both)
