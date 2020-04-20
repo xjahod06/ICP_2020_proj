@@ -35,13 +35,12 @@ void progress_bar::show_path(path *active_path)
         start = end;
         i++;
     }
-    if(m_vehicle != nullptr){
-        delete m_vehicle;
+    if(m_vehicle == nullptr){
     }
     m_vehicle = new vehicle();
     m_vehicle->setPen(active_path->m_vehicle->pen());
     m_vehicle->pos_in_dict = 1;
-    m_vehicle->setRect(0,0,-1,-1);
+    m_vehicle->setRect(0,0,0,0);
     addItem(m_vehicle);
 
     m_vehicle->position = active_path->m_vehicle->position;
@@ -64,12 +63,14 @@ void progress_bar::show_path(path *active_path)
 void progress_bar::reset_path()
 {
     clear();
-    disconnect(*m_timer, &QTimer::timeout, this, &progress_bar::launch);
+    //disconnect(*m_timer, &QTimer::timeout, this, &progress_bar::launch);
+    disconnect(*m_timer,&QTimer::timeout,this,&progress_bar::launch);
     qDebug() << "reseted";
 }
 
 void progress_bar::launch()
 {
+    //qDebug() << "tick";
     auto line = st_dict[active_line];
 
     if(prev_line > -1){

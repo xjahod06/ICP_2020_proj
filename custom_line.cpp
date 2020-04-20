@@ -57,6 +57,9 @@ QRectF custom_line::boundingRect() const
 void custom_line::add_vehicle(vehicle *new_vehicle, int pos)
 {
     vehicle_dict[pos] = new_vehicle;
+    if(vehicle_dict[pos]->anim != nullptr){
+        delete vehicle_dict[pos]->anim;
+    }
     vehicle_dict[pos]->anim = new QVariantAnimation(this);
     connect(vehicle_dict[pos]->anim, &QVariantAnimation::valueChanged, [this, pos, new_vehicle](){test_anim(vehicle_dict[pos]->anim, &vehicle_dict[pos]->active, &vehicle_dict[pos]->position, new_vehicle);});
 
