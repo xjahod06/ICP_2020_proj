@@ -32,7 +32,6 @@ void custom_line::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
     }
     if(anim_set == false)
     {
-        anim_set = true;
         set_anim();
         //qDebug() << line();
     }
@@ -77,7 +76,8 @@ void custom_line::remove_vehicle(int pos)
 
 void custom_line::set_anim()
 {
-    duration = line().length()*20.64;
+    anim_set = true;
+    duration = line().length()*31;
     //set_direction();
 }
 

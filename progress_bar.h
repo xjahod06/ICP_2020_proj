@@ -30,12 +30,18 @@ public slots:
 private:
     QMap<int, custom_line*> st_dict;
     QColor def_road_color{Qt::darkGray};
-    int pause{750};
+    int pause{1000};
     path *progress_path;
     bool m_connected{false};
     int m_minute;
     int m_hour;
+    int def_minute{0};
+    int def_hour{0};
+    bool new_line{false};
+    QString convert_to_time(qreal both);
     QString convert_time(int min, int hour);
+    int time_to_ms(int hour, int min);
+    void delay_to_station(bool forward);
 
 private slots:
     void launch();

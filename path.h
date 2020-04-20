@@ -24,7 +24,7 @@ public:
     std::list<int> wrong_direction_dict;
 
 private:
-    int pause{750};
+    int pause{1000};
 
 private slots:
     void move();

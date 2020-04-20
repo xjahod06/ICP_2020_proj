@@ -22,6 +22,7 @@ public:
     QVariantAnimation *anim{nullptr};
     qreal move{0.0};
     QString station_time{""};
+    void set_anim();
 
 protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
@@ -30,7 +31,6 @@ protected:
 
 private:
     QTimer *timer;
-    void set_anim();
     bool anim_set{false};
     void test_anim(QVariantAnimation *animation, bool *active_anim, qreal *anim_move, vehicle* veh = nullptr);
     void set_direction();

@@ -51,8 +51,8 @@ void MainWindow::init_scene()
     ui->view->setRenderHint(QPainter::Antialiasing);
     connect(ui->speedSlider, &QSlider::valueChanged, scene, &graphic_scene::speed_change);
     connect(ui->speedSlider, &QSlider::valueChanged, ui->view->lcd_timer, &clock::speed_change);
-    connect(ui->reset_timer_button, &QPushButton::clicked, scene, &graphic_scene::timer_reset);
     connect(ui->reset_timer_button, &QPushButton::clicked, ui->view->lcd_timer, &clock::reset_time);
+    connect(ui->reset_timer_button, &QPushButton::clicked, scene, &graphic_scene::timer_reset);
 
     connect(scene, &graphic_scene::circle_clicked, progress_scene, &progress_bar::show_path);
     connect(scene, &graphic_scene::circle_unclicked, progress_scene, &progress_bar::reset_path);
