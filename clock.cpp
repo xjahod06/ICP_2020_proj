@@ -30,15 +30,9 @@ void clock::reset_time()
     timer->start();
 }
 
-void clock::time_up()
+QString clock::convert_time(int min, int hour)
 {
-    minute++;
-    if(minute == 60){
-        hour++;
-        minute = 0;
-    }
-
-    min_string.setNum(minute);
+    min_string.setNum(min);
     hour_string.setNum(hour);
 
     QString final_text;
@@ -48,13 +42,24 @@ void clock::time_up()
     }
     final_text += hour_string+separator;
 
-    if(minute < 10){
+    if(min < 10){
         final_text += "0";
     }
     final_text += min_string;
 
+    return final_text;
+}
 
-    display(final_text);
+void clock::time_up()
+{
+    minute++;
+    if(minute == 60){
+        hour++;
+        minute = 0;
+    }
+
+    display(convert_time(minute,hour));
+    emit propagade_clock(hour,minute);
 
 
 }

@@ -21,10 +21,10 @@ public:
     qreal end{1.0};
     int active_line{0};
     int prev_line{-1};
+    std::list<int> wrong_direction_dict;
 
 private:
-    int pause{750};
-    std::list<int> wrong_direction_dict;
+    int pause{1000};
 
 private slots:
     void move();

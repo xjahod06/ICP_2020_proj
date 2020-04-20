@@ -17,6 +17,7 @@ public:
     qreal speed{1.0};
     void speed_change(int val);
     void reset_time();
+    QString convert_time(int min, int hour);
 
 private:
     QString separator{":"};
@@ -25,6 +26,7 @@ private slots:
     void time_up();
 
 signals:
+    void propagade_clock(int hour, int minute);
 
 };
 

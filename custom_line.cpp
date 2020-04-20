@@ -32,9 +32,11 @@ void custom_line::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
     }
     if(anim_set == false)
     {
-        anim_set = true;
         set_anim();
         //qDebug() << line();
+    }
+    if(station != -1 and station_time != ""){
+        painter->drawText(line().pointAt(station).x(),line().pointAt(station).y()-5,station_time);
     }
 }
 
@@ -57,6 +59,9 @@ QRectF custom_line::boundingRect() const
 void custom_line::add_vehicle(vehicle *new_vehicle, int pos)
 {
     vehicle_dict[pos] = new_vehicle;
+    if(vehicle_dict[pos]->anim != nullptr){
+        delete vehicle_dict[pos]->anim;
+    }
     vehicle_dict[pos]->anim = new QVariantAnimation(this);
     connect(vehicle_dict[pos]->anim, &QVariantAnimation::valueChanged, [this, pos, new_vehicle](){test_anim(vehicle_dict[pos]->anim, &vehicle_dict[pos]->active, &vehicle_dict[pos]->position, new_vehicle);});
 
@@ -71,7 +76,8 @@ void custom_line::remove_vehicle(int pos)
 
 void custom_line::set_anim()
 {
-    duration = line().length()*10.32;
+    anim_set = true;
+    duration = line().length()*31;
     //set_direction();
 }
 
@@ -85,7 +91,10 @@ void custom_line::test_anim(QVariantAnimation *animation, bool *active_anim, qre
     }
 
     update();
-    veh->move_yourself_lazy_circle(line().pointAt(veh->position));
+    if(veh != nullptr)
+    {
+        veh->move_yourself_lazy_circle(line().pointAt(veh->position));
+    }
 }
 
 void custom_line::set_direction()

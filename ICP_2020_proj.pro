@@ -23,6 +23,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     path.cpp \
+    progress_bar.cpp \
     vehicle.cpp
 
 HEADERS += \
@@ -32,6 +33,7 @@ HEADERS += \
     graphic_scene.h \
     mainwindow.h \
     path.h \
+    progress_bar.h \
     vehicle.h
 
 FORMS += \
