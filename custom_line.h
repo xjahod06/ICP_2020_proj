@@ -23,6 +23,9 @@ public:
     qreal move{0.0};
     QString station_time{""};
     void set_anim();
+    bool selected{false};
+    int pos;
+    int traffic_level;
 
 protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
@@ -34,6 +37,9 @@ private:
     bool anim_set{false};
     void test_anim(QVariantAnimation *animation, bool *active_anim, qreal *anim_move, vehicle* veh = nullptr);
     void set_direction();
+
+signals:
+    void line_selected(int pos);
 
 };
 

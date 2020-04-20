@@ -18,6 +18,13 @@ custom_line::custom_line(QColor m_color, QGraphicsItem *parent):
 
 void custom_line::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+    selected == true ? selected = false : selected = true;
+    selected == true ? setPen(QPen({Qt::red},3)): setPen(m_pen);
+
+    emit line_selected(pos);
+
+    qDebug() << "line clicked" << selected << pen();
+
     QGraphicsLineItem::mousePressEvent(event);
 }
 

@@ -15,8 +15,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    ui->traffic_spin;
-
     init_scene();
 
     connect(ui->view->buttonPlus, &QPushButton::clicked, this, &MainWindow::zoom_in);

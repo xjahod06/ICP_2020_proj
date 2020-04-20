@@ -13,46 +13,59 @@ graphic_scene::graphic_scene(QObject *parent) :
     st_dict[0] = new custom_line(def_road_color);
     st_dict[0]->setLine(200,-50,0,0);
     st_dict[0]->station = 0.8;
+    st_dict[0]->pos = 0;
     addItem(st_dict[0]);
 
     st_dict[1] = new custom_line(def_road_color);
     st_dict[1]->setLine(0,0,0,150);
     st_dict[1]->station = 0.8;
+    st_dict[1]->pos = 1;
     addItem(st_dict[1]);
 
     st_dict[2] = new custom_line(def_road_color);
     st_dict[2]->setLine(0,150,200,150);
+    st_dict[2]->pos = 2;
     addItem(st_dict[2]);
 
     st_dict[3] = new custom_line(def_road_color);
     st_dict[3]->setLine(300,300,200,150);
     st_dict[3]->station = 0.5;
+    st_dict[3]->pos = 3;
     addItem(st_dict[3]);
 
     st_dict[4] = new custom_line(def_road_color);
     st_dict[4]->setLine(500,300,300,300);
     st_dict[4]->station = 0.75;
+    st_dict[4]->pos = 4;
     addItem(st_dict[4]);
 
     st_dict[5] = new custom_line(def_road_color);
     st_dict[5]->setLine(500,0,500,300);
     st_dict[5]->station = 0.35;
+    st_dict[5]->pos = 5;
     addItem(st_dict[5]);
 
     st_dict[6] = new custom_line(def_road_color);
     st_dict[6]->setLine(200,-50,200,150);
     st_dict[6]->station = 0.1;
+    st_dict[6]->pos = 6;
     addItem(st_dict[6]);
 
     st_dict[7] = new custom_line(def_road_color);
     st_dict[7]->setLine(300,300,0,300);
     st_dict[7]->station = 0.45;
+    st_dict[7]->pos = 7;
     addItem(st_dict[7]);
 
     st_dict[8] = new custom_line(def_road_color);
     st_dict[8]->setLine(200,-50,500,0);
     st_dict[8]->station = 0.2;
+    st_dict[8]->pos = 8;
     addItem(st_dict[8]);
+
+    foreach (auto st, st_dict) {
+        connect(st, &custom_line::line_selected, this, &graphic_scene::select_line);
+    }
 
     vehicle_dict[0] = new vehicle();
     vehicle_dict[0]->setPen(QPen({Qt::blue},3));
@@ -159,23 +172,6 @@ void graphic_scene::check_clicked(int pos)
             road->setPen(vehicle_dict[pos]->pen());
         }
         emit circle_clicked(path_dict[pos]);
-        /*
-        for (int i = 0; i < path_dict[pos]->st_dict.count(); i++) {
-            auto road = path_dict[pos]->st_dict[i];
-            road->setPen(vehicle_dict[pos]->pen());
-            if( i < path_dict[pos]->active_line && road->station != -1){
-                qDebug() << "passed: " << i;
-            }else if(i > path_dict[pos]->active_line && road->station != -1){
-                qDebug() << "future: " << i;
-            }else if(i == path_dict[pos]->active_line && road->station != -1){
-                if(path_dict[pos]->m_vehicle->position > road->station){
-                    qDebug() << "passed: " << i;
-                }else{
-                    qDebug() << "future: " << i;
-                }
-            }
-        }
-        */
     }
     else if (vehicle_dict[pos]->cliked == false)
     {
@@ -185,6 +181,23 @@ void graphic_scene::check_clicked(int pos)
         emit circle_unclicked();
     }
     //qDebug() << pos;
+}
+
+void graphic_scene::select_line(int pos)
+{
+
+    reset_line_selection(pos);
+
+}
+
+void graphic_scene::reset_line_selection(int pos)
+{
+    for (int i = 0; i < st_dict.count();i++) {
+        if(i != pos){
+            st_dict[i]->setPen(st_dict[i]->m_pen);
+            st_dict[i]->selected = false;
+        }
+    }
 }
 
 void graphic_scene::start_all_paths()

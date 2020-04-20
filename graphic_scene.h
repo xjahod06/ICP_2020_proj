@@ -25,6 +25,8 @@ private:
     void reset_click_on_lines(int pos);
     void check_clicked(int pos);
     QColor def_road_color{Qt::darkGray};
+    void select_line(int pos);
+    void reset_line_selection(int pos);
 
 private slots:
     void start_all_paths();
