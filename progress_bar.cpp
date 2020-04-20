@@ -8,9 +8,26 @@ progress_bar::progress_bar(QObject *parent) :
 {
 }
 
+void progress_bar::sync_self_clock(int hour, int min)
+{
+    m_hour = hour;
+    m_minute = min;
+    auto time = convert_time(m_hour,m_minute);
+    if(m_connected == true){
+        foreach (auto road, st_dict) {
+             road->station_time = time;
+        }
+        update();
+    }
+
+}
+
 void progress_bar::show_path(path *active_path)
 {
     clear();
+    if(m_connected == true){
+        disconnect(*m_timer,&QTimer::timeout,this,&progress_bar::launch);
+    }
     int i = 0;
     qreal start = 0.0;
     qreal total_length = 0;
@@ -31,7 +48,7 @@ void progress_bar::show_path(path *active_path)
             st_dict[i]->station = road->station;
         }
         addItem(st_dict[i]);
-        //st_dict[i]->duration = road->duration;
+        st_dict[i]->station_time = convert_time(m_hour,m_minute);
         start = end;
         i++;
     }
@@ -56,6 +73,7 @@ void progress_bar::show_path(path *active_path)
     m_timer = &active_path->timer;
 
     connect(*m_timer, &QTimer::timeout, this, &progress_bar::launch);
+    m_connected = true;
     //launch();
 
 }
@@ -63,9 +81,34 @@ void progress_bar::show_path(path *active_path)
 void progress_bar::reset_path()
 {
     clear();
+    m_connected = false;
     //disconnect(*m_timer, &QTimer::timeout, this, &progress_bar::launch);
     disconnect(*m_timer,&QTimer::timeout,this,&progress_bar::launch);
     qDebug() << "reseted";
+    update();
+}
+
+QString progress_bar::convert_time(int hour, int min)
+{
+    QString min_string;
+    QString hour_string;
+
+    min_string.setNum(min);
+    hour_string.setNum(hour);
+
+    QString final_text;
+
+    if(hour < 10){
+        final_text += "0";
+    }
+    final_text += hour_string + ":";
+
+    if(min < 10){
+        final_text += "0";
+    }
+    final_text += min_string;
+
+    return final_text;
 }
 
 void progress_bar::launch()

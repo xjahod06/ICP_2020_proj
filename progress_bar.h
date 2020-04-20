@@ -21,6 +21,7 @@ public:
     qreal end;
     int active_line;
     int prev_line;
+    void sync_self_clock(int hour, int min);
 
 public slots:
     void show_path(path *active_path);
@@ -31,6 +32,10 @@ private:
     QColor def_road_color{Qt::darkGray};
     int pause{750};
     path *progress_path;
+    bool m_connected{false};
+    int m_minute;
+    int m_hour;
+    QString convert_time(int min, int hour);
 
 private slots:
     void launch();

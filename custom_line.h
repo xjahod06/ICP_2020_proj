@@ -21,6 +21,7 @@ public:
     QString direction;
     QVariantAnimation *anim{nullptr};
     qreal move{0.0};
+    QString station_time{""};
 
 protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;

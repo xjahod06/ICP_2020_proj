@@ -7,6 +7,7 @@
 #include "graphic_scene.h"
 #include "custom_graphics_view.h"
 #include "progress_bar.h"
+#include "clock.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -42,6 +43,7 @@ void MainWindow::init_scene()
     progress_scene = new progress_bar(ui->progress_bar);
     ui->progress_bar->setScene(progress_scene);
     ui->progress_bar->setRenderHint(QPainter::Antialiasing);
+    ui->progress_bar->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
     progress_scene->m_width = width();
 
     auto scene = new graphic_scene(ui->view);
@@ -54,6 +56,8 @@ void MainWindow::init_scene()
 
     connect(scene, &graphic_scene::circle_clicked, progress_scene, &progress_bar::show_path);
     connect(scene, &graphic_scene::circle_unclicked, progress_scene, &progress_bar::reset_path);
+
+    connect(ui->view->lcd_timer, &clock::propagade_clock, progress_scene, &progress_bar::sync_self_clock);
 
 }
 
