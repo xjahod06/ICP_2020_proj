@@ -13,17 +13,20 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
+private slots:
+    void zoom_in();
+    void zoom_out();
+    void zoom_slide(int val);
+    void toggle_stop_button();
+    void inc_traffic_on_road();
+    void dec_traffic_on_road();
+
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
 
 public slots:
-    void zoom_in();
-    void zoom_out();
-    void zoom_slide(int val);
-    void inc_traffic_on_road();
-    void dec_traffic_on_road();
     void set_active_road(custom_line *road);
 
 private:

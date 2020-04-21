@@ -150,6 +150,27 @@ void graphic_scene::timer_reset()
 
 }
 
+void graphic_scene::toggle_timers()
+{
+    static bool active_timers = true;
+    if(active_timers == true){
+        foreach (auto path, path_dict) {
+            path->timer->stop();
+            path->m_vehicle->anim->pause();
+            //qDebug() << path->m_vehicle->anim->state();
+        }
+        active_timers = false;
+    }else{
+        foreach (auto path, path_dict) {
+            path->timer->start();
+            if (path->m_vehicle->anim->state() == QAbstractAnimation::Paused){
+                path->m_vehicle->anim->resume();
+            }
+        }
+        active_timers = true;
+    }
+}
+
 void graphic_scene::reset_click_on_lines(int pos)
 {
     for (int i = 0; i < vehicle_dict.count(); i++) {

@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <layout class="QVBoxLayout" name="verticalLayout_4">
     <item>
      <widget class="custom_graphics_view" name="view">
       <property name="sizePolicy">
@@ -69,11 +69,22 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="reset_timer_button">
-        <property name="text">
-         <string>reset timers</string>
-        </property>
-       </widget>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QPushButton" name="stop_timer_button">
+          <property name="text">
+           <string>stop timers</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="reset_timer_button">
+          <property name="text">
+           <string>reset timers</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
        <widget class="QSlider" name="speedSlider">
@@ -153,7 +164,7 @@
          <enum>Qt::Horizontal</enum>
         </property>
         <property name="sizeType">
-         <enum>QSizePolicy::Maximum</enum>
+         <enum>QSizePolicy::Fixed</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>

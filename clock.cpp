@@ -50,6 +50,11 @@ QString clock::convert_time(int min, int hour)
     return final_text;
 }
 
+void clock::toggle_timer()
+{
+    timer->isActive() == true ? timer->stop() : timer->start();
+}
+
 void clock::time_up()
 {
     minute++;

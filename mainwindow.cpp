@@ -56,6 +56,10 @@ void MainWindow::init_scene()
     connect(ui->reset_timer_button, &QPushButton::clicked, ui->view->lcd_timer, &clock::reset_time);
     connect(ui->reset_timer_button, &QPushButton::clicked, scene, &graphic_scene::timer_reset);
 
+    connect(ui->stop_timer_button, &QPushButton::clicked, this, &MainWindow::toggle_stop_button);
+    connect(ui->stop_timer_button, &QPushButton::clicked, ui->view->lcd_timer, &clock::toggle_timer);
+    connect(ui->stop_timer_button, &QPushButton::clicked, scene, &graphic_scene::toggle_timers);
+
     connect(scene, &graphic_scene::circle_clicked, progress_scene, &progress_bar::show_path);
     connect(scene, &graphic_scene::circle_unclicked, progress_scene, &progress_bar::reset_path);
 
@@ -82,6 +86,11 @@ void MainWindow::zoom_slide(int val)
     auto org = ui->view->transform();
     qreal scale = val/50.0;
     ui->view->setTransform(QTransform(scale, org.m12(), org.m21(), scale, org.dx(), org.dy()));
+}
+
+void MainWindow::toggle_stop_button()
+{
+    ui->stop_timer_button->text() == "stop timers" ? ui->stop_timer_button->setText("start timers") : ui->stop_timer_button->setText("stop timers");
 }
 
 void MainWindow::inc_traffic_on_road()

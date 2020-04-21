@@ -15,6 +15,7 @@ public:
 public slots:
     void speed_change(int val);
     void timer_reset();
+    void toggle_timers();
 
 private:
     QMap<int, custom_line*> st_dict;

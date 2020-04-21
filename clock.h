@@ -19,6 +19,9 @@ public:
     void reset_time();
     QString convert_time(int min, int hour);
 
+public slots:
+    void toggle_timer();
+
 private:
     QString separator{":"};
 
