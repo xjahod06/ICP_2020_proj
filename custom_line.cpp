@@ -34,6 +34,10 @@ void custom_line::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void custom_line::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    if(traffic_level > 0){
+        painter->setPen(QPen({Qt::black},4));
+        painter->drawLine(line());
+    }
     if(selected == true){
         painter->setPen(QPen({Qt::cyan},10));
         painter->drawLine(line());

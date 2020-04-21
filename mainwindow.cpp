@@ -110,6 +110,8 @@ void MainWindow::set_active_road(custom_line *road)
     if(active_line != nullptr){
         QString lvl;
         ui->traffic_level_text->setText("Traffic level "+lvl.setNum(active_line->traffic_level));
+    }else{
+        ui->traffic_level_text->setText("Traffic level");
     }
 }
 

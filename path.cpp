@@ -86,13 +86,13 @@ void path::move()
 
     m_vehicle->anim->setEndValue(tmp_end);
     m_vehicle->anim->setStartValue(tmp_start);
-    timer->setInterval((line->duration + 20) * speed);
-    m_vehicle->anim->setDuration(line->duration * speed);
+    timer->setInterval((line->duration + line->delay + 20) * speed);
+    m_vehicle->anim->setDuration((line->duration + line->delay) * speed);
 
     if((line->station != -1) && (same == false)){
         m_vehicle->anim->setEndValue(line->station);
-        timer->setInterval(((line->duration * (std::abs(tmp_start - line->station))) + pause) * speed);
-        m_vehicle->anim->setDuration((line->duration * (std::abs(tmp_start - line->station))) * speed);
+        timer->setInterval((((line->duration + line->delay) * (std::abs(tmp_start - line->station))) + pause) * speed);
+        m_vehicle->anim->setDuration(((line->duration + line->delay) * (std::abs(tmp_start - line->station))) * speed);
         same = true;
         if(forward == true){
             active_line--;
@@ -102,8 +102,8 @@ void path::move()
 
     }else if(same == true){
         m_vehicle->anim->setStartValue(line->station);
-        timer->setInterval(((line->duration - (line->duration * (std::abs(tmp_start - line->station)))) + 20) * speed);
-        m_vehicle->anim->setDuration((line->duration - (line->duration * (std::abs(tmp_start - line->station)))) * speed);
+        timer->setInterval((((line->duration + line->delay) - ((line->duration + line->delay) * (std::abs(tmp_start - line->station)))) + 20) * speed);
+        m_vehicle->anim->setDuration(((line->duration + line->delay) - ((line->duration + line->delay) * (std::abs(tmp_start - line->station)))) * speed);
         same = false;
     }
 
