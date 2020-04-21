@@ -22,6 +22,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->view->slider, &QSlider::valueChanged, this, &MainWindow::zoom_slide);
     connect(ui->traffic_level_up, &QPushButton::clicked, this, &MainWindow::inc_traffic_on_road);
     connect(ui->traffic_level_down, &QPushButton::clicked, this, &MainWindow::dec_traffic_on_road);
+
+    connect(ui->close_road, &QPushButton::clicked, this, &MainWindow::close_active_road);
+
     //connect(this, &QMainWindow::, this, &MainWindow::resized);
     qDebug() << height() << width();
 
@@ -110,6 +113,13 @@ void MainWindow::dec_traffic_on_road()
         qDebug() << active_line->pos << active_line->traffic_level;
         QString lvl;
         ui->traffic_level_text->setText("Traffic level "+lvl.setNum(active_line->traffic_level));
+    }
+}
+
+void MainWindow::close_active_road()
+{
+    if(active_line != nullptr){
+        qDebug() << active_line->pos << "closed";
     }
 }
 

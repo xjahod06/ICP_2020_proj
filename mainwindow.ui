@@ -62,7 +62,7 @@
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>200</width>
+          <width>150</width>
           <height>20</height>
          </size>
         </property>
@@ -159,6 +159,13 @@
        </layout>
       </item>
       <item>
+       <widget class="QPushButton" name="close_road">
+        <property name="text">
+         <string>close road</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <spacer name="horizontalSpacer_2">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -168,7 +175,7 @@
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>200</width>
+          <width>150</width>
           <height>20</height>
          </size>
         </property>

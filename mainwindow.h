@@ -20,6 +20,7 @@ private slots:
     void toggle_stop_button();
     void inc_traffic_on_road();
     void dec_traffic_on_road();
+    void close_active_road();
 
 public:
     MainWindow(QWidget *parent = nullptr);
