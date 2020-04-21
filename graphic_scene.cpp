@@ -65,7 +65,6 @@ graphic_scene::graphic_scene(QObject *parent) :
 
     foreach (auto st, st_dict) {
         connect(st, &custom_line::line_selected, this, &graphic_scene::select_line);
-        qDebug() << st->pos << "connected";
     }
 
     vehicle_dict[0] = new vehicle();
@@ -116,6 +115,25 @@ graphic_scene::graphic_scene(QObject *parent) :
     path_dict[0]->timer->start();
     path_dict[1]->timer->start();
     path_dict[2]->timer->start();
+
+    QMap<int, custom_line*> test;
+    test[0] = st_dict[0];
+    test[1] = st_dict[1];
+    test[2] = st_dict[2];
+    test[3] = st_dict[3];
+
+    foreach (auto road, test) {
+        qDebug() << road->pos;
+    }
+
+    test = insert_into_map(test,1,st_dict[4]);
+    qDebug() << "";
+
+    foreach (auto road, test) {
+        qDebug() << road->pos;
+    }
+
+
 
 }
 
@@ -210,14 +228,34 @@ void graphic_scene::check_clicked(int pos)
 
 void graphic_scene::select_line(custom_line *road)
 {
-    if(road->selected == true){
-        reset_line_selection(road->pos);
-        qDebug() << "clicked";
-        emit road_clicked(road);
+    static int pos_in_alternate_route = 0;
+    if(line_selecting_for_close == false){
+        if(road->selected == true){
+            reset_line_selection(road->pos);
+            qDebug() << "clicked";
+            emit road_clicked(road);
+            selected_line = road;
 
+        }else{
+            emit road_clicked(nullptr);
+            qDebug() << "unclicked";
+        }
     }else{
-        emit road_clicked(nullptr);
-        qDebug() << "unclicked";
+        int pos = is_in_map(alternate_route,road);
+        if(pos != NULL){
+            qDebug() << road->pos << "removed";
+            alternate_route = remove_from_map(alternate_route,pos);
+            pos_in_alternate_route--;
+        }else{
+            qDebug() << road->pos << "added";
+            alternate_route[pos_in_alternate_route] = road;
+            pos_in_alternate_route++;
+        }
+        if(alternate_route.count() > 2){
+            foreach (auto st, alternate_route) {
+                qDebug() << st->pos;
+            }
+        }
     }
 
 }
@@ -234,6 +272,39 @@ void graphic_scene::reset_line_selection(int pos)
             }
         }
     }
+}
+
+QMap<int, custom_line *> graphic_scene::insert_into_map(QMap<int, custom_line *> map, int index, custom_line *value)
+{
+    custom_line *stores_value;
+    custom_line *insert_vale = value;
+    for (int i = index; i < map.count();i++) {
+        stores_value = map[i];
+        map[i] = insert_vale;
+        insert_vale = stores_value;
+    }
+    map[map.count()] = insert_vale;
+
+    return map;
+}
+
+QMap<int, custom_line *> graphic_scene::remove_from_map(QMap<int, custom_line *> map, int index)
+{
+    for (int i = index; i < map.count()-1; i++) {
+        map[i] = map[i+1];
+    }
+    map.remove(map.count()-1);
+    return map;
+}
+
+int graphic_scene::is_in_map(QMap<int, custom_line *> map, custom_line *value)
+{
+    for (int i = 0; i < map.count();i++) {
+        if(value->pos == map[i]->pos){
+            return i;
+        }
+    }
+    return NULL;
 }
 
 void graphic_scene::start_all_paths()

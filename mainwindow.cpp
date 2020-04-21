@@ -26,14 +26,12 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->close_road, &QPushButton::clicked, this, &MainWindow::close_active_road);
 
     //connect(this, &QMainWindow::, this, &MainWindow::resized);
-    qDebug() << height() << width();
 
 }
 
 void MainWindow::resizeEvent(QResizeEvent* event)
 {
    QMainWindow::resizeEvent(event);
-   qDebug() << height() << width();
    progress_scene->m_width = width();
 }
 
@@ -51,7 +49,7 @@ void MainWindow::init_scene()
     ui->progress_bar->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
     progress_scene->m_width = width();
 
-    auto scene = new graphic_scene(ui->view);
+    scene = new graphic_scene(ui->view);
     ui->view->setScene(scene);
     ui->view->setRenderHint(QPainter::Antialiasing);
     connect(ui->speedSlider, &QSlider::valueChanged, scene, &graphic_scene::speed_change);
@@ -119,7 +117,13 @@ void MainWindow::dec_traffic_on_road()
 void MainWindow::close_active_road()
 {
     if(active_line != nullptr){
-        qDebug() << active_line->pos << "closed";
+        active_line->closed == true  ? qDebug() << active_line->pos << "opened" : qDebug() << active_line->pos << "closed";
+        active_line->closed == true  ? active_line->closed = false : active_line->closed = true;
+        active_line->closed == false ? ui->close_road->setText("close road") : ui->close_road->setText("open road");
+        //ui->view->lcd_timer->toggle_timer();
+        //scene->toggle_timers();
+        scene->line_selecting_for_close == false ? scene->line_selecting_for_close = true : scene->line_selecting_for_close = false;
+
     }
 }
 

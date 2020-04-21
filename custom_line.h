@@ -30,6 +30,7 @@ public:
     int traffic_level{0};
     void inc_traffic();
     void dec_traffic();
+    bool closed{false};
 
 protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;

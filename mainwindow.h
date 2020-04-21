@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "progress_bar.h"
 #include "custom_line.h"
+#include "graphic_scene.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -33,6 +34,7 @@ public slots:
 private:
     void init_scene();
     progress_bar *progress_scene;
+    graphic_scene * scene;
     Ui::MainWindow *ui;
     custom_line *active_line{nullptr};
 
