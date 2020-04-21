@@ -25,7 +25,7 @@ private:
     void reset_click_on_lines(int pos);
     void check_clicked(int pos);
     QColor def_road_color{Qt::darkGray};
-    void select_line(int pos);
+    void select_line(custom_line *road);
     void reset_line_selection(int pos);
 
 private slots:
@@ -34,6 +34,7 @@ private slots:
 signals:
     void circle_clicked(path *path);
     void circle_unclicked();
+    void road_clicked(custom_line *road);
 };
 
 #endif // GRAPHIC_SCENE_H

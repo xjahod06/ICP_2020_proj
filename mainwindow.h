@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "progress_bar.h"
+#include "custom_line.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -21,11 +22,15 @@ public slots:
     void zoom_in();
     void zoom_out();
     void zoom_slide(int val);
+    void inc_traffic_on_road();
+    void dec_traffic_on_road();
+    void set_active_road(custom_line *road);
 
 private:
     void init_scene();
     progress_bar *progress_scene;
     Ui::MainWindow *ui;
+    custom_line *active_line{nullptr};
 
 protected:
     virtual void wheelEvent(QWheelEvent *event) override;

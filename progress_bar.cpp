@@ -79,7 +79,8 @@ void progress_bar::show_path(path *active_path)
         end = 0.0;
     }
     active_line = active_path->active_line;
-    prev_line = active_path->prev_line;
+    //prev_line = active_path->prev_line;
+    prev_line = -1;
     get_duration_of_path();
 
     speed = &active_path->speed;

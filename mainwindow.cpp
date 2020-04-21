@@ -20,6 +20,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->view->buttonPlus, &QPushButton::clicked, this, &MainWindow::zoom_in);
     connect(ui->view->buttonMinus, &QPushButton::clicked, this, &MainWindow::zoom_out);
     connect(ui->view->slider, &QSlider::valueChanged, this, &MainWindow::zoom_slide);
+    connect(ui->traffic_level_up, &QPushButton::clicked, this, &MainWindow::inc_traffic_on_road);
+    connect(ui->traffic_level_down, &QPushButton::clicked, this, &MainWindow::dec_traffic_on_road);
     //connect(this, &QMainWindow::, this, &MainWindow::resized);
     qDebug() << height() << width();
 
@@ -59,6 +61,8 @@ void MainWindow::init_scene()
 
     connect(ui->view->lcd_timer, &clock::propagade_clock, progress_scene, &progress_bar::sync_self_clock);
 
+    connect(scene, &graphic_scene::road_clicked, this, &MainWindow::set_active_road);
+
 }
 
 void MainWindow::zoom_in()
@@ -78,6 +82,35 @@ void MainWindow::zoom_slide(int val)
     auto org = ui->view->transform();
     qreal scale = val/50.0;
     ui->view->setTransform(QTransform(scale, org.m12(), org.m21(), scale, org.dx(), org.dy()));
+}
+
+void MainWindow::inc_traffic_on_road()
+{
+    if(active_line != nullptr){
+        active_line->inc_traffic();
+        qDebug() << active_line->pos << active_line->traffic_level;
+        QString lvl;
+        ui->traffic_level_text->setText("Traffic level "+lvl.setNum(active_line->traffic_level));
+    }
+}
+
+void MainWindow::dec_traffic_on_road()
+{
+    if(active_line != nullptr){
+        active_line->dec_traffic();
+        qDebug() << active_line->pos << active_line->traffic_level;
+        QString lvl;
+        ui->traffic_level_text->setText("Traffic level "+lvl.setNum(active_line->traffic_level));
+    }
+}
+
+void MainWindow::set_active_road(custom_line *road)
+{
+    active_line = road;
+    if(active_line != nullptr){
+        QString lvl;
+        ui->traffic_level_text->setText("Traffic level "+lvl.setNum(active_line->traffic_level));
+    }
 }
 
 void MainWindow::wheelEvent(QWheelEvent *event)

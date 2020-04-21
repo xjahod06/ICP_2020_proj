@@ -65,6 +65,7 @@ graphic_scene::graphic_scene(QObject *parent) :
 
     foreach (auto st, st_dict) {
         connect(st, &custom_line::line_selected, this, &graphic_scene::select_line);
+        qDebug() << st->pos << "connected";
     }
 
     vehicle_dict[0] = new vehicle();
@@ -170,23 +171,33 @@ void graphic_scene::check_clicked(int pos)
     {
         foreach (auto road, path_dict[pos]->st_dict) {
             road->setPen(vehicle_dict[pos]->pen());
+            if(road->selected == true){
+                road->selected = false;
+            }
         }
         emit circle_clicked(path_dict[pos]);
     }
     else if (vehicle_dict[pos]->cliked == false)
     {
         foreach (auto road, path_dict[pos]->st_dict) {
-            road->setPen(QPen({def_road_color},3));
+            road->setPen(road->m_pen);
         }
         emit circle_unclicked();
     }
     //qDebug() << pos;
 }
 
-void graphic_scene::select_line(int pos)
+void graphic_scene::select_line(custom_line *road)
 {
+    if(road->selected == true){
+        reset_line_selection(road->pos);
+        qDebug() << "clicked";
+        emit road_clicked(road);
 
-    reset_line_selection(pos);
+    }else{
+        emit road_clicked(nullptr);
+        qDebug() << "unclicked";
+    }
 
 }
 
@@ -194,8 +205,12 @@ void graphic_scene::reset_line_selection(int pos)
 {
     for (int i = 0; i < st_dict.count();i++) {
         if(i != pos){
-            st_dict[i]->setPen(st_dict[i]->m_pen);
-            st_dict[i]->selected = false;
+            if(st_dict[i]->selected == true){
+                qDebug() << "reseted:" << i;
+                //st_dict[i]->setPen(st_dict[i]->m_pen);
+                st_dict[i]->selected = false;
+                break;
+            }
         }
     }
 }
