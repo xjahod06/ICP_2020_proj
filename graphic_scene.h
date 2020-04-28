@@ -29,11 +29,12 @@ private:
     QColor def_road_color{Qt::darkGray};
     void select_line(custom_line *road);
     void reset_line_selection(int pos);
-    QMap<int, custom_line *> insert_into_map(QMap<int, custom_line*> map, int index, custom_line* value);
-    QMap<int, custom_line *> remove_from_map(QMap<int, custom_line*> map, int index);
+    QMap<int, custom_line *> insert_into_map(QMap<int, custom_line*> *map, int index, custom_line* value);
+    QMap<int, custom_line *> remove_from_map(QMap<int, custom_line*> *map, int index);
     int is_in_map(QMap<int, custom_line*> map, custom_line* value);
     QMap<int, custom_line *> alternate_route;
     custom_line *selected_line;
+    bool line_subsequent(QLineF l1, QLineF l2);
 
 private slots:
     void start_all_paths();

@@ -122,16 +122,18 @@ graphic_scene::graphic_scene(QObject *parent) :
     test[2] = st_dict[2];
     test[3] = st_dict[3];
 
-    foreach (auto road, test) {
-        qDebug() << road->pos;
+    foreach (auto to_print, test) {
+        fprintf(stderr,"%i, ",to_print->pos);
+        fflush(stderr);
     }
-
-    test = insert_into_map(test,1,st_dict[4]);
     qDebug() << "";
 
-    foreach (auto road, test) {
-        qDebug() << road->pos;
+    insert_into_map(&test,1,st_dict[4]);
+    foreach (auto to_print, test) {
+        fprintf(stderr,"%i, ",to_print->pos);
+        fflush(stderr);
     }
+    qDebug() << "";
 
 
 
@@ -242,18 +244,52 @@ void graphic_scene::select_line(custom_line *road)
         }
     }else{
         int pos = is_in_map(alternate_route,road);
-        if(pos != NULL){
+        if(pos != -1){
             qDebug() << road->pos << "removed";
-            alternate_route = remove_from_map(alternate_route,pos);
+            remove_from_map(&alternate_route,pos);
             pos_in_alternate_route--;
         }else{
             qDebug() << road->pos << "added";
             alternate_route[pos_in_alternate_route] = road;
             pos_in_alternate_route++;
         }
-        if(alternate_route.count() > 2){
+        if(alternate_route.count() > 1){
+            /*
             foreach (auto st, alternate_route) {
                 qDebug() << st->pos;
+            }
+            */
+            if(line_subsequent(alternate_route[alternate_route.count()-1]->line(),selected_line->line())){
+                qDebug() << "wuiiiii";
+                pos = is_in_map(path_dict[2]->st_dict,selected_line);
+                qDebug() << pos;
+                foreach (auto to_print, alternate_route) {
+                    fprintf(stderr,"%i, ",to_print->pos);
+                    fflush(stderr);
+                }
+                qDebug() << "";
+                foreach (auto to_print, path_dict[2]->st_dict) {
+                    fprintf(stderr,"%i, ",to_print->pos);
+                    fflush(stderr);
+                }
+                qDebug() << "";
+                remove_from_map(&path_dict[2]->st_dict,pos);
+                foreach (auto to_print, path_dict[2]->st_dict) {
+                    fprintf(stderr,"%i, ",to_print->pos);
+                    fflush(stderr);
+                }
+                qDebug() << "";
+                int i = pos;
+                foreach (auto insert_road, alternate_route) {
+                    insert_into_map(&path_dict[2]->st_dict,i++,insert_road);
+                }
+                foreach (auto to_print, path_dict[2]->st_dict) {
+                    fprintf(stderr,"%i, ",to_print->pos);
+                    fflush(stderr);
+                }
+                qDebug() << "";
+                path_dict[1]->find_corr_way();
+
             }
         }
     }
@@ -274,37 +310,55 @@ void graphic_scene::reset_line_selection(int pos)
     }
 }
 
-QMap<int, custom_line *> graphic_scene::insert_into_map(QMap<int, custom_line *> map, int index, custom_line *value)
+QMap<int, custom_line *> graphic_scene::insert_into_map(QMap<int, custom_line *> *map, int index, custom_line *value)
 {
     custom_line *stores_value;
     custom_line *insert_vale = value;
-    for (int i = index; i < map.count();i++) {
-        stores_value = map[i];
-        map[i] = insert_vale;
+    for (int i = index; i < map->count();i++) {
+        stores_value = (*map)[i];
+        (*map)[i] = insert_vale;
         insert_vale = stores_value;
     }
-    map[map.count()] = insert_vale;
+    (*map)[map->count()] = insert_vale;
 
-    return map;
+    return *map;
 }
 
-QMap<int, custom_line *> graphic_scene::remove_from_map(QMap<int, custom_line *> map, int index)
+QMap<int, custom_line *> graphic_scene::remove_from_map(QMap<int, custom_line *> *map, int index)
 {
-    for (int i = index; i < map.count()-1; i++) {
-        map[i] = map[i+1];
+    //map.remove(index);
+    for (int i = index; i < map->count()-1; i++) {
+        (*map)[i] = (*map)[i+1];
     }
-    map.remove(map.count()-1);
-    return map;
+    map->remove(map->count()-1);
+    return *map;
 }
 
 int graphic_scene::is_in_map(QMap<int, custom_line *> map, custom_line *value)
 {
     for (int i = 0; i < map.count();i++) {
+        //qDebug() << value->pos << map[i]->pos;
         if(value->pos == map[i]->pos){
             return i;
         }
     }
-    return NULL;
+    return -1;
+}
+
+bool graphic_scene::line_subsequent(QLineF l1, QLineF l2)
+{
+    if(l1.p1() == l2.p1() || l1.p1() == l2.p2())
+    {
+        qDebug() << "navazuje";
+        return true;
+    }else if(l1.p2() == l2.p1() || l1.p2() == l2.p2())
+    {
+        qDebug() << "navazuje";
+        return true;
+    }else
+    {
+        return false;
+    }
 }
 
 void graphic_scene::start_all_paths()
