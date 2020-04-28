@@ -27,6 +27,8 @@ void clock::reset_time()
     timer->stop();
     minute = 0;
     hour = 0;
+    display("00:00");
+    timer->setInterval(1000);
     timer->start();
 }
 

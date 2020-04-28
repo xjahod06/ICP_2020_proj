@@ -128,6 +128,8 @@ void path::move()
         end = 1.0;
         timer->setInterval(timer->remainingTime() + pause*speed);
     }
+    anim_duration = m_vehicle->anim->duration();
+    timer_duration = timer->interval();
     //qDebug() << "orig" << m_vehicle->anim->duration();
 }
 
