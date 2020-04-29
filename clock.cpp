@@ -27,6 +27,8 @@ void clock::reset_time()
     timer->stop();
     minute = 0;
     hour = 0;
+    display("00:00");
+    timer->setInterval(1000);
     timer->start();
 }
 
@@ -48,6 +50,11 @@ QString clock::convert_time(int min, int hour)
     final_text += min_string;
 
     return final_text;
+}
+
+void clock::toggle_timer()
+{
+    timer->isActive() == true ? timer->stop() : timer->start();
 }
 
 void clock::time_up()

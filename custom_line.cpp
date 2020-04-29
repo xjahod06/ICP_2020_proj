@@ -10,6 +10,7 @@ custom_line::custom_line(QColor m_color, QGraphicsItem *parent):
     QObject(),
     QGraphicsLineItem(parent)
 {
+    def_color = m_color;
     m_pen.setColor(m_color);
     setPen(m_pen);
     //setFlag(QGraphicsItem::ItemIsSelectable);
@@ -18,11 +19,29 @@ custom_line::custom_line(QColor m_color, QGraphicsItem *parent):
 
 void custom_line::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+    if(pen().color() != m_pen.color() && selected == false){
+        return;
+    }
+    selected == true ? selected = false : selected = true;
+    //selected == true ? setPen(QPen({QColor(255,120,120)},3)): setPen(m_pen);
+
+    emit line_selected(this);
+
+    qDebug() << "line clicked" << selected << pos;
+
     QGraphicsLineItem::mousePressEvent(event);
 }
 
 void custom_line::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    if(traffic_level > 0){
+        painter->setPen(QPen({Qt::black},4));
+        painter->drawLine(line());
+    }
+    if(selected == true){
+        painter->setPen(QPen({Qt::cyan},10));
+        painter->drawLine(line());
+    }
     painter->setPen(pen());
     painter->drawLine(line());
     painter->setPen(QPen({Qt::black},5));
@@ -70,7 +89,7 @@ void custom_line::add_vehicle(vehicle *new_vehicle, int pos)
 void custom_line::remove_vehicle(int pos)
 {
     //disconnect(vehicle_dict[pos]->anim);
-    this->disconnect();
+    this->disconnect(vehicle_dict[pos]->anim);
     vehicle_dict.remove(pos);
 }
 
@@ -79,6 +98,35 @@ void custom_line::set_anim()
     anim_set = true;
     duration = line().length()*31;
     //set_direction();
+}
+
+void custom_line::inc_traffic()
+{
+    if (traffic_level < 16){
+        traffic_level++;
+        delay = duration*(0.25*traffic_level);
+        m_pen.setColor(QColor(255,255-traffic_level*16+1,255-traffic_level*16+1));
+        setPen(m_pen);
+        update();
+        qDebug() << delay << pen().color();
+    }
+}
+
+void custom_line::dec_traffic()
+{
+    if (traffic_level > 0){
+        traffic_level--;
+        if(traffic_level == 0){
+            delay = 0;
+            m_pen.setColor(def_color);
+        }else{
+            delay = duration*(0.25*traffic_level);
+            m_pen.setColor(QColor(255,255-traffic_level*16,255-traffic_level*16));
+        }
+        setPen(m_pen);
+        update();
+        qDebug() << delay << pen().color();
+    }
 }
 
 void custom_line::test_anim(QVariantAnimation *animation, bool *active_anim, qreal *anim_move, vehicle* veh)

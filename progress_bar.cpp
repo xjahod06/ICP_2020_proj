@@ -57,6 +57,7 @@ void progress_bar::show_path(path *active_path)
         addItem(st_dict[i]);
         st_dict[i]->set_anim();
         st_dict[i]->duration = road->duration;
+        st_dict[i]->delay = road->delay;
         st_dict[i]->station_time = convert_time(m_hour,m_minute);
         start = end;
         i++;
@@ -79,7 +80,8 @@ void progress_bar::show_path(path *active_path)
         end = 0.0;
     }
     active_line = active_path->active_line;
-    prev_line = active_path->prev_line;
+    //prev_line = active_path->prev_line;
+    prev_line = -1;
     get_duration_of_path();
 
     speed = &active_path->speed;
@@ -158,9 +160,9 @@ void progress_bar::delay_to_station(bool forward)
         foreach (auto road, st_dict) {
             if(road->station != -1){
                 total_duration += pause;
-                road->station_time = convert_to_time((total_duration+(road->station * road->duration)) / 1000);
+                road->station_time = convert_to_time((total_duration+(road->station * (road->duration + road->delay))) / 1000);
             }
-            total_duration += road->duration+20;
+            total_duration += road->duration + road->delay + 20;
         }
     }else{
         //qDebug() << st_dict.count() << convert_to_time(total_duration/1000);
@@ -168,9 +170,9 @@ void progress_bar::delay_to_station(bool forward)
             auto road = st_dict[i];
             if(road->station != -1){
                 total_duration += pause;
-                road->station_time = convert_to_time((total_duration+((1-road->station) * road->duration)) / 1000);
+                road->station_time = convert_to_time((total_duration+((1-road->station) * (road->duration + road->delay))) / 1000);
             }
-            total_duration += road->duration+20;
+            total_duration += road->duration + road->delay + 20;
         }
     }
 
@@ -180,7 +182,7 @@ void progress_bar::get_duration_of_path()
 {
     int dur = 0;
     foreach (auto road, st_dict) {
-        dur += road->duration;
+        dur += road->duration + road->delay;
         if(road->station != -1){
             dur += pause;
         }
@@ -227,11 +229,11 @@ void progress_bar::launch()
 
     m_vehicle->anim->setEndValue(end);
     m_vehicle->anim->setStartValue(start);
-    m_vehicle->anim->setDuration(line->duration * *speed);
+    m_vehicle->anim->setDuration((line->duration + line->delay) * *speed);
 
     if((line->station != -1) && (same == false)){
         m_vehicle->anim->setEndValue(line->station);
-        m_vehicle->anim->setDuration((line->duration * (std::abs(start - line->station))) * *speed);
+        m_vehicle->anim->setDuration(((line->duration + line->delay) * (std::abs(start - line->station))) * *speed);
         same = true;
         if(forward == true){
             active_line--;
@@ -241,7 +243,7 @@ void progress_bar::launch()
 
     }else if(same == true){
         m_vehicle->anim->setStartValue(line->station);
-        m_vehicle->anim->setDuration((line->duration - (line->duration * (std::abs(start - line->station)))) * *speed);
+        m_vehicle->anim->setDuration(((line->duration + line->delay) - (line->duration * (std::abs(start - line->station)))) * *speed);
         same = false;
     }
 

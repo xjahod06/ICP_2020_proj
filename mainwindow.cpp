@@ -15,22 +15,23 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    ui->traffic_spin;
-
     init_scene();
 
     connect(ui->view->buttonPlus, &QPushButton::clicked, this, &MainWindow::zoom_in);
     connect(ui->view->buttonMinus, &QPushButton::clicked, this, &MainWindow::zoom_out);
     connect(ui->view->slider, &QSlider::valueChanged, this, &MainWindow::zoom_slide);
+    connect(ui->traffic_level_up, &QPushButton::clicked, this, &MainWindow::inc_traffic_on_road);
+    connect(ui->traffic_level_down, &QPushButton::clicked, this, &MainWindow::dec_traffic_on_road);
+
+    connect(ui->close_road, &QPushButton::clicked, this, &MainWindow::close_active_road);
+
     //connect(this, &QMainWindow::, this, &MainWindow::resized);
-    qDebug() << height() << width();
 
 }
 
 void MainWindow::resizeEvent(QResizeEvent* event)
 {
    QMainWindow::resizeEvent(event);
-   qDebug() << height() << width();
    progress_scene->m_width = width();
 }
 
@@ -48,7 +49,7 @@ void MainWindow::init_scene()
     ui->progress_bar->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
     progress_scene->m_width = width();
 
-    auto scene = new graphic_scene(ui->view);
+    scene = new graphic_scene(ui->view);
     ui->view->setScene(scene);
     ui->view->setRenderHint(QPainter::Antialiasing);
     connect(ui->speedSlider, &QSlider::valueChanged, scene, &graphic_scene::speed_change);
@@ -56,10 +57,16 @@ void MainWindow::init_scene()
     connect(ui->reset_timer_button, &QPushButton::clicked, ui->view->lcd_timer, &clock::reset_time);
     connect(ui->reset_timer_button, &QPushButton::clicked, scene, &graphic_scene::timer_reset);
 
+    connect(ui->stop_timer_button, &QPushButton::clicked, this, &MainWindow::toggle_stop_button);
+    connect(ui->stop_timer_button, &QPushButton::clicked, ui->view->lcd_timer, &clock::toggle_timer);
+    connect(ui->stop_timer_button, &QPushButton::clicked, scene, &graphic_scene::toggle_timers);
+
     connect(scene, &graphic_scene::circle_clicked, progress_scene, &progress_bar::show_path);
     connect(scene, &graphic_scene::circle_unclicked, progress_scene, &progress_bar::reset_path);
 
     connect(ui->view->lcd_timer, &clock::propagade_clock, progress_scene, &progress_bar::sync_self_clock);
+
+    connect(scene, &graphic_scene::road_clicked, this, &MainWindow::set_active_road);
 
 }
 
@@ -80,6 +87,55 @@ void MainWindow::zoom_slide(int val)
     auto org = ui->view->transform();
     qreal scale = val/50.0;
     ui->view->setTransform(QTransform(scale, org.m12(), org.m21(), scale, org.dx(), org.dy()));
+}
+
+void MainWindow::toggle_stop_button()
+{
+    ui->stop_timer_button->text() == "stop timers" ? ui->stop_timer_button->setText("start timers") : ui->stop_timer_button->setText("stop timers");
+}
+
+void MainWindow::inc_traffic_on_road()
+{
+    if(active_line != nullptr){
+        active_line->inc_traffic();
+        qDebug() << active_line->pos << active_line->traffic_level;
+        QString lvl;
+        ui->traffic_level_text->setText("Traffic level "+lvl.setNum(active_line->traffic_level));
+    }
+}
+
+void MainWindow::dec_traffic_on_road()
+{
+    if(active_line != nullptr){
+        active_line->dec_traffic();
+        qDebug() << active_line->pos << active_line->traffic_level;
+        QString lvl;
+        ui->traffic_level_text->setText("Traffic level "+lvl.setNum(active_line->traffic_level));
+    }
+}
+
+void MainWindow::close_active_road()
+{
+    if(active_line != nullptr){
+        active_line->closed == true  ? qDebug() << active_line->pos << "opened" : qDebug() << active_line->pos << "closed";
+        active_line->closed == true  ? active_line->closed = false : active_line->closed = true;
+        active_line->closed == false ? ui->close_road->setText("close road") : ui->close_road->setText("open road");
+        //ui->view->lcd_timer->toggle_timer();
+        //scene->toggle_timers();
+        scene->line_selecting_for_close == false ? scene->line_selecting_for_close = true : scene->line_selecting_for_close = false;
+
+    }
+}
+
+void MainWindow::set_active_road(custom_line *road)
+{
+    active_line = road;
+    if(active_line != nullptr){
+        QString lvl;
+        ui->traffic_level_text->setText("Traffic level "+lvl.setNum(active_line->traffic_level));
+    }else{
+        ui->traffic_level_text->setText("Traffic level");
+    }
 }
 
 void MainWindow::wheelEvent(QWheelEvent *event)
