@@ -94,6 +94,9 @@ graphic_scene::graphic_scene(QObject *parent) :
     path_dict[0]->st_dict[2] = st_dict[2];
     path_dict[0]->st_dict[3] = st_dict[3];
     path_dict[0]->st_dict[4] = st_dict[7];
+    path_dict[0]->stations.push_back(0);
+    path_dict[0]->stations.push_back(1);
+    path_dict[0]->stations.push_back(7);
     path_dict[0]->find_corr_way();
     path_dict[0]->m_vehicle = vehicle_dict[0];
 
@@ -102,6 +105,10 @@ graphic_scene::graphic_scene(QObject *parent) :
     path_dict[1]->st_dict[1] = st_dict[4];
     path_dict[1]->st_dict[2] = st_dict[5];
     path_dict[1]->st_dict[3] = st_dict[8];
+    path_dict[1]->stations.push_back(3);
+    path_dict[1]->stations.push_back(4);
+    path_dict[1]->stations.push_back(5);
+    path_dict[1]->stations.push_back(8);
     path_dict[1]->find_corr_way();
     path_dict[1]->m_vehicle = vehicle_dict[1];
 
@@ -109,13 +116,16 @@ graphic_scene::graphic_scene(QObject *parent) :
     path_dict[2]->st_dict[0] = st_dict[6];
     path_dict[2]->st_dict[1] = st_dict[3];
     path_dict[2]->st_dict[2] = st_dict[7];
+    path_dict[2]->stations.push_back(6);
+    path_dict[2]->stations.push_back(3);
+    path_dict[2]->stations.push_back(7);
     path_dict[2]->find_corr_way();
     path_dict[2]->m_vehicle = vehicle_dict[2];
 
     path_dict[0]->timer->start();
     path_dict[1]->timer->start();
     path_dict[2]->timer->start();
-
+    /*
     QMap<int, custom_line*> test;
     test[0] = st_dict[0];
     test[1] = st_dict[1];
@@ -134,6 +144,7 @@ graphic_scene::graphic_scene(QObject *parent) :
         fflush(stderr);
     }
     qDebug() << "";
+    */
 
 
 
@@ -177,7 +188,7 @@ void graphic_scene::timer_reset()
         road->timer->stop();
         road->timer->setInterval(10);
         road->m_vehicle->anim->stop();
-        road->same = false;
+        road->same = true;
         road->forward = true;
         road->start = 0.0;
         road->end = 1.0;

@@ -89,16 +89,30 @@ void path::move()
     timer->setInterval((line->duration + line->delay + 20) * speed);
     m_vehicle->anim->setDuration((line->duration + line->delay) * speed);
 
-    if((line->station != -1) && (same == false)){
+    if((line->station != -1) && (same == false) && (std::find(stations.begin(),stations.end(), line->pos) != stations.end())){
         m_vehicle->anim->setEndValue(line->station);
         timer->setInterval((((line->duration + line->delay) * (std::abs(tmp_start - line->station))) + pause) * speed);
         m_vehicle->anim->setDuration(((line->duration + line->delay) * (std::abs(tmp_start - line->station))) * speed);
-        same = true;
-        if(forward == true){
-            active_line--;
-        }else{
+        if(line->pos == stations.back() && (forward == true))
+        {
+            forward = false;
+            start = 1.0;
+            end = 0.0;
             active_line++;
+            timer->setInterval(timer->remainingTime() + pause*speed);
         }
+        else if(line->pos == stations.front() && (forward == false))
+        {
+            forward = true;
+            start = 0.0;
+            end = 1.0;
+            active_line--;
+            timer->setInterval(timer->remainingTime() + pause*speed);
+        }else{
+            forward == true ? active_line-- : active_line++;
+
+        }
+        same = true;
 
     }else if(same == true){
         m_vehicle->anim->setStartValue(line->station);
@@ -109,25 +123,7 @@ void path::move()
 
     m_vehicle->active = true;
     m_vehicle->anim->start();
-
-    if(forward == true){
-        active_line++;
-    }else{
-        active_line--;
-    }
-    if(active_line == st_dict.count()){
-        forward = false;
-        active_line--;
-        start = 1.0;
-        end = 0.0;
-        timer->setInterval(timer->remainingTime() + pause*speed);
-    }else if(active_line == -1){
-        active_line++;
-        forward = true;
-        start = 0.0;
-        end = 1.0;
-        timer->setInterval(timer->remainingTime() + pause*speed);
-    }
+    forward == true ? active_line++ : active_line--;
     anim_duration = m_vehicle->anim->duration();
     timer_duration = timer->interval();
     //qDebug() << "orig" << m_vehicle->anim->duration();

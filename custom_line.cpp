@@ -57,6 +57,7 @@ void custom_line::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
     if(station != -1 and station_time != ""){
         painter->drawText(line().pointAt(station).x(),line().pointAt(station).y()-5,station_time);
     }
+    painter->drawText(line().pointAt(0.5),QString().setNum(pos));
 }
 
 QRectF custom_line::boundingRect() const
