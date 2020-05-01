@@ -40,6 +40,7 @@ private:
 
 private slots:
     void start_all_paths();
+    void delete_path(int pos);
 
 signals:
     void circle_clicked(path *path);

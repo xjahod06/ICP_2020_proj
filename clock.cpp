@@ -64,7 +64,7 @@ void clock::time_up()
         hour++;
         minute = 0;
     }
-    if(minute % 10 == 0){
+    if(minute % 3 == 0){
         emit start_new_line(rand()%3);
     }
 

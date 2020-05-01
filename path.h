@@ -33,11 +33,13 @@ public slots:
 
 private:
     int pause{1000};
+    bool end_me{false};
 
 private slots:
     void move();
 
 signals:
+    void delete_me(int pos);
 
 };
 

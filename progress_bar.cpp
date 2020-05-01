@@ -166,7 +166,7 @@ void progress_bar::delay_to_station(bool forward)
     ///qDebug() << total_duration;
     if(forward == true)
     {
-        /*
+
         foreach (auto road, st_dict) {
             if(road->station != -1){
                 total_duration += pause;
@@ -174,7 +174,8 @@ void progress_bar::delay_to_station(bool forward)
             }
             total_duration += road->duration + road->delay + 20;
         }
-        */
+
+        /*
         st_dict[stations.front()]->station_time = convert_to_time(total_duration/1000);
         total_duration += (1 - st_dict[stations.front()]->station) * (st_dict[stations.front()]->duration + st_dict[stations.front()]->delay);
         for (int i = stations.front(); i < st_dict.count()-1; i++) {
@@ -186,6 +187,7 @@ void progress_bar::delay_to_station(bool forward)
         }
         total_duration += st_dict[stations.front()]->station * (st_dict[stations.front()]->duration + st_dict[stations.front()]->delay);
         st_dict[stations.size()-1]->station_time = convert_to_time(total_duration/1000);
+        */
     }else
     {
         //qDebug() << st_dict.count() << convert_to_time(total_duration/1000);
@@ -213,7 +215,7 @@ void progress_bar::get_duration_of_path()
     }
     total_path_duration = dur + pause*2;
     */
-    int path_duration = (1 - st_dict[stations.front()]->station) * (st_dict[stations.front()]->duration + st_dict[stations.front()]->delay);
+    /*int path_duration = (1 - st_dict[stations.front()]->station) * (st_dict[stations.front()]->duration + st_dict[stations.front()]->delay);
     qDebug() << path_duration << st_dict[stations.front()]->duration;
     for (int i = stations.front(); i < st_dict.count()-1; i++) {
         path_duration += st_dict[i]->duration + st_dict[i]->delay;
@@ -224,7 +226,8 @@ void progress_bar::get_duration_of_path()
     path_duration += st_dict[stations.size()-1]->station * (st_dict[stations.size()-1]->duration + st_dict[stations.size()-1]->delay);
     path_duration += pause;
     qDebug() << path_duration << total_path_duration;
-    total_path_duration = path_duration;
+    total_path_duration = path_duration;*/
+    total_path_duration = 10000;
 }
 
 void progress_bar::guess_def_times()

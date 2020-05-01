@@ -64,6 +64,15 @@ void path::start_this()
 
 void path::move()
 {
+    if(end_me == true){
+        qDebug() << "ended";
+        //int my_pos = m_vehicle->pos_in_dict;
+        delete m_vehicle;
+        timer->stop();
+        //emit delete_me(my_pos);
+        return;
+    }
+
     auto line = st_dict[active_line];
     //auto veh_pos = m_vehicle->pos_in_dict;
 
@@ -109,10 +118,11 @@ void path::move()
         else if(line->pos == stations.front() && (forward == false))
         {
             forward = true;
-            start = 0.0;
-            end = 1.0;
+            //start = 0.0;
+            //end = 1.0;
             active_line--;
-            timer->setInterval(timer->remainingTime() + pause*speed);
+            timer->setInterval(timer->remainingTime() - pause*speed);
+            end_me = true;
         }else{
             forward == true ? active_line-- : active_line++;
 

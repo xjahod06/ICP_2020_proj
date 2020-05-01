@@ -229,13 +229,15 @@ void graphic_scene::generate_new_connection(int pos)
     path_dict[inserted_pos]->st_dict = path_pattern->st_dict;
     path_dict[inserted_pos]->stations = path_pattern->stations;
     path_dict[inserted_pos]->wrong_direction_dict = path_pattern->wrong_direction_dict;
-    path_dict[inserted_pos]->m_vehicle = new vehicle();
+    vehicle_dict[inserted_pos] = new vehicle();
+    path_dict[inserted_pos]->m_vehicle = vehicle_dict[inserted_pos];
     path_dict[inserted_pos]->m_vehicle->setPen(path_pattern->m_vehicle->pen());
     path_dict[inserted_pos]->m_vehicle->setRect(0,0,0,0);
     path_dict[inserted_pos]->m_vehicle->pos_in_dict = inserted_pos;
     addItem(path_dict[inserted_pos]->m_vehicle);
     connect(path_dict[inserted_pos]->m_vehicle, &vehicle::circle_clicked, this, &graphic_scene::check_clicked);
     path_dict[inserted_pos]->timer->start();
+    connect(path_dict[inserted_pos], &path::delete_me, this, &graphic_scene::delete_path);
 }
 
 void graphic_scene::reset_click_on_lines(int pos)
@@ -412,5 +414,15 @@ void graphic_scene::start_all_paths()
 {
     foreach (auto road, path_dict) {
         road->timer->start();
+    }
+}
+
+void graphic_scene::delete_path(int pos)
+{
+    vehicle_dict.remove(pos);
+    path_dict.remove(pos);
+    for(int i = pos; i < path_dict.count()+1;i++){
+        path_dict[i] = path_dict[i+1];
+        vehicle_dict[i] = vehicle_dict[i+1];
     }
 }
