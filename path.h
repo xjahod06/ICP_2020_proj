@@ -26,6 +26,7 @@ public:
     int rem_duration{0};
     int anim_duration;
     int timer_duration;
+    int init_time{0};
 
 private:
     int pause{1000};

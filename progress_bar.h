@@ -45,6 +45,7 @@ private:
     int total_path_duration{0};
     void get_duration_of_path();
     void guess_def_times();
+    std::list<int> stations;
 
 private slots:
     void launch();
