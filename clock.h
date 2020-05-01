@@ -30,6 +30,7 @@ private slots:
 
 signals:
     void propagade_clock(int hour, int minute);
+    void start_new_line(int pos);
 
 };
 

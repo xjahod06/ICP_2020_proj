@@ -65,6 +65,7 @@ void MainWindow::init_scene()
     connect(scene, &graphic_scene::circle_unclicked, progress_scene, &progress_bar::reset_path);
 
     connect(ui->view->lcd_timer, &clock::propagade_clock, progress_scene, &progress_bar::sync_self_clock);
+    connect(ui->view->lcd_timer, &clock::start_new_line, scene, &graphic_scene::generate_new_connection);
 
     connect(scene, &graphic_scene::road_clicked, this, &MainWindow::set_active_road);
 

@@ -6,6 +6,7 @@
 #include <QString>
 #include <QDebug>
 #include <QTimer>
+#include <QThread>
 
 graphic_scene::graphic_scene(QObject *parent) :
     QGraphicsScene(parent)
@@ -67,64 +68,50 @@ graphic_scene::graphic_scene(QObject *parent) :
         connect(st, &custom_line::line_selected, this, &graphic_scene::select_line);
     }
 
-    vehicle_dict[0] = new vehicle();
-    vehicle_dict[0]->setPen(QPen({Qt::blue},3));
-    vehicle_dict[0]->pos_in_dict = 0;
-    vehicle_dict[0]->setRect(0,0,0,0);
-    addItem(vehicle_dict[0]);
-    connect(vehicle_dict[0], &vehicle::circle_clicked, this, &graphic_scene::check_clicked);
+    defined_path[0] = new path(this);
+    defined_path[0]->st_dict[0] = st_dict[0];
+    defined_path[0]->st_dict[1] = st_dict[1];
+    defined_path[0]->st_dict[2] = st_dict[2];
+    defined_path[0]->st_dict[3] = st_dict[3];
+    defined_path[0]->st_dict[4] = st_dict[7];
+    defined_path[0]->stations.push_back(0);
+    defined_path[0]->stations.push_back(1);
+    defined_path[0]->stations.push_back(7);
+    defined_path[0]->find_corr_way();
+    defined_path[0]->m_vehicle = new vehicle();
+    defined_path[0]->m_vehicle->setPen(QPen({Qt::blue},3));
 
-    vehicle_dict[1] = new vehicle();
-    vehicle_dict[1]->setPen(QPen({Qt::cyan},3));
-    vehicle_dict[1]->pos_in_dict = 1;
-    vehicle_dict[1]->setRect(0,0,0,0);
-    addItem(vehicle_dict[1]);
-    connect(vehicle_dict[1], &vehicle::circle_clicked, this, &graphic_scene::check_clicked);
+    defined_path[1] = new path(this);
+    defined_path[1]->st_dict[0] = st_dict[3];
+    defined_path[1]->st_dict[1] = st_dict[4];
+    defined_path[1]->st_dict[2] = st_dict[5];
+    defined_path[1]->st_dict[3] = st_dict[8];
+    defined_path[1]->stations.push_back(3);
+    defined_path[1]->stations.push_back(4);
+    defined_path[1]->stations.push_back(5);
+    defined_path[1]->stations.push_back(8);
+    defined_path[1]->find_corr_way();
+    defined_path[1]->m_vehicle = new vehicle();
+    defined_path[1]->m_vehicle->setPen(QPen({Qt::cyan},3));
 
-    vehicle_dict[2] = new vehicle();
-    vehicle_dict[2]->setPen(QPen({Qt::green},3));
-    vehicle_dict[2]->pos_in_dict = 2;
-    vehicle_dict[2]->setRect(0,0,0,0);
-    addItem(vehicle_dict[2]);
-    connect(vehicle_dict[2], &vehicle::circle_clicked, this, &graphic_scene::check_clicked);
+    defined_path[2] = new path(this);
+    defined_path[2]->st_dict[0] = st_dict[6];
+    defined_path[2]->st_dict[1] = st_dict[3];
+    defined_path[2]->st_dict[2] = st_dict[7];
+    defined_path[2]->stations.push_back(6);
+    defined_path[2]->stations.push_back(3);
+    defined_path[2]->stations.push_back(7);
+    defined_path[2]->find_corr_way();
+    defined_path[2]->m_vehicle = new vehicle();
+    defined_path[2]->m_vehicle->setPen(QPen({Qt::green},3));
 
-    path_dict[0] = new path(this);
-    path_dict[0]->st_dict[0] = st_dict[0];
-    path_dict[0]->st_dict[1] = st_dict[1];
-    path_dict[0]->st_dict[2] = st_dict[2];
-    path_dict[0]->st_dict[3] = st_dict[3];
-    path_dict[0]->st_dict[4] = st_dict[7];
-    path_dict[0]->stations.push_back(0);
-    path_dict[0]->stations.push_back(1);
-    path_dict[0]->stations.push_back(7);
-    path_dict[0]->find_corr_way();
-    path_dict[0]->m_vehicle = vehicle_dict[0];
+    generate_new_connection(0);
+    generate_new_connection(1);
+    generate_new_connection(2);
 
-    path_dict[1] = new path(this);
-    path_dict[1]->st_dict[0] = st_dict[3];
-    path_dict[1]->st_dict[1] = st_dict[4];
-    path_dict[1]->st_dict[2] = st_dict[5];
-    path_dict[1]->st_dict[3] = st_dict[8];
-    path_dict[1]->stations.push_back(3);
-    path_dict[1]->stations.push_back(4);
-    path_dict[1]->stations.push_back(5);
-    path_dict[1]->stations.push_back(8);
-    path_dict[1]->find_corr_way();
-    path_dict[1]->m_vehicle = vehicle_dict[1];
-
-    path_dict[2] = new path(this);
-    path_dict[2]->st_dict[0] = st_dict[6];
-    path_dict[2]->st_dict[1] = st_dict[3];
-    path_dict[2]->st_dict[2] = st_dict[7];
-    path_dict[2]->stations.push_back(6);
-    path_dict[2]->stations.push_back(3);
-    path_dict[2]->stations.push_back(7);
-    path_dict[2]->find_corr_way();
-    path_dict[2]->m_vehicle = vehicle_dict[2];
-
-    path_dict[0]->timer->start();
-    path_dict[1]->timer->start();
-    path_dict[2]->timer->start();
+    //path_dict[0]->timer->start();
+    //path_dict[1]->timer->start();
+    //path_dict[2]->timer->start();
     /*
     QMap<int, custom_line*> test;
     test[0] = st_dict[0];
@@ -222,6 +209,33 @@ void graphic_scene::toggle_timers()
         }
         active_timers = true;
     }
+}
+
+/*
+    vehicle_dict[1] = new vehicle();
+    vehicle_dict[1]->setPen(QPen({Qt::cyan},3));
+    vehicle_dict[1]->pos_in_dict = 1;
+    vehicle_dict[1]->setRect(0,0,0,0);
+    addItem(vehicle_dict[1]);
+    connect(vehicle_dict[1], &vehicle::circle_clicked, this, &graphic_scene::check_clicked);
+
+*/
+
+void graphic_scene::generate_new_connection(int pos)
+{
+    path *path_pattern = defined_path[pos];
+    int inserted_pos = path_dict.count();
+    path_dict[inserted_pos] = new path(this);
+    path_dict[inserted_pos]->st_dict = path_pattern->st_dict;
+    path_dict[inserted_pos]->stations = path_pattern->stations;
+    path_dict[inserted_pos]->wrong_direction_dict = path_pattern->wrong_direction_dict;
+    path_dict[inserted_pos]->m_vehicle = new vehicle();
+    path_dict[inserted_pos]->m_vehicle->setPen(path_pattern->m_vehicle->pen());
+    path_dict[inserted_pos]->m_vehicle->setRect(0,0,0,0);
+    path_dict[inserted_pos]->m_vehicle->pos_in_dict = inserted_pos;
+    addItem(path_dict[inserted_pos]->m_vehicle);
+    connect(path_dict[inserted_pos]->m_vehicle, &vehicle::circle_clicked, this, &graphic_scene::check_clicked);
+    path_dict[inserted_pos]->timer->start();
 }
 
 void graphic_scene::reset_click_on_lines(int pos)

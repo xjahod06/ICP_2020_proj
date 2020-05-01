@@ -28,6 +28,9 @@ public:
     int timer_duration;
     int init_time{0};
 
+public slots:
+    void start_this();
+
 private:
     int pause{1000};
 

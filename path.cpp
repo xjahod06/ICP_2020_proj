@@ -57,6 +57,11 @@ void path::find_corr_way()
     //qDebug() << wrong_direction_dict;
 }
 
+void path::start_this()
+{
+    timer->start();
+}
+
 void path::move()
 {
     auto line = st_dict[active_line];

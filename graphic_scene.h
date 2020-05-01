@@ -12,6 +12,8 @@ class graphic_scene : public QGraphicsScene
 public:
     explicit graphic_scene(QObject *parent = nullptr);
     bool line_selecting_for_close{false};
+    QMap<int, path*> path_dict;
+    void generate_new_connection(int pos);
 
 public slots:
     void speed_change(int val);
@@ -19,8 +21,8 @@ public slots:
     void toggle_timers();
 
 private:
+    QMap<int, path*> defined_path;
     QMap<int, custom_line*> st_dict;
-    QMap<int, path*> path_dict;
     QMap<int, vehicle*> vehicle_dict;
     qreal speed{1.0};
     bool change_rdy{true};

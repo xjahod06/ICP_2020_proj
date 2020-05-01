@@ -64,6 +64,9 @@ void clock::time_up()
         hour++;
         minute = 0;
     }
+    if(minute % 10 == 0){
+        emit start_new_line(rand()%3);
+    }
 
     display(convert_time(minute,hour));
     emit propagade_clock(hour,minute);
