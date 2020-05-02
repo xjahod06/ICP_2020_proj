@@ -27,6 +27,9 @@ public:
     int anim_duration;
     int timer_duration;
     int init_time{0};
+    bool active{true};
+    int start_min{0};
+    int start_hour{0};
 
 public slots:
     void start_this();

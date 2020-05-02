@@ -13,9 +13,9 @@ public:
     explicit graphic_scene(QObject *parent = nullptr);
     bool line_selecting_for_close{false};
     QMap<int, path*> path_dict;
-    void generate_new_connection(int pos);
 
 public slots:
+    void generate_new_connection(int pos,int min, int hour);
     void speed_change(int val);
     void timer_reset();
     void toggle_timers();

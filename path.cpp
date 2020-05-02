@@ -121,7 +121,7 @@ void path::move()
             //start = 0.0;
             //end = 1.0;
             active_line--;
-            timer->setInterval(timer->remainingTime() - pause*speed);
+            //timer->setInterval(timer->remainingTime() - pause*speed);
             end_me = true;
         }else{
             forward == true ? active_line-- : active_line++;
