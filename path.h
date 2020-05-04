@@ -30,13 +30,14 @@ public:
     bool active{true};
     int start_min{0};
     int start_hour{0};
+    bool end_me{false};
 
 public slots:
     void start_this();
 
 private:
     int pause{1000};
-    bool end_me{false};
+    void reset_colors();
 
 private slots:
     void move();

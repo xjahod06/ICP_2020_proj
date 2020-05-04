@@ -62,11 +62,22 @@ void path::start_this()
     timer->start();
 }
 
+void path::reset_colors()
+{
+    foreach (auto road, st_dict) {
+        road->setPen(QPen({road->m_pen.color()},3));
+    }
+}
+
 void path::move()
 {
     if(end_me == true){
         qDebug() << "ended";
+        if(m_vehicle->cliked == true){
+            reset_colors();
+        }
         //int my_pos = m_vehicle->pos_in_dict;
+        active = false;
         delete m_vehicle;
         timer->stop();
         //emit delete_me(my_pos);

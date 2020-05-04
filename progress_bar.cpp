@@ -26,6 +26,9 @@ void progress_bar::sync_self_clock(int hour, int min)
 
 void progress_bar::show_path(path *active_path)
 {
+    if(active_path->end_me == true){
+        return;
+    }
     clear();
     def_hour = 0;
     def_minute = 0;
@@ -63,9 +66,11 @@ void progress_bar::show_path(path *active_path)
         st_dict[i]->set_anim();
         st_dict[i]->duration = road->duration;
         st_dict[i]->delay = road->delay;
-        st_dict[i]->station_time = convert_time(m_hour,m_minute);
         st_dict[i]->pos = road->pos;
         start = end;
+        if((std::find(stations.begin(),stations.end(), st_dict[i]->pos) == stations.end())){
+            st_dict[i]->station = -1;
+        }
         i++;
     }
 
@@ -88,7 +93,6 @@ void progress_bar::show_path(path *active_path)
     active_line = active_path->active_line;
     //prev_line = active_path->prev_line;
     prev_line = -1;
-    get_duration_of_path();
 
     speed = &active_path->speed;
 
@@ -97,7 +101,8 @@ void progress_bar::show_path(path *active_path)
     connect(*m_timer, &QTimer::timeout, this, &progress_bar::launch);
     m_connected = true;
     //launch();
-    guess_def_times();
+    def_minute = active_path->start_min;
+    def_hour = active_path->start_hour;
     delay_to_station(forward);
 
     //qDebug() << active_path->st_dict.keys() << st_dict.keys();
@@ -159,103 +164,63 @@ int progress_bar::time_to_ms(int hour, int min)
 
 void progress_bar::delay_to_station(bool forward)
 {
-    if(def_hour == 0 && def_minute == 0){
-        def_minute = 1;
-    }
     int total_duration = time_to_ms(def_hour,def_minute);
     ///qDebug() << total_duration;
     if(forward == true)
     {
+        st_dict[0]->station_time = convert_to_time(total_duration/1000);
+        total_duration += pause;
+        total_duration += (1 - st_dict[0]->station)*(st_dict[0]->duration + st_dict[0]->delay);
 
-        foreach (auto road, st_dict) {
-            if(road->station != -1){
+        for (int i = 1 ;i < st_dict.count()-1;i++) {
+            if((st_dict[i]->station != -1) && (std::find(stations.begin(),stations.end(), st_dict[i]->pos) != stations.end())){
                 total_duration += pause;
-                road->station_time = convert_to_time((total_duration+(road->station * (road->duration + road->delay))) / 1000);
-            }
-            total_duration += road->duration + road->delay + 20;
-        }
-
-        /*
-        st_dict[stations.front()]->station_time = convert_to_time(total_duration/1000);
-        total_duration += (1 - st_dict[stations.front()]->station) * (st_dict[stations.front()]->duration + st_dict[stations.front()]->delay);
-        for (int i = stations.front(); i < st_dict.count()-1; i++) {
-            if(st_dict[i]->station != -1 && (std::find(stations.begin(),stations.end(), i) != stations.end())){
-                total_duration += pause;
-                st_dict[i]->station_time = convert_to_time((total_duration+(st_dict[i]->station * (st_dict[i]->duration + st_dict[i]->delay))) / 1000);
+                st_dict[i]->station_time = convert_to_time((total_duration + (st_dict[i]->station * (st_dict[i]->duration + st_dict[i]->delay))) / 1000);
             }
             total_duration += st_dict[i]->duration + st_dict[i]->delay + 20;
         }
-        total_duration += st_dict[stations.front()]->station * (st_dict[stations.front()]->duration + st_dict[stations.front()]->delay);
-        st_dict[stations.size()-1]->station_time = convert_to_time(total_duration/1000);
-        */
+        total_duration += st_dict[st_dict.count()-1]->station * (st_dict[st_dict.count()-1]->duration + st_dict[st_dict.count()-1]->delay);
+        total_duration += pause;
+        st_dict[st_dict.count()-1]->station_time = convert_to_time(total_duration/1000);
     }else
     {
-        //qDebug() << st_dict.count() << convert_to_time(total_duration/1000);
-        for (int i = st_dict.count()-1; i >= 0 ;i--) {
-            auto road = st_dict[i];
-            if(road->station != -1){
-                total_duration += pause;
-                road->station_time = convert_to_time((total_duration+((1-road->station) * (road->duration + road->delay))) / 1000);
+        if(total_duration == 0){
+            foreach (auto road, st_dict) {
+                total_duration += road->duration + road->delay +20;
+                if((road->station != -1) && (std::find(stations.begin(),stations.end(), road->pos) != stations.end())){
+                    total_duration += pause;
+                }
             }
-            total_duration += road->duration + road->delay + 20;
+            total_duration -= (1 - st_dict[st_dict.count()-1]->station) * (st_dict[st_dict.count()-1]->duration+st_dict[st_dict.count()-1]->delay);
+            total_duration -= (st_dict[0]->station) * (st_dict[0]->duration + st_dict[0]->delay);
         }
+        st_dict[st_dict.count()-1]->station_time = convert_to_time(total_duration/1000);
+        total_duration += pause;
+        total_duration += st_dict[st_dict.count()-1]->station*(st_dict[st_dict.count()-1]->duration + st_dict[st_dict.count()-1]->delay);
+
+        for (int i = st_dict.count()-2 ;i > 0;i--) {
+            if((st_dict[i]->station != -1) && (std::find(stations.begin(),stations.end(), st_dict[i]->pos) != stations.end())){
+                total_duration += pause;
+                st_dict[i]->station_time = convert_to_time((total_duration + ((1-st_dict[i]->station) * (st_dict[i]->duration + st_dict[i]->delay))) / 1000);
+            }
+            total_duration += st_dict[i]->duration + st_dict[i]->delay + 20;
+        }
+        total_duration += (1-st_dict[0]->station) * (st_dict[0]->duration + st_dict[0]->delay);
+        st_dict[0]->station_time = convert_to_time(total_duration/1000);
     }
 
-}
-
-void progress_bar::get_duration_of_path()
-{
-    /*
-    int dur = 0;
-    foreach (auto road, st_dict) {
-        dur += road->duration + road->delay;
-        if(road->station != -1){
-            dur += pause;
-        }
-    }
-    total_path_duration = dur + pause*2;
-    */
-    /*int path_duration = (1 - st_dict[stations.front()]->station) * (st_dict[stations.front()]->duration + st_dict[stations.front()]->delay);
-    qDebug() << path_duration << st_dict[stations.front()]->duration;
-    for (int i = stations.front(); i < st_dict.count()-1; i++) {
-        path_duration += st_dict[i]->duration + st_dict[i]->delay;
-        if(st_dict[i]->station != -1 && (std::find(stations.begin(),stations.end(), i) != stations.end())){
-            path_duration += pause;
-        }
-    }
-    path_duration += st_dict[stations.size()-1]->station * (st_dict[stations.size()-1]->duration + st_dict[stations.size()-1]->delay);
-    path_duration += pause;
-    qDebug() << path_duration << total_path_duration;
-    total_path_duration = path_duration;*/
-    total_path_duration = 10000;
-}
-
-void progress_bar::guess_def_times()
-{
-    /*
-    int guess_time = 0;
-    int actual_time = time_to_ms(m_hour,m_minute);
-    while(true){
-        if(guess_time >= actual_time){
-            def_hour = div((int)(guess_time - total_path_duration) /1000,60).quot;
-            def_minute = (int)((guess_time - total_path_duration) /1000)%60;
-            //qDebug() << guess_time << actual_time << total_path_duration << def_hour << def_minute;
-            break;
-        }else{
-            guess_time += total_path_duration;
-        }
-    }
-    */
-    //qDebug() << convert_to_time(total_path_duration/1000) << convert_time(def_hour,def_minute);
-
-    def_hour = 0;
-    def_minute = 0;
 }
 
 void progress_bar::launch()
 {
     //delay_to_station();
     //qDebug() << "tick";
+
+    if(end_of_road == true){
+        end_of_road = false;
+        reset_path();
+        return;
+    }
 
     if(new_line == true){
         def_hour = m_hour;
@@ -291,11 +256,7 @@ void progress_bar::launch()
         }
         else if(line->pos == stations.front() && (forward == false))
         {
-            forward = true;
-            start = 0.0;
-            end = 1.0;
-            active_line--;
-            new_line = true;
+            end_of_road = true;
         }
         else{
             forward == true ? active_line-- : active_line++;

@@ -142,6 +142,9 @@ void graphic_scene::speed_change(int val)
     speed = abs(val-25)/15.0;
     qDebug() << "speed" << speed << abs(val-25);
     foreach (auto path, path_dict) {
+       if(path->active == false){
+           continue;
+       }
        path->speed = speed;
        if (path->m_vehicle->anim->state() == QAbstractAnimation::Running){
            //qDebug() << path->m_vehicle->anim->startValue().toDouble() << path->m_vehicle->anim->endValue().toDouble() << path->m_vehicle->anim->duration() << path->m_vehicle->position;
@@ -192,6 +195,9 @@ void graphic_scene::toggle_timers()
     static bool active_timers = true;
     if(active_timers == true){
         foreach (auto path, path_dict) {
+            if(path->active == false){
+                continue;
+            }
             path->rem_duration = path->timer->remainingTime();
             qDebug() << path->rem_duration;
             path->timer->stop();
@@ -201,6 +207,9 @@ void graphic_scene::toggle_timers()
         active_timers = false;
     }else{
         foreach (auto path, path_dict) {
+            if(path->active == false){
+                continue;
+            }
             path->timer->setInterval(path->rem_duration);
             path->timer->start();
             if (path->m_vehicle->anim->state() == QAbstractAnimation::Paused){
@@ -415,8 +424,11 @@ bool graphic_scene::line_subsequent(QLineF l1, QLineF l2)
 
 void graphic_scene::start_all_paths()
 {
-    foreach (auto road, path_dict) {
-        road->timer->start();
+    foreach (auto path, path_dict) {
+        if(path->active == false){
+            continue;
+        }
+        path->timer->start();
     }
 }
 
