@@ -90,7 +90,6 @@ void clock::time_up()
     }*/
     display(convert_time(minute,hour));
     emit propagade_clock(hour,minute);
-    qDebug() << minute;
     foreach (auto table, timetables) {
         if(table->start_hour == hour && table->start_min == minute && table->active == false){
             emit start_new_line(table->path_id,minute,hour);
