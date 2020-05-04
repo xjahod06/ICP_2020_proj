@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QLCDNumber>
+#include "timetable.h"
+#include <QMap>
 
 class clock : public QLCDNumber
 {
@@ -10,14 +12,17 @@ class clock : public QLCDNumber
 public:
     explicit clock(QWidget *parent = nullptr);
     QTimer *timer;
-    int minute{00};
-    int hour{00};
+    int minute{0};
+    int hour{0};
     QString min_string;
     QString hour_string;
     qreal speed{1.0};
     void speed_change(int val);
     void reset_time();
     QString convert_time(int min, int hour);
+    QMap<int, timetable*> timetables;
+    void add_timetable(int ID,int start_hour, int start_min, int interval, int end_hour, int end_min);
+    void check_the_start_timetables();
 
 public slots:
     void toggle_timer();

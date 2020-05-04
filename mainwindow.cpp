@@ -43,15 +43,16 @@ MainWindow::~MainWindow()
 
 void MainWindow::init_scene()
 {
+    scene = new graphic_scene(ui->view);
+    ui->view->setScene(scene);
+    ui->view->setRenderHint(QPainter::Antialiasing);
+
     progress_scene = new progress_bar(ui->progress_bar);
     ui->progress_bar->setScene(progress_scene);
     ui->progress_bar->setRenderHint(QPainter::Antialiasing);
     ui->progress_bar->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
     progress_scene->m_width = width();
 
-    scene = new graphic_scene(ui->view);
-    ui->view->setScene(scene);
-    ui->view->setRenderHint(QPainter::Antialiasing);
     connect(ui->speedSlider, &QSlider::valueChanged, scene, &graphic_scene::speed_change);
     connect(ui->speedSlider, &QSlider::valueChanged, ui->view->lcd_timer, &clock::speed_change);
     connect(ui->reset_timer_button, &QPushButton::clicked, ui->view->lcd_timer, &clock::reset_time);
@@ -69,6 +70,7 @@ void MainWindow::init_scene()
 
     connect(scene, &graphic_scene::road_clicked, this, &MainWindow::set_active_road);
 
+    ui->view->lcd_timer->check_the_start_timetables();
 }
 
 void MainWindow::zoom_in()

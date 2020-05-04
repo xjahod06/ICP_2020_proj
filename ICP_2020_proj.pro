@@ -24,6 +24,7 @@ SOURCES += \
     mainwindow.cpp \
     path.cpp \
     progress_bar.cpp \
+    timetable.cpp \
     vehicle.cpp
 
 HEADERS += \
@@ -34,6 +35,7 @@ HEADERS += \
     mainwindow.h \
     path.h \
     progress_bar.h \
+    timetable.h \
     vehicle.h
 
 FORMS += \

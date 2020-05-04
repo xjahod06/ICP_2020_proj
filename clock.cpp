@@ -13,6 +13,10 @@ clock::clock(QWidget *parent) :
     timer->setInterval(1000);
     connect(timer, &QTimer::timeout, this, &clock::time_up);
     timer->start();
+    add_timetable(0,0,0,5,0,15);
+    add_timetable(1,0,1,5,0,20);
+    add_timetable(2,0,2,5,0,25);
+    add_timetable(1,2,0,10,3,0);
 }
 
 void clock::speed_change(int val)
@@ -52,6 +56,22 @@ QString clock::convert_time(int min, int hour)
     return final_text;
 }
 
+void clock::add_timetable(int ID, int start_hour, int start_min, int interval, int end_hour, int end_min)
+{
+    timetables[timetables.count()] = new timetable(this,ID,start_hour,start_min,interval,end_hour,end_min);
+}
+
+void clock::check_the_start_timetables()
+{
+    foreach (auto table, timetables) {
+        if(table->start_hour == hour && table->start_min == minute && table->active == false){
+            emit start_new_line(table->path_id,minute,hour);
+            table->active = true;
+            continue;
+        }
+    }
+}
+
 void clock::toggle_timer()
 {
     timer->isActive() == true ? timer->stop() : timer->start();
@@ -64,12 +84,28 @@ void clock::time_up()
         hour++;
         minute = 0;
     }
+    /*
     if(minute % 10 == 0){
         emit start_new_line(rand()%3,minute,hour);
-    }
-
+    }*/
     display(convert_time(minute,hour));
     emit propagade_clock(hour,minute);
-
+    qDebug() << minute;
+    foreach (auto table, timetables) {
+        if(table->start_hour == hour && table->start_min == minute && table->active == false){
+            emit start_new_line(table->path_id,minute,hour);
+            table->active = true;
+            continue;
+        }
+        if(table->end_hour == hour && table->end_min == minute && table->active == true){
+            table->active = false;
+            continue;
+        }
+        if(table->active == true){
+            if((minute - table->start_min) % table->interval == 0){
+                emit start_new_line(table->path_id,minute,hour);
+            }
+        }
+    }
 
 }

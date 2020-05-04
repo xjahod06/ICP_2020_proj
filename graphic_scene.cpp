@@ -105,9 +105,9 @@ graphic_scene::graphic_scene(QObject *parent) :
     defined_path[2]->m_vehicle = new vehicle();
     defined_path[2]->m_vehicle->setPen(QPen({Qt::green},3));
 
-    generate_new_connection(0,0,0);
-    generate_new_connection(1,0,0);
-    generate_new_connection(2,0,0);
+    //generate_new_connection(0,0,0);
+    //generate_new_connection(1,0,0);
+    //generate_new_connection(2,0,0);
 
     //path_dict[0]->timer->start();
     //path_dict[1]->timer->start();
@@ -249,7 +249,8 @@ void graphic_scene::generate_new_connection(int pos, int min, int hour)
     connect(path_dict[inserted_pos], &path::delete_me, this, &graphic_scene::delete_path);
     path_dict[inserted_pos]->start_min = min;
     path_dict[inserted_pos]->start_hour = hour;
-    qDebug() << hour << min;
+    path_dict[inserted_pos]->speed = speed;
+    //qDebug() << hour << min;
 }
 
 void graphic_scene::reset_click_on_lines(int pos)
