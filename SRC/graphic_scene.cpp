@@ -223,12 +223,31 @@ void graphic_scene::toggle_timers()
 
 void graphic_scene::create_street(int street_id, QPointF start_p, QPointF end_p)
 {
-    qDebug() << "huh";
     st_dict[street_id] = new custom_line(def_road_color);
     st_dict[street_id]->setLine(QLineF(start_p,end_p));
     st_dict[street_id]->pos = street_id;
     addItem(st_dict[street_id]);
-    qDebug() << start_p << end_p << st_dict[street_id]->line() << QLineF(start_p,end_p);
+    connect(st_dict[street_id], &custom_line::line_selected, this, &graphic_scene::select_line);
+}
+
+void graphic_scene::create_station(int street_id, qreal position)
+{
+    st_dict[street_id]->station = position;
+}
+
+void graphic_scene::create_route(int route_id, QList<int> streets, QList<int> stations, QColor color)
+{
+    defined_path[route_id] = new path(this);
+    foreach (auto road, streets) {
+        defined_path[route_id]->st_dict[defined_path[route_id]->st_dict.count()] = st_dict[road];
+    }
+    foreach (auto station, stations) {
+        defined_path[route_id]->stations.push_back(station);
+    }
+    defined_path[route_id]->find_corr_way();
+    defined_path[route_id]->m_vehicle = new vehicle();
+    defined_path[route_id]->m_vehicle->setPen(QPen({color},3));
+    //generate_new_connection(route_id,0,0);
 }
 
 void graphic_scene::generate_new_connection(int pos, int min, int hour)

@@ -58,7 +58,7 @@ QString clock::convert_time(int min, int hour)
     return final_text;
 }
 
-void clock::add_timetable(int ID, int start_hour, int start_min, int interval, int end_hour, int end_min)
+void clock::add_timetable(int ID, int start_hour, int start_min, int end_hour, int end_min, int interval)
 {
     timetables[timetables.count()] = new timetable(this,ID,start_hour,start_min,interval,end_hour,end_min);
 }

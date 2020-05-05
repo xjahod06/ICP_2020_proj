@@ -29,7 +29,12 @@ MainWindow::MainWindow(QWidget *parent)
     //connect(this, &QMainWindow::, this, &MainWindow::resized);
     parser = new file_parser(this,"../ICP_2020_proj/Example/1.txt");
     connect(parser, &file_parser::create_street, scene, &graphic_scene::create_street);
+    connect(parser, &file_parser::create_station, scene, &graphic_scene::create_station);
+    connect(parser, &file_parser::create_route, scene, &graphic_scene::create_route);
+    connect(parser, &file_parser::create_timetable, ui->view->lcd_timer, &clock::add_timetable);
     parser->parse_start();
+    ui->view->lcd_timer->check_the_start_timetables();
+    ui->view->lcd_timer->timer->start();
 }
 
 void MainWindow::resizeEvent(QResizeEvent* event)
@@ -73,7 +78,6 @@ void MainWindow::init_scene()
 
     connect(scene, &graphic_scene::road_clicked, this, &MainWindow::set_active_road);
 
-    ui->view->lcd_timer->check_the_start_timetables();
 }
 
 void MainWindow::zoom_in()

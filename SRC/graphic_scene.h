@@ -21,6 +21,8 @@ public slots:
     void timer_reset();
     void toggle_timers();
     void create_street(int street_id,QPointF start_p,QPointF end_p);
+    void create_station(int street_id,qreal position);
+    void create_route(int route_id,QList<int> streets,QList<int> stations,QColor color);
 
 private:
     QMap<int, path*> defined_path;
