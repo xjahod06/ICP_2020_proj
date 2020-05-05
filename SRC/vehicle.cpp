@@ -35,6 +35,10 @@ void vehicle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void vehicle::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+   if(cliked == true){
+       painter->setPen(QPen({Qt::cyan},10));
+       painter->drawEllipse(rect());
+   }
    painter->setPen(pen());
    painter->drawEllipse(rect());
    //painter->fillRect(rect(),QBrush(Qt::black));
