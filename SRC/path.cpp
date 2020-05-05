@@ -57,8 +57,33 @@ void path::find_corr_way()
     //qDebug() << wrong_direction_dict;
 }
 
+void path::start_this()
+{
+    timer->start();
+}
+
+void path::reset_colors()
+{
+    foreach (auto road, st_dict) {
+        road->setPen(QPen({road->m_pen.color()},3));
+    }
+}
+
 void path::move()
 {
+    if(end_me == true){
+        qDebug() << "ended";
+        if(m_vehicle->cliked == true){
+            reset_colors();
+        }
+        //int my_pos = m_vehicle->pos_in_dict;
+        active = false;
+        delete m_vehicle;
+        timer->stop();
+        //emit delete_me(my_pos);
+        return;
+    }
+
     auto line = st_dict[active_line];
     //auto veh_pos = m_vehicle->pos_in_dict;
 
@@ -89,16 +114,31 @@ void path::move()
     timer->setInterval((line->duration + line->delay + 20) * speed);
     m_vehicle->anim->setDuration((line->duration + line->delay) * speed);
 
-    if((line->station != -1) && (same == false)){
+    if((line->station != -1) && (same == false) && (std::find(stations.begin(),stations.end(), line->pos) != stations.end())){
         m_vehicle->anim->setEndValue(line->station);
         timer->setInterval((((line->duration + line->delay) * (std::abs(tmp_start - line->station))) + pause) * speed);
         m_vehicle->anim->setDuration(((line->duration + line->delay) * (std::abs(tmp_start - line->station))) * speed);
-        same = true;
-        if(forward == true){
-            active_line--;
-        }else{
+        if(line->pos == stations.back() && (forward == true))
+        {
+            forward = false;
+            start = 1.0;
+            end = 0.0;
             active_line++;
+            timer->setInterval(timer->remainingTime() + pause*speed);
         }
+        else if(line->pos == stations.front() && (forward == false))
+        {
+            forward = true;
+            //start = 0.0;
+            //end = 1.0;
+            active_line--;
+            //timer->setInterval(timer->remainingTime() - pause*speed);
+            end_me = true;
+        }else{
+            forward == true ? active_line-- : active_line++;
+
+        }
+        same = true;
 
     }else if(same == true){
         m_vehicle->anim->setStartValue(line->station);
@@ -109,25 +149,7 @@ void path::move()
 
     m_vehicle->active = true;
     m_vehicle->anim->start();
-
-    if(forward == true){
-        active_line++;
-    }else{
-        active_line--;
-    }
-    if(active_line == st_dict.count()){
-        forward = false;
-        active_line--;
-        start = 1.0;
-        end = 0.0;
-        timer->setInterval(timer->remainingTime() + pause*speed);
-    }else if(active_line == -1){
-        active_line++;
-        forward = true;
-        start = 0.0;
-        end = 1.0;
-        timer->setInterval(timer->remainingTime() + pause*speed);
-    }
+    forward == true ? active_line++ : active_line--;
     anim_duration = m_vehicle->anim->duration();
     timer_duration = timer->interval();
     //qDebug() << "orig" << m_vehicle->anim->duration();
