@@ -2,13 +2,18 @@
 #define MENU_BUTTON_H
 
 #include <QObject>
-#include <QMenu>
+#include <QAction>
+#include <QDir>
 
-class menu_button : public QMenu
+class menu_button : public QAction
 {
 
 public:
     explicit menu_button(QWidget *parent = nullptr);
+    QString path;
+
+public slots:
+    void clicked();
 
 signals:
 

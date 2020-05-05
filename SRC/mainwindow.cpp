@@ -44,8 +44,10 @@ MainWindow::MainWindow(QWidget *parent)
     auto filemenu = ui->menubar->addMenu("examples");
     foreach (auto file_name, list) {
         menu_button *part = new menu_button(filemenu);
-        filemenu->addMenu(part);
-        part->setTitle(file_name);
+        filemenu->addAction(part);
+        part->setText(file_name);
+        connect(part,&menu_button::triggered, part, &menu_button::clicked);
+        qDebug() << directory.filePath(file_name);
     }
 
 }
