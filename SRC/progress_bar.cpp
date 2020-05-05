@@ -180,7 +180,6 @@ void progress_bar::delay_to_station(bool forward)
             total_duration += st_dict[i]->duration + st_dict[i]->delay + 20;
         }
         total_duration += st_dict[st_dict.count()-1]->station * (st_dict[st_dict.count()-1]->duration + st_dict[st_dict.count()-1]->delay);
-        total_duration += pause;
         st_dict[st_dict.count()-1]->station_time = convert_to_time(total_duration/1000);
     }else
     {
