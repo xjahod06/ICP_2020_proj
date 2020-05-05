@@ -12,7 +12,7 @@ clock::clock(QWidget *parent) :
     timer = new QTimer(this);
     timer->setInterval(1000);
     connect(timer, &QTimer::timeout, this, &clock::time_up);
-    timer->start();
+    //timer->start();
     add_timetable(0,0,0,5,0,15);
     add_timetable(1,0,1,5,0,20);
     add_timetable(2,0,2,5,0,25);
