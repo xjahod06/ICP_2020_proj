@@ -30,13 +30,18 @@ void vehicle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
     //qDebug() << "clicked on circle" << cliked;
 
-    QGraphicsEllipseItem::mousePressEvent(event);
+    //QGraphicsEllipseItem::mousePressEvent(event);
 }
 
 void vehicle::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+   if(cliked == true){
+       painter->setPen(QPen({Qt::cyan},10));
+       painter->drawEllipse(rect());
+   }
    painter->setPen(pen());
    painter->drawEllipse(rect());
+   //painter->fillRect(rect(),QBrush(Qt::black));
    //painter->drawEllipse(center, size, size);
    //qDebug() << "__paint:" <<center;
 }
@@ -44,6 +49,7 @@ void vehicle::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 QRectF vehicle::boundingRect() const
 {
     QPainterPath pp;
+    pp.addRect(QGraphicsEllipseItem::boundingRect());
     pp.addEllipse(center,size+5,size+5);
     return pp.boundingRect();
 }

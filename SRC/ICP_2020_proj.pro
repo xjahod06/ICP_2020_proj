@@ -2,7 +2,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++17
+CONFIG += c++1z
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -19,21 +19,25 @@ SOURCES += \
     clock.cpp \
     custom_graphics_view.cpp \
     custom_line.cpp \
+    file_parser.cpp \
     graphic_scene.cpp \
     main.cpp \
     mainwindow.cpp \
     path.cpp \
     progress_bar.cpp \
+    timetable.cpp \
     vehicle.cpp
 
 HEADERS += \
     clock.h \
     custom_graphics_view.h \
     custom_line.h \
+    file_parser.h \
     graphic_scene.h \
     mainwindow.h \
     path.h \
     progress_bar.h \
+    timetable.h \
     vehicle.h
 
 FORMS += \
