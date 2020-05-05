@@ -6,10 +6,12 @@
 #include <QString>
 #include <QDebug>
 #include <QTimer>
+#include <QThread>
 
 graphic_scene::graphic_scene(QObject *parent) :
     QGraphicsScene(parent)
 {
+    /*e
     st_dict[0] = new custom_line(def_road_color);
     st_dict[0]->setLine(200,-50,0,0);
     st_dict[0]->station = 0.8;
@@ -67,55 +69,51 @@ graphic_scene::graphic_scene(QObject *parent) :
         connect(st, &custom_line::line_selected, this, &graphic_scene::select_line);
     }
 
-    vehicle_dict[0] = new vehicle();
-    vehicle_dict[0]->setPen(QPen({Qt::blue},3));
-    vehicle_dict[0]->pos_in_dict = 0;
-    vehicle_dict[0]->setRect(0,0,0,0);
-    addItem(vehicle_dict[0]);
-    connect(vehicle_dict[0], &vehicle::circle_clicked, this, &graphic_scene::check_clicked);
+    defined_path[0] = new path(this);
+    defined_path[0]->st_dict[0] = st_dict[0];
+    defined_path[0]->st_dict[1] = st_dict[1];
+    defined_path[0]->st_dict[2] = st_dict[2];
+    defined_path[0]->st_dict[3] = st_dict[3];
+    defined_path[0]->st_dict[4] = st_dict[7];
+    defined_path[0]->stations.push_back(0);
+    defined_path[0]->stations.push_back(1);
+    defined_path[0]->stations.push_back(7);
+    defined_path[0]->find_corr_way();
+    defined_path[0]->m_vehicle = new vehicle();
+    defined_path[0]->m_vehicle->setPen(QPen({Qt::blue},3));
 
-    vehicle_dict[1] = new vehicle();
-    vehicle_dict[1]->setPen(QPen({Qt::cyan},3));
-    vehicle_dict[1]->pos_in_dict = 1;
-    vehicle_dict[1]->setRect(0,0,0,0);
-    addItem(vehicle_dict[1]);
-    connect(vehicle_dict[1], &vehicle::circle_clicked, this, &graphic_scene::check_clicked);
+    defined_path[1] = new path(this);
+    defined_path[1]->st_dict[0] = st_dict[3];
+    defined_path[1]->st_dict[1] = st_dict[4];
+    defined_path[1]->st_dict[2] = st_dict[5];
+    defined_path[1]->st_dict[3] = st_dict[8];
+    defined_path[1]->stations.push_back(3);
+    defined_path[1]->stations.push_back(4);
+    defined_path[1]->stations.push_back(5);
+    defined_path[1]->stations.push_back(8);
+    defined_path[1]->find_corr_way();
+    defined_path[1]->m_vehicle = new vehicle();
+    defined_path[1]->m_vehicle->setPen(QPen({Qt::cyan},3));
 
-    vehicle_dict[2] = new vehicle();
-    vehicle_dict[2]->setPen(QPen({Qt::green},3));
-    vehicle_dict[2]->pos_in_dict = 2;
-    vehicle_dict[2]->setRect(0,0,0,0);
-    addItem(vehicle_dict[2]);
-    connect(vehicle_dict[2], &vehicle::circle_clicked, this, &graphic_scene::check_clicked);
+    defined_path[2] = new path(this);
+    defined_path[2]->st_dict[0] = st_dict[6];
+    defined_path[2]->st_dict[1] = st_dict[3];
+    defined_path[2]->st_dict[2] = st_dict[7];
+    defined_path[2]->stations.push_back(6);
+    defined_path[2]->stations.push_back(3);
+    defined_path[2]->stations.push_back(7);
+    defined_path[2]->find_corr_way();
+    defined_path[2]->m_vehicle = new vehicle();
+    defined_path[2]->m_vehicle->setPen(QPen({Qt::green},3));
+    */
+    //generate_new_connection(0,0,0);
+    //generate_new_connection(1,0,0);
+    //generate_new_connection(2,0,0);
 
-    path_dict[0] = new path(this);
-    path_dict[0]->st_dict[0] = st_dict[0];
-    path_dict[0]->st_dict[1] = st_dict[1];
-    path_dict[0]->st_dict[2] = st_dict[2];
-    path_dict[0]->st_dict[3] = st_dict[3];
-    path_dict[0]->st_dict[4] = st_dict[7];
-    path_dict[0]->find_corr_way();
-    path_dict[0]->m_vehicle = vehicle_dict[0];
-
-    path_dict[1] = new path(this);
-    path_dict[1]->st_dict[0] = st_dict[3];
-    path_dict[1]->st_dict[1] = st_dict[4];
-    path_dict[1]->st_dict[2] = st_dict[5];
-    path_dict[1]->st_dict[3] = st_dict[8];
-    path_dict[1]->find_corr_way();
-    path_dict[1]->m_vehicle = vehicle_dict[1];
-
-    path_dict[2] = new path(this);
-    path_dict[2]->st_dict[0] = st_dict[6];
-    path_dict[2]->st_dict[1] = st_dict[3];
-    path_dict[2]->st_dict[2] = st_dict[7];
-    path_dict[2]->find_corr_way();
-    path_dict[2]->m_vehicle = vehicle_dict[2];
-
-    path_dict[0]->timer->start();
-    path_dict[1]->timer->start();
-    path_dict[2]->timer->start();
-
+    //path_dict[0]->timer->start();
+    //path_dict[1]->timer->start();
+    //path_dict[2]->timer->start();
+    /*
     QMap<int, custom_line*> test;
     test[0] = st_dict[0];
     test[1] = st_dict[1];
@@ -134,6 +132,7 @@ graphic_scene::graphic_scene(QObject *parent) :
         fflush(stderr);
     }
     qDebug() << "";
+    */
 
 
 
@@ -144,6 +143,9 @@ void graphic_scene::speed_change(int val)
     speed = abs(val-25)/15.0;
     qDebug() << "speed" << speed << abs(val-25);
     foreach (auto path, path_dict) {
+       if(path->active == false){
+           continue;
+       }
        path->speed = speed;
        if (path->m_vehicle->anim->state() == QAbstractAnimation::Running){
            //qDebug() << path->m_vehicle->anim->startValue().toDouble() << path->m_vehicle->anim->endValue().toDouble() << path->m_vehicle->anim->duration() << path->m_vehicle->position;
@@ -177,7 +179,7 @@ void graphic_scene::timer_reset()
         road->timer->stop();
         road->timer->setInterval(10);
         road->m_vehicle->anim->stop();
-        road->same = false;
+        road->same = true;
         road->forward = true;
         road->start = 0.0;
         road->end = 1.0;
@@ -194,6 +196,9 @@ void graphic_scene::toggle_timers()
     static bool active_timers = true;
     if(active_timers == true){
         foreach (auto path, path_dict) {
+            if(path->active == false){
+                continue;
+            }
             path->rem_duration = path->timer->remainingTime();
             qDebug() << path->rem_duration;
             path->timer->stop();
@@ -203,6 +208,9 @@ void graphic_scene::toggle_timers()
         active_timers = false;
     }else{
         foreach (auto path, path_dict) {
+            if(path->active == false){
+                continue;
+            }
             path->timer->setInterval(path->rem_duration);
             path->timer->start();
             if (path->m_vehicle->anim->state() == QAbstractAnimation::Paused){
@@ -211,6 +219,58 @@ void graphic_scene::toggle_timers()
         }
         active_timers = true;
     }
+}
+
+void graphic_scene::create_street(int street_id, QPointF start_p, QPointF end_p)
+{
+    st_dict[street_id] = new custom_line(def_road_color);
+    st_dict[street_id]->setLine(QLineF(start_p,end_p));
+    st_dict[street_id]->pos = street_id;
+    addItem(st_dict[street_id]);
+    connect(st_dict[street_id], &custom_line::line_selected, this, &graphic_scene::select_line);
+}
+
+void graphic_scene::create_station(int street_id, qreal position)
+{
+    st_dict[street_id]->station = position;
+}
+
+void graphic_scene::create_route(int route_id, QList<int> streets, QList<int> stations, QColor color)
+{
+    defined_path[route_id] = new path(this);
+    foreach (auto road, streets) {
+        defined_path[route_id]->st_dict[defined_path[route_id]->st_dict.count()] = st_dict[road];
+    }
+    foreach (auto station, stations) {
+        defined_path[route_id]->stations.push_back(station);
+    }
+    defined_path[route_id]->find_corr_way();
+    defined_path[route_id]->m_vehicle = new vehicle();
+    defined_path[route_id]->m_vehicle->setPen(QPen({color},3));
+    //generate_new_connection(route_id,0,0);
+}
+
+void graphic_scene::generate_new_connection(int pos, int min, int hour)
+{
+    path *path_pattern = defined_path[pos];
+    int inserted_pos = path_dict.count();
+    path_dict[inserted_pos] = new path(this);
+    path_dict[inserted_pos]->st_dict = path_pattern->st_dict;
+    path_dict[inserted_pos]->stations = path_pattern->stations;
+    path_dict[inserted_pos]->wrong_direction_dict = path_pattern->wrong_direction_dict;
+    vehicle_dict[inserted_pos] = new vehicle();
+    path_dict[inserted_pos]->m_vehicle = vehicle_dict[inserted_pos];
+    path_dict[inserted_pos]->m_vehicle->setPen(path_pattern->m_vehicle->pen());
+    path_dict[inserted_pos]->m_vehicle->setRect(0,0,0,0);
+    path_dict[inserted_pos]->m_vehicle->pos_in_dict = inserted_pos;
+    addItem(path_dict[inserted_pos]->m_vehicle);
+    connect(path_dict[inserted_pos]->m_vehicle, &vehicle::circle_clicked, this, &graphic_scene::check_clicked);
+    path_dict[inserted_pos]->timer->start();
+    connect(path_dict[inserted_pos], &path::delete_me, this, &graphic_scene::delete_path);
+    path_dict[inserted_pos]->start_min = min;
+    path_dict[inserted_pos]->start_hour = hour;
+    path_dict[inserted_pos]->speed = speed;
+    //qDebug() << hour << min;
 }
 
 void graphic_scene::reset_click_on_lines(int pos)
@@ -385,7 +445,20 @@ bool graphic_scene::line_subsequent(QLineF l1, QLineF l2)
 
 void graphic_scene::start_all_paths()
 {
-    foreach (auto road, path_dict) {
-        road->timer->start();
+    foreach (auto path, path_dict) {
+        if(path->active == false){
+            continue;
+        }
+        path->timer->start();
+    }
+}
+
+void graphic_scene::delete_path(int pos)
+{
+    vehicle_dict.remove(pos);
+    path_dict.remove(pos);
+    for(int i = pos; i < path_dict.count()+1;i++){
+        path_dict[i] = path_dict[i+1];
+        vehicle_dict[i] = vehicle_dict[i+1];
     }
 }

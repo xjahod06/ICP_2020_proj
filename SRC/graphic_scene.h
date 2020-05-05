@@ -2,6 +2,7 @@
 #define GRAPHIC_SCENE_H
 
 #include <QGraphicsScene>
+#include <QPointF>
 #include "custom_line.h"
 #include "path.h"
 #include "vehicle.h"
@@ -12,15 +13,20 @@ class graphic_scene : public QGraphicsScene
 public:
     explicit graphic_scene(QObject *parent = nullptr);
     bool line_selecting_for_close{false};
+    QMap<int, path*> path_dict;
 
 public slots:
+    void generate_new_connection(int pos,int min, int hour);
     void speed_change(int val);
     void timer_reset();
     void toggle_timers();
+    void create_street(int street_id,QPointF start_p,QPointF end_p);
+    void create_station(int street_id,qreal position);
+    void create_route(int route_id,QList<int> streets,QList<int> stations,QColor color);
 
 private:
+    QMap<int, path*> defined_path;
     QMap<int, custom_line*> st_dict;
-    QMap<int, path*> path_dict;
     QMap<int, vehicle*> vehicle_dict;
     qreal speed{1.0};
     bool change_rdy{true};
@@ -38,6 +44,7 @@ private:
 
 private slots:
     void start_all_paths();
+    void delete_path(int pos);
 
 signals:
     void circle_clicked(path *path);

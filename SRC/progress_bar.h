@@ -43,8 +43,8 @@ private:
     int time_to_ms(int hour, int min);
     void delay_to_station(bool forward);
     int total_path_duration{0};
-    void get_duration_of_path();
-    void guess_def_times();
+    std::list<int> stations;
+    bool end_of_road{false};
 
 private slots:
     void launch();

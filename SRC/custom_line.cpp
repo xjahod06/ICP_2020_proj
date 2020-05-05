@@ -57,6 +57,7 @@ void custom_line::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
     if(station != -1 and station_time != ""){
         painter->drawText(line().pointAt(station).x(),line().pointAt(station).y()-5,station_time);
     }
+    painter->drawText(line().pointAt(0.5),QString().setNum(pos));
 }
 
 QRectF custom_line::boundingRect() const
@@ -68,13 +69,7 @@ QRectF custom_line::boundingRect() const
     }*/
     return pp.boundingRect();
 }
-/*
-//qDebug() << vehicle_dict[dict_pos]->position;
-//vehicle_dict[dict_pos]->anim = new QVariantAnimation(this);
-//vehicle_dict[dict_pos]->anim->setDuration(duration);
-//auto *actual_vehicle = vehicle_dict[dict_pos];
-//connect(vehicle_dict[dict_pos]->anim, &QVariantAnimation::valueChanged, [this, dict_pos](){ test_anim(vehicle_dict[dict_pos]->anim,&(vehicle_dict[dict_pos]->active),&(vehicle_dict[dict_pos]->position)); });
-*/
+
 void custom_line::add_vehicle(vehicle *new_vehicle, int pos)
 {
     vehicle_dict[pos] = new_vehicle;

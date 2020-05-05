@@ -15,24 +15,35 @@ public:
     QTimer *timer;
     qreal speed{1.0};
     void find_corr_way();
-    bool same{false};
+    bool same{true};
     bool forward{true};
     qreal start{0.0};
     qreal end{1.0};
     int active_line{0};
     int prev_line{-1};
     std::list<int> wrong_direction_dict;
+    std::list<int> stations;
     int rem_duration{0};
     int anim_duration;
     int timer_duration;
+    int init_time{0};
+    bool active{true};
+    int start_min{0};
+    int start_hour{0};
+    bool end_me{false};
+
+public slots:
+    void start_this();
 
 private:
     int pause{1000};
+    void reset_colors();
 
 private slots:
     void move();
 
 signals:
+    void delete_me(int pos);
 
 };
 
