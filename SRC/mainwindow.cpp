@@ -27,7 +27,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->close_road, &QPushButton::clicked, this, &MainWindow::close_active_road);
 
     //connect(this, &QMainWindow::, this, &MainWindow::resized);
-    parser = new file_parser(this,"../Example/1.txt");
+    parser = new file_parser(this,"../ICP_2020_proj/Example/1.txt");
     connect(parser, &file_parser::create_street, scene, &graphic_scene::create_street);
     parser->parse_start();
 }

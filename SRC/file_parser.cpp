@@ -2,6 +2,7 @@
 #include <QFile>
 #include <QDebug>
 #include <QPointF>
+#include <QDir>
 
 file_parser::file_parser(QObject *parent,QString file_name) : QObject(parent)
 {
@@ -11,8 +12,9 @@ file_parser::file_parser(QObject *parent,QString file_name) : QObject(parent)
 void file_parser::parse_start()
 {
     QFile file(m_file_name);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-            return;
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)){
+        qDebug() << "some problems with" << m_file_name << QDir::currentPath();
+    }
 
     QTextStream in(&file);
         while (!in.atEnd()) {

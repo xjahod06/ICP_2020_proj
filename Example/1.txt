@@ -1,0 +1,2 @@
+#identifikator|ID|start coord|end coord
+street|0|200,-50|0,0
