@@ -13,10 +13,12 @@ clock::clock(QWidget *parent) :
     timer->setInterval(1000);
     connect(timer, &QTimer::timeout, this, &clock::time_up);
     //timer->start();
+    /*
     add_timetable(0,0,0,5,0,15);
     add_timetable(1,0,1,5,0,20);
     add_timetable(2,0,2,5,0,25);
     add_timetable(1,2,0,10,3,0);
+    */
 }
 
 void clock::speed_change(int val)

@@ -2,6 +2,7 @@
 #define GRAPHIC_SCENE_H
 
 #include <QGraphicsScene>
+#include <QPointF>
 #include "custom_line.h"
 #include "path.h"
 #include "vehicle.h"
@@ -19,6 +20,7 @@ public slots:
     void speed_change(int val);
     void timer_reset();
     void toggle_timers();
+    void create_street(int street_id,QPointF start_p,QPointF end_p);
 
 private:
     QMap<int, path*> defined_path;

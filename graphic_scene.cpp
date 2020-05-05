@@ -11,6 +11,7 @@
 graphic_scene::graphic_scene(QObject *parent) :
     QGraphicsScene(parent)
 {
+    /*e
     st_dict[0] = new custom_line(def_road_color);
     st_dict[0]->setLine(200,-50,0,0);
     st_dict[0]->station = 0.8;
@@ -104,7 +105,7 @@ graphic_scene::graphic_scene(QObject *parent) :
     defined_path[2]->find_corr_way();
     defined_path[2]->m_vehicle = new vehicle();
     defined_path[2]->m_vehicle->setPen(QPen({Qt::green},3));
-
+    */
     //generate_new_connection(0,0,0);
     //generate_new_connection(1,0,0);
     //generate_new_connection(2,0,0);
@@ -220,15 +221,15 @@ void graphic_scene::toggle_timers()
     }
 }
 
-/*
-    vehicle_dict[1] = new vehicle();
-    vehicle_dict[1]->setPen(QPen({Qt::cyan},3));
-    vehicle_dict[1]->pos_in_dict = 1;
-    vehicle_dict[1]->setRect(0,0,0,0);
-    addItem(vehicle_dict[1]);
-    connect(vehicle_dict[1], &vehicle::circle_clicked, this, &graphic_scene::check_clicked);
-
-*/
+void graphic_scene::create_street(int street_id, QPointF start_p, QPointF end_p)
+{
+    qDebug() << "huh";
+    st_dict[street_id] = new custom_line(def_road_color);
+    st_dict[street_id]->setLine(QLineF(start_p,end_p));
+    st_dict[street_id]->pos = street_id;
+    addItem(st_dict[street_id]);
+    qDebug() << start_p << end_p << st_dict[street_id]->line() << QLineF(start_p,end_p);
+}
 
 void graphic_scene::generate_new_connection(int pos, int min, int hour)
 {

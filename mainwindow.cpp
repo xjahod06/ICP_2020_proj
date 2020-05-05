@@ -8,6 +8,7 @@
 #include "custom_graphics_view.h"
 #include "progress_bar.h"
 #include "clock.h"
+#include <fstream>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -26,7 +27,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->close_road, &QPushButton::clicked, this, &MainWindow::close_active_road);
 
     //connect(this, &QMainWindow::, this, &MainWindow::resized);
-
+    parser = new file_parser(this,"../Example/1.txt");
+    connect(parser, &file_parser::create_street, scene, &graphic_scene::create_street);
+    parser->parse_start();
 }
 
 void MainWindow::resizeEvent(QResizeEvent* event)
@@ -75,13 +78,11 @@ void MainWindow::init_scene()
 
 void MainWindow::zoom_in()
 {
-    //ui->view->scale(1.25,1.25);
     ui->view->slider->setSliderPosition(ui->view->slider->value()*1.25);
 }
 
 void MainWindow::zoom_out()
 {
-    //ui->view->scale(0.8,0.8);
     ui->view->slider->setSliderPosition(ui->view->slider->value()/1.25);
 }
 
@@ -123,8 +124,6 @@ void MainWindow::close_active_road()
         active_line->closed == true  ? qDebug() << active_line->pos << "opened" : qDebug() << active_line->pos << "closed";
         active_line->closed == true  ? active_line->closed = false : active_line->closed = true;
         active_line->closed == false ? ui->close_road->setText("close road") : ui->close_road->setText("open road");
-        //ui->view->lcd_timer->toggle_timer();
-        //scene->toggle_timers();
         scene->line_selecting_for_close == false ? scene->line_selecting_for_close = true : scene->line_selecting_for_close = false;
 
     }
@@ -143,15 +142,10 @@ void MainWindow::set_active_road(custom_line *road)
 
 void MainWindow::wheelEvent(QWheelEvent *event)
 {
-    if(event->delta() > 0)
-        {
-            //qDebug() << "zoom in" << ui->zoom_slider->value();
+    if(event->delta() > 0){
             ui->view->slider->setSliderPosition(ui->view->slider->value()+ui->view->slider->singleStep());
         }
-        else
-        {
-
-            //qDebug() << "zoom out" << ui->zoom_slider->value();
+        else{
             ui->view->slider->setSliderPosition(ui->view->slider->value()-ui->view->slider->singleStep());
         }
 }
