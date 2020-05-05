@@ -9,6 +9,7 @@
 #include "progress_bar.h"
 #include "clock.h"
 #include <fstream>
+#include <QDir>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -35,6 +36,16 @@ MainWindow::MainWindow(QWidget *parent)
     parser->parse_start();
     ui->view->lcd_timer->check_the_start_timetables();
     ui->view->lcd_timer->timer->start();
+
+    QDir directory("../ICP_2020_proj/Example");
+    QStringList list = directory.entryList(QStringList(),QDir::Files);
+    qDebug() << directory << list;
+    auto filemenu = ui->menubar->addMenu("examples");
+    filemenu;
+    foreach (auto file_name, list) {
+        filemenu->addAction(file_name);
+    }
+
 }
 
 void MainWindow::resizeEvent(QResizeEvent* event)
