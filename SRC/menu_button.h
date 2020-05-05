@@ -7,16 +7,16 @@
 
 class menu_button : public QAction
 {
-
+    Q_OBJECT
 public:
-    explicit menu_button(QWidget *parent = nullptr);
+    explicit menu_button(QObject *parent = nullptr);
     QString path;
 
 public slots:
     void clicked();
 
 signals:
-
+    void load_layout(QString name);
 };
 
 #endif // MENU_BUTTON_H

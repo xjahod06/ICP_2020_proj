@@ -5,10 +5,21 @@
 #include <QTime>
 #include <QString>
 #include "clock.h"
+#include <QGraphicsItem>
 
 custom_graphics_view::custom_graphics_view(QWidget *parent) :
     QGraphicsView(parent)
 {
+
+}
+
+void custom_graphics_view::program_rdy_scene()
+{
+    buttonPlus = new QPushButton(this);
+    buttonMinus = new QPushButton(this);
+    lcd_timer = new class clock(this);
+    slider = new QSlider(this);
+
     auto horizontalLayout = new QHBoxLayout;
     viewport()->setLayout(horizontalLayout);
 
@@ -25,6 +36,7 @@ custom_graphics_view::custom_graphics_view(QWidget *parent) :
     slider->setSliderPosition(50);
     //buttonPlus->setText("+");
     //buttonMinus->setText("-");
+
     verticalLayout->addSpacerItem(new QSpacerItem(1, 1, QSizePolicy::Minimum, QSizePolicy::Expanding));
     verticalLayout->addWidget(slider);
     verticalLayout->addWidget(buttonPlus);
@@ -38,5 +50,9 @@ custom_graphics_view::custom_graphics_view(QWidget *parent) :
     horizontalLayout->addItem(verticalLayout);
 
     setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+}
+
+void custom_graphics_view::startup_scene()
+{
 
 }

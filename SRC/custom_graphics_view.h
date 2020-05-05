@@ -16,10 +16,14 @@ public:
     explicit custom_graphics_view(QWidget *parent = nullptr);
 
 public:
-    QPushButton *buttonPlus{new QPushButton(this)};
-    QPushButton *buttonMinus{new QPushButton(this)};
-    class clock *lcd_timer{new class clock(this)};
-    QSlider *slider{new QSlider(this)};
+    QPushButton *buttonPlus{nullptr};
+    QPushButton *buttonMinus{nullptr};
+    class clock *lcd_timer{nullptr};
+    QSlider *slider{nullptr};
+    void program_rdy_scene();
+    void startup_scene();
+
+private:
 
 signals:
 

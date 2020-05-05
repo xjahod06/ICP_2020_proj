@@ -1,7 +1,8 @@
 #include "menu_button.h"
 #include <QDebug>
+#include <QObject>
 
-menu_button::menu_button(QWidget *parent) :
+menu_button::menu_button(QObject *parent) :
     QAction(parent)
 {
 
@@ -10,4 +11,5 @@ menu_button::menu_button(QWidget *parent) :
 void menu_button::clicked()
 {
     qDebug() << text();
+    emit load_layout(path);
 }

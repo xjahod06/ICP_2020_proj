@@ -11,101 +11,6 @@
 graphic_scene::graphic_scene(QObject *parent) :
     QGraphicsScene(parent)
 {
-    /*e
-    st_dict[0] = new custom_line(def_road_color);
-    st_dict[0]->setLine(200,-50,0,0);
-    st_dict[0]->station = 0.8;
-    st_dict[0]->pos = 0;
-    addItem(st_dict[0]);
-
-    st_dict[1] = new custom_line(def_road_color);
-    st_dict[1]->setLine(0,0,0,150);
-    st_dict[1]->station = 0.8;
-    st_dict[1]->pos = 1;
-    addItem(st_dict[1]);
-
-    st_dict[2] = new custom_line(def_road_color);
-    st_dict[2]->setLine(0,150,200,150);
-    st_dict[2]->pos = 2;
-    addItem(st_dict[2]);
-
-    st_dict[3] = new custom_line(def_road_color);
-    st_dict[3]->setLine(300,300,200,150);
-    st_dict[3]->station = 0.5;
-    st_dict[3]->pos = 3;
-    addItem(st_dict[3]);
-
-    st_dict[4] = new custom_line(def_road_color);
-    st_dict[4]->setLine(500,300,300,300);
-    st_dict[4]->station = 0.75;
-    st_dict[4]->pos = 4;
-    addItem(st_dict[4]);
-
-    st_dict[5] = new custom_line(def_road_color);
-    st_dict[5]->setLine(500,0,500,300);
-    st_dict[5]->station = 0.35;
-    st_dict[5]->pos = 5;
-    addItem(st_dict[5]);
-
-    st_dict[6] = new custom_line(def_road_color);
-    st_dict[6]->setLine(200,-50,200,150);
-    st_dict[6]->station = 0.1;
-    st_dict[6]->pos = 6;
-    addItem(st_dict[6]);
-
-    st_dict[7] = new custom_line(def_road_color);
-    st_dict[7]->setLine(300,300,0,300);
-    st_dict[7]->station = 0.45;
-    st_dict[7]->pos = 7;
-    addItem(st_dict[7]);
-
-    st_dict[8] = new custom_line(def_road_color);
-    st_dict[8]->setLine(200,-50,500,0);
-    st_dict[8]->station = 0.2;
-    st_dict[8]->pos = 8;
-    addItem(st_dict[8]);
-
-    foreach (auto st, st_dict) {
-        connect(st, &custom_line::line_selected, this, &graphic_scene::select_line);
-    }
-
-    defined_path[0] = new path(this);
-    defined_path[0]->st_dict[0] = st_dict[0];
-    defined_path[0]->st_dict[1] = st_dict[1];
-    defined_path[0]->st_dict[2] = st_dict[2];
-    defined_path[0]->st_dict[3] = st_dict[3];
-    defined_path[0]->st_dict[4] = st_dict[7];
-    defined_path[0]->stations.push_back(0);
-    defined_path[0]->stations.push_back(1);
-    defined_path[0]->stations.push_back(7);
-    defined_path[0]->find_corr_way();
-    defined_path[0]->m_vehicle = new vehicle();
-    defined_path[0]->m_vehicle->setPen(QPen({Qt::blue},3));
-
-    defined_path[1] = new path(this);
-    defined_path[1]->st_dict[0] = st_dict[3];
-    defined_path[1]->st_dict[1] = st_dict[4];
-    defined_path[1]->st_dict[2] = st_dict[5];
-    defined_path[1]->st_dict[3] = st_dict[8];
-    defined_path[1]->stations.push_back(3);
-    defined_path[1]->stations.push_back(4);
-    defined_path[1]->stations.push_back(5);
-    defined_path[1]->stations.push_back(8);
-    defined_path[1]->find_corr_way();
-    defined_path[1]->m_vehicle = new vehicle();
-    defined_path[1]->m_vehicle->setPen(QPen({Qt::cyan},3));
-
-    defined_path[2] = new path(this);
-    defined_path[2]->st_dict[0] = st_dict[6];
-    defined_path[2]->st_dict[1] = st_dict[3];
-    defined_path[2]->st_dict[2] = st_dict[7];
-    defined_path[2]->stations.push_back(6);
-    defined_path[2]->stations.push_back(3);
-    defined_path[2]->stations.push_back(7);
-    defined_path[2]->find_corr_way();
-    defined_path[2]->m_vehicle = new vehicle();
-    defined_path[2]->m_vehicle->setPen(QPen({Qt::green},3));
-    */
     //generate_new_connection(0,0,0);
     //generate_new_connection(1,0,0);
     //generate_new_connection(2,0,0);
@@ -248,6 +153,17 @@ void graphic_scene::create_route(int route_id, QList<int> streets, QList<int> st
     defined_path[route_id]->m_vehicle = new vehicle();
     defined_path[route_id]->m_vehicle->setPen(QPen({color},3));
     //generate_new_connection(route_id,0,0);
+}
+
+void graphic_scene::reset_scene()
+{
+    clear();
+    path_dict.clear();
+    vehicle_dict.clear();
+    defined_path.clear();
+    st_dict.clear();
+    //emit road_clicked(nullptr);
+    //emit circle_unclicked();
 }
 
 void graphic_scene::generate_new_connection(int pos, int min, int hour)
