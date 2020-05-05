@@ -13,48 +13,53 @@ path::path(QObject *parent) : QObject(parent)
 void path::find_corr_way()
 {
     bool corrected = false;
-    int first = 1;
     for (int i = 1 ; i < st_dict.count();i++) {
-        if(st_dict[i-1]->line().p2() != st_dict[i]->line().p1() && corrected == false){
-            //qDebug() << "correcting way" << i;
-            wrong_direction_dict.push_back(i);
-            corrected = true;
-            first = 2;
-        }else if(corrected == true){
-            if(st_dict[i-1]->line().p1() != st_dict[i]->line().p1()){
-                //qDebug() << "correcting way (before corrected)" << i;
-                wrong_direction_dict.push_back(i);
-            }
+        int decision;
+        if(corrected == false){
+            decision = is_connected(st_dict[i-1]->line(),st_dict[i]->line());
+        }else{
+            decision = is_connected(reverse_line(st_dict[i-1]->line()),st_dict[i]->line());
             corrected = false;
         }
-        else if(first == 1){
-            first = 0;
+        if(decision == 0){
+            continue;
+        }else if(decision == 1){
+            wrong_direction_dict.push_back(i-1);
+        }else if(decision == 2){
+            wrong_direction_dict.push_back(i);
+        }else if(decision == 3){
+            wrong_direction_dict.push_back(i-1);
+            wrong_direction_dict.push_back(i);
         }
 
     }
-    //qDebug() << wrong_direction_dict;
-    if(first == 2){
-        if(std::find(wrong_direction_dict.begin(),wrong_direction_dict.end(), 1) != wrong_direction_dict.end() && std::find(wrong_direction_dict.begin(),wrong_direction_dict.end(), 2) != wrong_direction_dict.end()){
-            wrong_direction_dict.clear();
-            wrong_direction_dict.push_back(0);
-            corrected = true;
-            for (int i = 1 ; i < st_dict.count();i++) {
-                if(st_dict[i-1]->line().p2() != st_dict[i]->line().p1() && corrected == false){
-                    //qDebug() << "correcting way" << i;
-                    wrong_direction_dict.push_back(i);
-                    corrected = true;
-                }else if(corrected == true){
-                    if(st_dict[i-1]->line().p1() != st_dict[i]->line().p1()){
-                        //qDebug() << "correcting way (before corrected)" << i;
-                        wrong_direction_dict.push_back(i);
-                    }
-                    corrected = false;
-                }
-            }
+}
 
-        }
+int path::is_connected(QLineF l1, QLineF l2)
+{
+    if(l1.p2() == l2.p1())
+    {
+        return 0; //all ok
+    }else if(l1.p1() == l2.p1())
+    {
+        return 1; //correct 1
     }
-    //qDebug() << wrong_direction_dict;
+    else if(l1.p2() == l2.p2())
+    {
+        return 2; //correct 2
+    }
+    else if(l1.p1() == l2.p2())
+    {
+        return 3; //correct both
+    }
+    else{
+        return -1; //not connected
+    }
+}
+
+QLineF path::reverse_line(QLineF line)
+{
+    return QLineF(line.p2(),line.p1());
 }
 
 void path::start_this()

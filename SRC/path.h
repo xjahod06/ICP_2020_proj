@@ -2,6 +2,7 @@
 #define PATH_H
 
 #include <QObject>
+#include <QLineF>
 #include "custom_line.h"
 #include "vehicle.h"
 
@@ -21,7 +22,7 @@ public:
     qreal end{1.0};
     int active_line{0};
     int prev_line{-1};
-    std::list<int> wrong_direction_dict;
+    QList<int> wrong_direction_dict;
     std::list<int> stations;
     int rem_duration{0};
     int anim_duration;
@@ -38,6 +39,8 @@ public slots:
 private:
     int pause{1000};
     void reset_colors();
+    int is_connected(QLineF l1,QLineF l2);
+    QLineF reverse_line(QLineF line);
 
 private slots:
     void move();
