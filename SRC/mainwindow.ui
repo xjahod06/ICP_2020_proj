@@ -191,34 +191,9 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>30</height>
+     <height>21</height>
     </rect>
    </property>
-   <property name="minimumSize">
-    <size>
-     <width>0</width>
-     <height>30</height>
-    </size>
-   </property>
-   <widget class="QMenu" name="menudsad">
-    <property name="sizePolicy">
-     <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-      <horstretch>0</horstretch>
-      <verstretch>0</verstretch>
-     </sizepolicy>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>0</width>
-      <height>0</height>
-     </size>
-    </property>
-    <property name="title">
-     <string>dsad</string>
-    </property>
-    <addaction name="separator"/>
-   </widget>
-   <addaction name="menudsad"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>

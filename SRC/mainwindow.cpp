@@ -10,6 +10,7 @@
 #include "clock.h"
 #include <fstream>
 #include <QDir>
+#include "menu_button.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -41,9 +42,10 @@ MainWindow::MainWindow(QWidget *parent)
     QStringList list = directory.entryList(QStringList(),QDir::Files);
     qDebug() << directory << list;
     auto filemenu = ui->menubar->addMenu("examples");
-    filemenu;
     foreach (auto file_name, list) {
-        filemenu->addAction(file_name);
+        menu_button *part = new menu_button(filemenu);
+        filemenu->addMenu(part);
+        part->setTitle(file_name);
     }
 
 }
