@@ -25,7 +25,7 @@ route|3|6,3,4,5,8|6,4,5,8|#62c48b
 route|4|3,6,8,5|3,8,5|#f7c35c
 #identifikator|id|start time|end time(-1 for infinite generation)|interval of generating (in sec)
 timetable|0|00:00|-1|5
-#timetable|1|00:06|00:51|5
-#timetable|2|00:10|00:51|5
-#timetable|3|00:00|-1|5
-#timetable|4|00:20|-1|5
+timetable|1|00:06|00:51|5
+timetable|2|00:10|00:51|5
+timetable|3|00:00|-1|5
+timetable|4|00:20|-1|5

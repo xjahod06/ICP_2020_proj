@@ -194,12 +194,6 @@
      <height>21</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuICP_proj">
-    <property name="title">
-     <string>ICP_proj</string>
-    </property>
-   </widget>
-   <addaction name="menuICP_proj"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>

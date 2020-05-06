@@ -26,6 +26,7 @@ public:
 public slots:
     void toggle_timer();
     void add_timetable(int ID,int start_hour, int start_min, int end_hour, int end_min, int interval);
+    void reset_click();
 
 private:
     QString separator{":"};

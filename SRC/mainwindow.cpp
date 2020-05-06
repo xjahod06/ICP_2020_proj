@@ -9,12 +9,15 @@
 #include "progress_bar.h"
 #include "clock.h"
 #include <fstream>
+#include <QDir>
+#include "menu_button.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->view->program_rdy_scene();
 
     init_scene();
 
@@ -24,17 +27,29 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->traffic_level_up, &QPushButton::clicked, this, &MainWindow::inc_traffic_on_road);
     connect(ui->traffic_level_down, &QPushButton::clicked, this, &MainWindow::dec_traffic_on_road);
 
-    connect(ui->close_road, &QPushButton::clicked, this, &MainWindow::close_active_road);
+    //connect(ui->close_road, &QPushButton::clicked, this, &MainWindow::close_active_road);
 
     //connect(this, &QMainWindow::, this, &MainWindow::resized);
-    parser = new file_parser(this,"../ICP_2020_proj/Example/1.txt");
+    parser = new file_parser(this,"../ICP_2020_proj/Example/welcome.txt");
     connect(parser, &file_parser::create_street, scene, &graphic_scene::create_street);
-    connect(parser, &file_parser::create_station, scene, &graphic_scene::create_station);
-    connect(parser, &file_parser::create_route, scene, &graphic_scene::create_route);
-    connect(parser, &file_parser::create_timetable, ui->view->lcd_timer, &clock::add_timetable);
+    connect(parser, &file_parser::create_label_text, scene, &graphic_scene::create_text);
     parser->parse_start();
-    ui->view->lcd_timer->check_the_start_timetables();
-    ui->view->lcd_timer->timer->start();
+    //ui->view->lcd_timer->check_the_start_timetables();
+    //ui->view->lcd_timer->timer->start();
+
+    QDir directory("../ICP_2020_proj/Example");
+    QStringList list = directory.entryList(QStringList(),QDir::Files);
+    qDebug() << directory << list;
+    auto filemenu = ui->menubar->addMenu("examples");
+    foreach (auto file_name, list) {
+        menu_button *map_layout = new menu_button(filemenu);
+        filemenu->addAction(map_layout );
+        map_layout ->setText(file_name);
+        connect(map_layout ,&menu_button::triggered, map_layout , &menu_button::clicked);
+        connect(map_layout ,&menu_button::load_layout, this, &MainWindow::load_layout);
+        map_layout ->path = directory.filePath(file_name);
+    }
+
 }
 
 void MainWindow::resizeEvent(QResizeEvent* event)
@@ -131,6 +146,24 @@ void MainWindow::close_active_road()
         scene->line_selecting_for_close == false ? scene->line_selecting_for_close = true : scene->line_selecting_for_close = false;
 
     }
+}
+
+void MainWindow::load_layout(QString name)
+{
+    scene->reset_scene();
+    ui->view->lcd_timer->reset_click();
+    ui->menubar->clear();
+    if(parser != nullptr){
+        parser->disconnect();
+        delete(parser);
+    }
+    parser = new file_parser(this,name);
+    connect(parser, &file_parser::create_street, scene, &graphic_scene::create_street);
+    connect(parser, &file_parser::create_station, scene, &graphic_scene::create_station);
+    connect(parser, &file_parser::create_route, scene, &graphic_scene::create_route);
+    connect(parser, &file_parser::create_timetable, ui->view->lcd_timer, &clock::add_timetable);
+    parser->parse_start();
+    ui->view->lcd_timer->check_the_start_timetables();
 }
 
 void MainWindow::set_active_road(custom_line *road)
