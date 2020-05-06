@@ -166,6 +166,16 @@ void graphic_scene::reset_scene()
     //emit circle_unclicked();
 }
 
+void graphic_scene::create_text(QString content, QPointF point, int font_size)
+{
+    QGraphicsTextItem *text = addText(content);
+    text->setPos(point);
+    QFont font_to_change = text->font();
+    font_to_change.setPointSize(font_size);
+    text->setFont(font_to_change);
+    qDebug() << text->pos() << text->textWidth() << content.length();
+}
+
 void graphic_scene::generate_new_connection(int pos, int min, int hour)
 {
     path *path_pattern = defined_path[pos];

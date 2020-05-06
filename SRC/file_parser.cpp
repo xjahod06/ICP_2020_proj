@@ -40,6 +40,8 @@ void file_parser::process_line(QString line)
         process_route(list);
     }else if(list.at(0) == "timetable"){
         process_timetable(list);
+    }else if(list.at(0) == "text"){
+        process_text(list);
     }else{
         qDebug() << "identifikator not recognised";
     }
@@ -122,4 +124,17 @@ void file_parser::split_hour_and_minute_from_string(int *hour, int *min, QString
         *hour = list.at(0).toInt();
         *min = list.at(1).toInt();
     }
+}
+
+void file_parser::process_text(QStringList list)
+{
+    QString content;
+    QPointF point;
+    int font_size;
+    list.removeAt(0);
+    content = list.at(0);
+    point = get_point_from_string(list.at(1));
+    font_size = list.at(2).toInt();
+    emit create_label_text(content,point,font_size);
+
 }

@@ -32,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
     //connect(this, &QMainWindow::, this, &MainWindow::resized);
     parser = new file_parser(this,"../ICP_2020_proj/Example/welcome.txt");
     connect(parser, &file_parser::create_street, scene, &graphic_scene::create_street);
+    connect(parser, &file_parser::create_label_text, scene, &graphic_scene::create_text);
     parser->parse_start();
     //ui->view->lcd_timer->check_the_start_timetables();
     //ui->view->lcd_timer->timer->start();

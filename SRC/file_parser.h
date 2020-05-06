@@ -23,12 +23,14 @@ private:
     QList<int> get_list_from_string(QStringList list);
     void process_timetable(QStringList list);
     void split_hour_and_minute_from_string(int *hour, int *min, QString string);
+    void process_text(QStringList list);
 
 signals:
     void create_street(int street_id,QPointF start_p,QPointF end_p);
     void create_station(int street_id,qreal position);
     void create_route(int route_id,QList<int> streets,QList<int> stations,QColor color);
     void create_timetable(int route_id,int start_hour,int start_min,int end_hour,int end_min,int interval);
+    void create_label_text(QString content,QPointF point,int font_size);
 };
 
 #endif // FILE_PARSER_H

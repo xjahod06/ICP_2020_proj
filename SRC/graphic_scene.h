@@ -24,6 +24,7 @@ public slots:
     void create_station(int street_id,qreal position);
     void create_route(int route_id,QList<int> streets,QList<int> stations,QColor color);
     void reset_scene();
+    void create_text(QString content,QPointF point,int font_size);
 
 private:
     QMap<int, path*> defined_path;
