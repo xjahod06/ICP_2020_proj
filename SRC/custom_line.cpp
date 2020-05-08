@@ -180,3 +180,8 @@ void custom_line::set_direction()
         direction = "LR";
     }
 }
+
+QString custom_line::value()
+{
+    return QString(pos);
+}
