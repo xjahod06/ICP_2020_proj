@@ -27,7 +27,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->traffic_level_up, &QPushButton::clicked, this, &MainWindow::inc_traffic_on_road);
     connect(ui->traffic_level_down, &QPushButton::clicked, this, &MainWindow::dec_traffic_on_road);
 
-    //connect(ui->close_road, &QPushButton::clicked, this, &MainWindow::close_active_road);
+    connect(ui->close_road, &QPushButton::clicked, this, &MainWindow::close_active_road);
 
     //connect(this, &QMainWindow::, this, &MainWindow::resized);
     parser = new file_parser(this,"../ICP_2020_proj/Example/welcome.txt");

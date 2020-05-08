@@ -258,35 +258,18 @@ void graphic_scene::select_line(custom_line *road)
             }
             */
             if(line_subsequent(alternate_route[alternate_route.count()-1]->line(),selected_line->line())){
-                qDebug() << "wuiiiii";
+                /*
                 pos = is_in_map(path_dict[2]->st_dict,selected_line);
-                qDebug() << pos;
-                foreach (auto to_print, alternate_route) {
-                    fprintf(stderr,"%i, ",to_print->pos);
-                    fflush(stderr);
-                }
-                qDebug() << "";
-                foreach (auto to_print, path_dict[2]->st_dict) {
-                    fprintf(stderr,"%i, ",to_print->pos);
-                    fflush(stderr);
-                }
-                qDebug() << "";
                 remove_from_map(&path_dict[2]->st_dict,pos);
-                foreach (auto to_print, path_dict[2]->st_dict) {
-                    fprintf(stderr,"%i, ",to_print->pos);
-                    fflush(stderr);
-                }
-                qDebug() << "";
                 int i = pos;
                 foreach (auto insert_road, alternate_route) {
                     insert_into_map(&path_dict[2]->st_dict,i++,insert_road);
                 }
-                foreach (auto to_print, path_dict[2]->st_dict) {
-                    fprintf(stderr,"%i, ",to_print->pos);
-                    fflush(stderr);
-                }
-                qDebug() << "";
                 path_dict[1]->find_corr_way();
+                */
+                qDebug() << "path" << selected_line->pos << "closed";
+                qDebug() << "objizdna trasa je:" << alternate_route.keys(); //<<<<fuck this line !!!!!!!!!!!!!!
+                qDebug() << "actual:" << path_dict[0]->st_dict.keys();
 
             }
         }
