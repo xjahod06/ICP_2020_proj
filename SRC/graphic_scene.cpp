@@ -23,10 +23,10 @@ void graphic_scene::speed_change(int val)
            continue;
        }
        path->speed = speed;
+       if(path->m_vehicle->anim == NULL){
+           continue;
+       }
        if (path->m_vehicle->anim->state() == QAbstractAnimation::Running){
-           //qDebug() << path->m_vehicle->anim->startValue().toDouble() << path->m_vehicle->anim->endValue().toDouble() << path->m_vehicle->anim->duration() << path->m_vehicle->position;
-           //qDebug() << path->m_vehicle->anim->duration() / std::abs(path->m_vehicle->anim->startValue().toDouble() - path->m_vehicle->anim->endValue().toDouble()) * std::abs(path->m_vehicle->anim->startValue().toDouble() - path->m_vehicle->position);
-           //qDebug() << path->m_vehicle->anim->duration() - (path->m_vehicle->anim->duration() / std::abs(path->m_vehicle->anim->startValue().toDouble() - path->m_vehicle->anim->endValue().toDouble()) * std::abs(path->m_vehicle->anim->startValue().toDouble() - path->m_vehicle->position));
            int rem_anim_time = path->anim_duration - (path->anim_duration / std::abs(path->m_vehicle->anim->startValue().toDouble() - path->m_vehicle->anim->endValue().toDouble()) * std::abs(path->m_vehicle->anim->startValue().toDouble() - path->m_vehicle->position));
            path->m_vehicle->anim->stop();
            path->m_vehicle->anim->setStartValue(path->m_vehicle->position);
@@ -37,11 +37,18 @@ void graphic_scene::speed_change(int val)
              qDebug() << path->m_vehicle->anim->duration() << path->anim_duration;
            }
            //qDebug() << "_____________________________________________________________________________";
+           path->timer->stop();
+           if(path->station_in_timer == true){
+               path->timer->setInterval( path->m_vehicle->anim->duration()+(path->pause*speed));
+           }else{
+               path->timer->setInterval( path->m_vehicle->anim->duration()+10);
+           }
+           path->timer->start();
+       }else{
+           path->timer->stop();
+           path->timer->setInterval(path->timer->remainingTime()*speed);
+           path->timer->start();
        }
-       int rem_time = path->timer->remainingTime();
-       path->timer->stop();
-       path->timer->setInterval(rem_time*speed);
-       path->timer->start();
     }
 }
 
