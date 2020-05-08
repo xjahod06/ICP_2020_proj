@@ -35,6 +35,9 @@ void clock::reset_time()
     hour = 0;
     display("00:00");
     timer->setInterval(1000);
+    foreach (auto table, timetables) {
+        table->active = false;
+    }
 }
 
 QString clock::convert_time(int min, int hour)
@@ -75,7 +78,6 @@ void clock::check_the_start_timetables()
         if(table->start_hour == hour && table->start_min == minute && table->active == false){
             emit start_new_line(table->path_id,minute,hour);
             table->active = true;
-            continue;
         }
     }
 }
@@ -109,8 +111,8 @@ void clock::time_up()
             continue;
         }
         if(table->active == true){
-            if((minute - table->start_min) % table->interval == 0){
-                emit start_new_line(table->path_id,minute,hour);
+            if((minute - table->start_min+1) % table->interval == 0){
+                emit start_new_line(table->path_id,minute+1,hour);
             }
         }
     }

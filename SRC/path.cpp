@@ -83,7 +83,10 @@ void path::move()
         }
         //int my_pos = m_vehicle->pos_in_dict;
         active = false;
-        delete m_vehicle;
+        m_vehicle->disconnect();
+        m_vehicle->hide = true;
+        m_vehicle->update();
+        //delete m_vehicle;
         timer->stop();
         //emit delete_me(my_pos);
         return;
@@ -123,6 +126,7 @@ void path::move()
         m_vehicle->anim->setEndValue(line->station);
         timer->setInterval((((line->duration + line->delay) * (std::abs(tmp_start - line->station))) + pause) * speed);
         m_vehicle->anim->setDuration(((line->duration + line->delay) * (std::abs(tmp_start - line->station))) * speed);
+        station_in_timer = true;
         if(line->pos == stations.back() && (forward == true))
         {
             forward = false;
@@ -150,6 +154,7 @@ void path::move()
         timer->setInterval((((line->duration + line->delay) - ((line->duration + line->delay) * (std::abs(tmp_start - line->station)))) + 20) * speed);
         m_vehicle->anim->setDuration(((line->duration + line->delay) - ((line->duration + line->delay) * (std::abs(tmp_start - line->station)))) * speed);
         same = false;
+        station_in_timer = false;
     }
 
     m_vehicle->active = true;

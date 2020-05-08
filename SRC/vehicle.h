@@ -19,6 +19,7 @@ public:
     int pos_in_dict;
     void move_yourself_lazy_circle(QPointF paint_point);
     bool cliked{false};
+    bool hide{false};
 
 private:
     QPointF center;

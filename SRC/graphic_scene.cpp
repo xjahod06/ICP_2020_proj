@@ -11,35 +11,6 @@
 graphic_scene::graphic_scene(QObject *parent) :
     QGraphicsScene(parent)
 {
-    //generate_new_connection(0,0,0);
-    //generate_new_connection(1,0,0);
-    //generate_new_connection(2,0,0);
-
-    //path_dict[0]->timer->start();
-    //path_dict[1]->timer->start();
-    //path_dict[2]->timer->start();
-    /*
-    QMap<int, custom_line*> test;
-    test[0] = st_dict[0];
-    test[1] = st_dict[1];
-    test[2] = st_dict[2];
-    test[3] = st_dict[3];
-
-    foreach (auto to_print, test) {
-        fprintf(stderr,"%i, ",to_print->pos);
-        fflush(stderr);
-    }
-    qDebug() << "";
-
-    insert_into_map(&test,1,st_dict[4]);
-    foreach (auto to_print, test) {
-        fprintf(stderr,"%i, ",to_print->pos);
-        fflush(stderr);
-    }
-    qDebug() << "";
-    */
-
-
 
 }
 
@@ -52,10 +23,10 @@ void graphic_scene::speed_change(int val)
            continue;
        }
        path->speed = speed;
+       if(path->m_vehicle->anim == NULL){
+           continue;
+       }
        if (path->m_vehicle->anim->state() == QAbstractAnimation::Running){
-           //qDebug() << path->m_vehicle->anim->startValue().toDouble() << path->m_vehicle->anim->endValue().toDouble() << path->m_vehicle->anim->duration() << path->m_vehicle->position;
-           //qDebug() << path->m_vehicle->anim->duration() / std::abs(path->m_vehicle->anim->startValue().toDouble() - path->m_vehicle->anim->endValue().toDouble()) * std::abs(path->m_vehicle->anim->startValue().toDouble() - path->m_vehicle->position);
-           //qDebug() << path->m_vehicle->anim->duration() - (path->m_vehicle->anim->duration() / std::abs(path->m_vehicle->anim->startValue().toDouble() - path->m_vehicle->anim->endValue().toDouble()) * std::abs(path->m_vehicle->anim->startValue().toDouble() - path->m_vehicle->position));
            int rem_anim_time = path->anim_duration - (path->anim_duration / std::abs(path->m_vehicle->anim->startValue().toDouble() - path->m_vehicle->anim->endValue().toDouble()) * std::abs(path->m_vehicle->anim->startValue().toDouble() - path->m_vehicle->position));
            path->m_vehicle->anim->stop();
            path->m_vehicle->anim->setStartValue(path->m_vehicle->position);
@@ -66,34 +37,40 @@ void graphic_scene::speed_change(int val)
              qDebug() << path->m_vehicle->anim->duration() << path->anim_duration;
            }
            //qDebug() << "_____________________________________________________________________________";
+           path->timer->stop();
+           if(path->station_in_timer == true){
+               path->timer->setInterval( path->m_vehicle->anim->duration()+(path->pause*speed));
+           }else{
+               path->timer->setInterval( path->m_vehicle->anim->duration()+10);
+           }
+           path->timer->start();
+       }else{
+           path->timer->stop();
+           path->timer->setInterval(path->timer->remainingTime()*speed);
+           path->timer->start();
        }
-       int rem_time = path->timer->remainingTime();
-       path->timer->stop();
-       path->timer->setInterval(rem_time*speed);
-       path->timer->start();
     }
 }
 
 void graphic_scene::timer_reset()
 {
-    auto timer = new QTimer(this);
-    timer->setSingleShot(500);
-    connect(timer, &QTimer::timeout, this, &graphic_scene::start_all_paths);
-
+    emit circle_unclicked();
     foreach (auto road, path_dict) {
-        road->timer->stop();
-        road->timer->setInterval(10);
-        road->m_vehicle->anim->stop();
-        road->same = true;
-        road->forward = true;
-        road->start = 0.0;
-        road->end = 1.0;
-        road->active_line = 0;
-        road->prev_line = -1;
-        road->m_vehicle->position = 0.0;
+        if(road->active == true){
+            if(road->m_vehicle->anim != NULL){
+                road->m_vehicle->anim->stop();
+            }
+            road->timer->stop();
+            road->m_vehicle->disconnect();
+            road->active = false;
+            road->m_vehicle->hide = true;
+            road->m_vehicle->update();
+        }
+        //delete(road->m_vehicle);
     }
-    timer->start();
-
+    path_dict.clear();
+    vehicle_dict.clear();
+    emit reseted();
 }
 
 void graphic_scene::toggle_timers()
@@ -126,13 +103,15 @@ void graphic_scene::toggle_timers()
     }
 }
 
-void graphic_scene::create_street(int street_id, QPointF start_p, QPointF end_p)
+void graphic_scene::create_street(int street_id, QPointF start_p, QPointF end_p, QString street_name)
 {
     st_dict[street_id] = new custom_line(def_road_color);
     st_dict[street_id]->setLine(QLineF(start_p,end_p));
     st_dict[street_id]->pos = street_id;
+    st_dict[street_id]->name = street_name;
     addItem(st_dict[street_id]);
     connect(st_dict[street_id], &custom_line::line_selected, this, &graphic_scene::select_line);
+    qDebug() << street_id << st_dict[street_id]->line().angle();
 }
 
 void graphic_scene::create_station(int street_id, qreal position)
@@ -157,6 +136,17 @@ void graphic_scene::create_route(int route_id, QList<int> streets, QList<int> st
 
 void graphic_scene::reset_scene()
 {
+    emit circle_unclicked();
+    foreach (auto road, path_dict) {
+        if(road->active == true){
+            if(road->m_vehicle->anim != NULL){
+                road->m_vehicle->anim->stop();
+            }
+            road->timer->stop();
+            road->m_vehicle->disconnect();
+            road->active = false;
+        }
+    }
     clear();
     path_dict.clear();
     vehicle_dict.clear();
