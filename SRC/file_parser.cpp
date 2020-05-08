@@ -52,11 +52,19 @@ void file_parser::process_street(QStringList list)
     int street_id;
     QPointF start_p;
     QPointF end_p;
+    QString street_name;
     list.removeAt(0);
     street_id = list.at(0).toInt();
     start_p = get_point_from_string(list.at(1));
     end_p = get_point_from_string(list.at(2));
-    emit create_street(street_id,start_p,end_p);
+
+    if(list.count() == 4){
+        street_name = list.at(3);
+    }else{
+        street_name = "";
+    }
+
+    emit create_street(street_id,start_p,end_p,street_name);
 }
 
 QPointF file_parser::get_point_from_string(QString point)

@@ -126,13 +126,15 @@ void graphic_scene::toggle_timers()
     }
 }
 
-void graphic_scene::create_street(int street_id, QPointF start_p, QPointF end_p)
+void graphic_scene::create_street(int street_id, QPointF start_p, QPointF end_p, QString street_name)
 {
     st_dict[street_id] = new custom_line(def_road_color);
     st_dict[street_id]->setLine(QLineF(start_p,end_p));
     st_dict[street_id]->pos = street_id;
+    st_dict[street_id]->name = street_name;
     addItem(st_dict[street_id]);
     connect(st_dict[street_id], &custom_line::line_selected, this, &graphic_scene::select_line);
+    qDebug() << street_id << st_dict[street_id]->line().angle();
 }
 
 void graphic_scene::create_station(int street_id, qreal position)
