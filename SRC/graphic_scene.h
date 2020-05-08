@@ -52,6 +52,7 @@ signals:
     void circle_clicked(path *path);
     void circle_unclicked();
     void road_clicked(custom_line *road);
+    void reseted();
 };
 
 #endif // GRAPHIC_SCENE_H

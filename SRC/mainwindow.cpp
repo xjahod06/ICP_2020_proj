@@ -78,8 +78,10 @@ void MainWindow::init_scene()
 
     connect(ui->speedSlider, &QSlider::valueChanged, scene, &graphic_scene::speed_change);
     connect(ui->speedSlider, &QSlider::valueChanged, ui->view->lcd_timer, &clock::speed_change);
+
     connect(ui->reset_timer_button, &QPushButton::clicked, ui->view->lcd_timer, &clock::reset_time);
     connect(ui->reset_timer_button, &QPushButton::clicked, scene, &graphic_scene::timer_reset);
+    connect(scene, &graphic_scene::reseted, ui->view->lcd_timer, &clock::check_the_start_timetables);
 
     connect(ui->stop_timer_button, &QPushButton::clicked, this, &MainWindow::toggle_stop_button);
     connect(ui->stop_timer_button, &QPushButton::clicked, ui->view->lcd_timer, &clock::toggle_timer);
@@ -162,6 +164,7 @@ void MainWindow::load_layout(QString name)
     connect(parser, &file_parser::create_station, scene, &graphic_scene::create_station);
     connect(parser, &file_parser::create_route, scene, &graphic_scene::create_route);
     connect(parser, &file_parser::create_timetable, ui->view->lcd_timer, &clock::add_timetable);
+    connect(parser, &file_parser::create_label_text, scene, &graphic_scene::create_text);
     parser->parse_start();
     ui->view->lcd_timer->check_the_start_timetables();
 }

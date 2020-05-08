@@ -11,35 +11,6 @@
 graphic_scene::graphic_scene(QObject *parent) :
     QGraphicsScene(parent)
 {
-    //generate_new_connection(0,0,0);
-    //generate_new_connection(1,0,0);
-    //generate_new_connection(2,0,0);
-
-    //path_dict[0]->timer->start();
-    //path_dict[1]->timer->start();
-    //path_dict[2]->timer->start();
-    /*
-    QMap<int, custom_line*> test;
-    test[0] = st_dict[0];
-    test[1] = st_dict[1];
-    test[2] = st_dict[2];
-    test[3] = st_dict[3];
-
-    foreach (auto to_print, test) {
-        fprintf(stderr,"%i, ",to_print->pos);
-        fflush(stderr);
-    }
-    qDebug() << "";
-
-    insert_into_map(&test,1,st_dict[4]);
-    foreach (auto to_print, test) {
-        fprintf(stderr,"%i, ",to_print->pos);
-        fflush(stderr);
-    }
-    qDebug() << "";
-    */
-
-
 
 }
 
@@ -76,24 +47,21 @@ void graphic_scene::speed_change(int val)
 
 void graphic_scene::timer_reset()
 {
-    auto timer = new QTimer(this);
-    timer->setSingleShot(500);
-    connect(timer, &QTimer::timeout, this, &graphic_scene::start_all_paths);
-
+    emit circle_unclicked();
     foreach (auto road, path_dict) {
-        road->timer->stop();
-        road->timer->setInterval(10);
-        road->m_vehicle->anim->stop();
-        road->same = true;
-        road->forward = true;
-        road->start = 0.0;
-        road->end = 1.0;
-        road->active_line = 0;
-        road->prev_line = -1;
-        road->m_vehicle->position = 0.0;
+        if(road->active == true){
+            road->timer->stop();
+            road->m_vehicle->anim->stop();
+            road->m_vehicle->disconnect();
+            road->active = false;
+            road->m_vehicle->hide = true;
+            road->m_vehicle->update();
+        }
+        //delete(road->m_vehicle);
     }
-    timer->start();
-
+    path_dict.clear();
+    vehicle_dict.clear();
+    emit reseted();
 }
 
 void graphic_scene::toggle_timers()

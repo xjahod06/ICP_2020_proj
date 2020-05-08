@@ -30,6 +30,7 @@ void custom_line::mousePressEvent(QGraphicsSceneMouseEvent *event)
     qDebug() << "line clicked" << selected << pos;
 
     QGraphicsLineItem::mousePressEvent(event);
+    update();
 }
 
 void custom_line::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
