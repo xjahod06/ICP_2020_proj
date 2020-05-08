@@ -181,21 +181,20 @@ void progress_bar::delay_to_station(bool forward)
         }
         total_duration += st_dict[st_dict.count()-1]->station * (st_dict[st_dict.count()-1]->duration + st_dict[st_dict.count()-1]->delay);
         st_dict[st_dict.count()-1]->station_time = convert_to_time(total_duration/1000);
-    }else
+    }
+    else
     {
-        if(new_line == false){
-            foreach (auto road, st_dict) {
-                total_duration += road->duration + road->delay +20;
-                if((road->station != -1) && (std::find(stations.begin(),stations.end(), road->pos) != stations.end())){
-                    total_duration += pause;
-                }
+        foreach (auto road, st_dict) {
+            total_duration += road->duration + road->delay +20;
+            if((road->station != -1) && (std::find(stations.begin(),stations.end(), road->pos) != stations.end())){
+                total_duration += pause;
             }
-            total_duration -= (1 - st_dict[st_dict.count()-1]->station) * (st_dict[st_dict.count()-1]->duration+st_dict[st_dict.count()-1]->delay);
-            total_duration -= (st_dict[0]->station) * (st_dict[0]->duration + st_dict[0]->delay);
-            st_dict[st_dict.count()-1]->station_time = convert_to_time(total_duration/1000);
-            total_duration += pause;
-            total_duration += st_dict[st_dict.count()-1]->station*(st_dict[st_dict.count()-1]->duration + st_dict[st_dict.count()-1]->delay);
         }
+        total_duration -= (1 - st_dict[st_dict.count()-1]->station) * (st_dict[st_dict.count()-1]->duration+st_dict[st_dict.count()-1]->delay);
+        total_duration -= (st_dict[0]->station) * (st_dict[0]->duration + st_dict[0]->delay);
+        st_dict[st_dict.count()-1]->station_time = convert_to_time(total_duration/1000);
+        total_duration += pause;
+        total_duration += st_dict[st_dict.count()-1]->station*(st_dict[st_dict.count()-1]->duration + st_dict[st_dict.count()-1]->delay);
         for (int i = st_dict.count()-2 ;i > 0;i--) {
             if((st_dict[i]->station != -1) && (std::find(stations.begin(),stations.end(), st_dict[i]->pos) != stations.end())){
                 total_duration += pause;
@@ -221,8 +220,8 @@ void progress_bar::launch()
     }
 
     if(new_line == true){
-        def_hour = m_hour;
-        def_minute = m_minute;
+        //def_hour = m_hour;
+        //def_minute = m_minute;
         delay_to_station(forward);
         new_line = false;
     }

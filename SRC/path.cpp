@@ -83,7 +83,10 @@ void path::move()
         }
         //int my_pos = m_vehicle->pos_in_dict;
         active = false;
-        delete m_vehicle;
+        m_vehicle->disconnect();
+        m_vehicle->hide = true;
+        m_vehicle->update();
+        //delete m_vehicle;
         timer->stop();
         //emit delete_me(my_pos);
         return;

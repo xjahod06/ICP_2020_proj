@@ -57,8 +57,10 @@ void graphic_scene::timer_reset()
     emit circle_unclicked();
     foreach (auto road, path_dict) {
         if(road->active == true){
+            if(road->m_vehicle->anim != NULL){
+                road->m_vehicle->anim->stop();
+            }
             road->timer->stop();
-            road->m_vehicle->anim->stop();
             road->m_vehicle->disconnect();
             road->active = false;
             road->m_vehicle->hide = true;

@@ -73,7 +73,6 @@ void clock::reset_click()
 }
 void clock::check_the_start_timetables()
 {
-    qDebug() << "clock started" << timer->interval() << timetables.keys();
     timer->start();
     foreach (auto table, timetables) {
         if(table->start_hour == hour && table->start_min == minute && table->active == false){
