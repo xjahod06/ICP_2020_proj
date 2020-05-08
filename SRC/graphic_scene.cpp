@@ -136,6 +136,17 @@ void graphic_scene::create_route(int route_id, QList<int> streets, QList<int> st
 
 void graphic_scene::reset_scene()
 {
+    emit circle_unclicked();
+    foreach (auto road, path_dict) {
+        if(road->active == true){
+            if(road->m_vehicle->anim != NULL){
+                road->m_vehicle->anim->stop();
+            }
+            road->timer->stop();
+            road->m_vehicle->disconnect();
+            road->active = false;
+        }
+    }
     clear();
     path_dict.clear();
     vehicle_dict.clear();

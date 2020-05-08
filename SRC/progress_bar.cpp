@@ -111,6 +111,9 @@ void progress_bar::show_path(path *active_path)
 
 void progress_bar::reset_path()
 {
+    if(m_connected == false){
+        return;
+    }
     clear();
     m_connected = false;
     //disconnect(*m_timer, &QTimer::timeout, this, &progress_bar::launch);

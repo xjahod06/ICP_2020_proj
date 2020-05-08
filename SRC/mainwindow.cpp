@@ -154,7 +154,7 @@ void MainWindow::load_layout(QString name)
 {
     scene->reset_scene();
     ui->view->lcd_timer->reset_click();
-    ui->menubar->clear();
+    //ui->menubar->clear();
     if(parser != nullptr){
         parser->disconnect();
         delete(parser);
