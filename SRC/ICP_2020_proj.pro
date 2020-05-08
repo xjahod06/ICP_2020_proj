@@ -19,21 +19,27 @@ SOURCES += \
     clock.cpp \
     custom_graphics_view.cpp \
     custom_line.cpp \
+    file_parser.cpp \
     graphic_scene.cpp \
     main.cpp \
     mainwindow.cpp \
+    menu_button.cpp \
     path.cpp \
     progress_bar.cpp \
+    timetable.cpp \
     vehicle.cpp
 
 HEADERS += \
     clock.h \
     custom_graphics_view.h \
     custom_line.h \
+    file_parser.h \
     graphic_scene.h \
     mainwindow.h \
+    menu_button.h \
     path.h \
     progress_bar.h \
+    timetable.h \
     vehicle.h
 
 FORMS += \

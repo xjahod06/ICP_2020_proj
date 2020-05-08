@@ -5,6 +5,7 @@
 #include "progress_bar.h"
 #include "custom_line.h"
 #include "graphic_scene.h"
+#include "file_parser.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -22,6 +23,7 @@ private slots:
     void inc_traffic_on_road();
     void dec_traffic_on_road();
     void close_active_road();
+    void load_layout(QString name);
 
 public:
     MainWindow(QWidget *parent = nullptr);
@@ -34,9 +36,10 @@ public slots:
 private:
     void init_scene();
     progress_bar *progress_scene;
-    graphic_scene * scene;
+    graphic_scene *scene;
     Ui::MainWindow *ui;
     custom_line *active_line{nullptr};
+    file_parser *parser{nullptr};
 
 protected:
     virtual void wheelEvent(QWheelEvent *event) override;

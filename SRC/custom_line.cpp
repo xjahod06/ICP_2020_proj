@@ -30,6 +30,7 @@ void custom_line::mousePressEvent(QGraphicsSceneMouseEvent *event)
     qDebug() << "line clicked" << selected << pos;
 
     QGraphicsLineItem::mousePressEvent(event);
+    update();
 }
 
 void custom_line::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -57,6 +58,23 @@ void custom_line::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
     if(station != -1 and station_time != ""){
         painter->drawText(line().pointAt(station).x(),line().pointAt(station).y()-5,station_time);
     }
+    auto point = QPointF(line().pointAt(0.5).x(),line().pointAt(0.5).y());
+    painter->save();
+    painter->translate(point);
+    //painter->rotate(-line().angle());
+    if(0 < line().angle() && line().angle() < 90){
+        painter->rotate(line().angle());
+    }else if(91 < line().angle() && line().angle() < 180){
+        painter->rotate(-line().angle()-180);
+    }else if(181 < line().angle() && line().angle() < 270){
+        painter->rotate(-line().angle()-180);
+    }else if(271 < line().angle() && line().angle() < 360){
+        painter->rotate(-line().angle());
+    }
+
+    painter->drawText(+5,-5,name);
+    painter->restore();
+    //painter->drawEllipse(line().pointAt(1),2,2);
 }
 
 QRectF custom_line::boundingRect() const
@@ -68,13 +86,7 @@ QRectF custom_line::boundingRect() const
     }*/
     return pp.boundingRect();
 }
-/*
-//qDebug() << vehicle_dict[dict_pos]->position;
-//vehicle_dict[dict_pos]->anim = new QVariantAnimation(this);
-//vehicle_dict[dict_pos]->anim->setDuration(duration);
-//auto *actual_vehicle = vehicle_dict[dict_pos];
-//connect(vehicle_dict[dict_pos]->anim, &QVariantAnimation::valueChanged, [this, dict_pos](){ test_anim(vehicle_dict[dict_pos]->anim,&(vehicle_dict[dict_pos]->active),&(vehicle_dict[dict_pos]->position)); });
-*/
+
 void custom_line::add_vehicle(vehicle *new_vehicle, int pos)
 {
     vehicle_dict[pos] = new_vehicle;
@@ -167,4 +179,9 @@ void custom_line::set_direction()
     }else if(decision_point.x() > 0){
         direction = "LR";
     }
+}
+
+QString custom_line::value()
+{
+    return QString(pos);
 }

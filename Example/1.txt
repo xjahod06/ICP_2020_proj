@@ -1,0 +1,31 @@
+#identifikator|ID|start coord|end coord|street name
+street|0|200,-50|0,0|Piccadilly
+street|1|0,0|0,150|Haymarket
+street|2|0,150|200,150|st Jame's Square
+street|3|300,300|200,150|Cork St
+street|4|500,300|300,300|hay Hill
+street|5|500,0|500,300|st Oznuk square
+street|6|200,-50|200,150|Bruton St
+street|7|300,300|0,300|st Oznuk bridge
+street|8|200,-50|500,0|Strand
+#identifikator|route id|percent position on line (0-1)
+station|0|0.8
+station|1|0.35
+station|3|0.123
+station|4|0.1
+station|5|0.75
+station|6|0.89
+station|8|0.4
+station|7|0.9
+#identifikator|id|streets id on route|stations to stop|route color
+route|0|0,1,2,3,7|0,1,7|#75aaff
+route|1|6,3,7|6,3,7|#e070ff
+route|2|1,2,3,4|1,3,4|#9ba343
+route|3|6,3,4,5,8|6,4,5,8|#62c48b
+route|4|3,6,8,5|3,8,5|#f7c35c
+#identifikator|id|start time|end time(-1 for infinite generation)|interval of generating (in sec)
+timetable|0|00:00|-1|5
+#timetable|1|00:06|00:51|5
+#timetable|2|00:10|00:50|5
+#timetable|3|00:00|-1|5
+#timetable|4|00:20|-1|5

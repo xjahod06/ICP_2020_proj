@@ -8,12 +8,16 @@
 #include "custom_graphics_view.h"
 #include "progress_bar.h"
 #include "clock.h"
+#include <fstream>
+#include <QDir>
+#include "menu_button.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->view->program_rdy_scene();
 
     init_scene();
 
@@ -26,6 +30,25 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->close_road, &QPushButton::clicked, this, &MainWindow::close_active_road);
 
     //connect(this, &QMainWindow::, this, &MainWindow::resized);
+    parser = new file_parser(this,"../ICP_2020_proj/Example/welcome.txt");
+    connect(parser, &file_parser::create_street, scene, &graphic_scene::create_street);
+    connect(parser, &file_parser::create_label_text, scene, &graphic_scene::create_text);
+    parser->parse_start();
+    //ui->view->lcd_timer->check_the_start_timetables();
+    //ui->view->lcd_timer->timer->start();
+
+    QDir directory("../ICP_2020_proj/Example");
+    QStringList list = directory.entryList(QStringList(),QDir::Files);
+    qDebug() << directory << list;
+    auto filemenu = ui->menubar->addMenu("examples");
+    foreach (auto file_name, list) {
+        menu_button *map_layout = new menu_button(filemenu);
+        filemenu->addAction(map_layout );
+        map_layout ->setText(file_name);
+        connect(map_layout ,&menu_button::triggered, map_layout , &menu_button::clicked);
+        connect(map_layout ,&menu_button::load_layout, this, &MainWindow::load_layout);
+        map_layout ->path = directory.filePath(file_name);
+    }
 
 }
 
@@ -43,19 +66,22 @@ MainWindow::~MainWindow()
 
 void MainWindow::init_scene()
 {
+    scene = new graphic_scene(ui->view);
+    ui->view->setScene(scene);
+    ui->view->setRenderHint(QPainter::Antialiasing);
+
     progress_scene = new progress_bar(ui->progress_bar);
     ui->progress_bar->setScene(progress_scene);
     ui->progress_bar->setRenderHint(QPainter::Antialiasing);
     ui->progress_bar->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
     progress_scene->m_width = width();
 
-    scene = new graphic_scene(ui->view);
-    ui->view->setScene(scene);
-    ui->view->setRenderHint(QPainter::Antialiasing);
     connect(ui->speedSlider, &QSlider::valueChanged, scene, &graphic_scene::speed_change);
     connect(ui->speedSlider, &QSlider::valueChanged, ui->view->lcd_timer, &clock::speed_change);
+
     connect(ui->reset_timer_button, &QPushButton::clicked, ui->view->lcd_timer, &clock::reset_time);
     connect(ui->reset_timer_button, &QPushButton::clicked, scene, &graphic_scene::timer_reset);
+    connect(scene, &graphic_scene::reseted, ui->view->lcd_timer, &clock::check_the_start_timetables);
 
     connect(ui->stop_timer_button, &QPushButton::clicked, this, &MainWindow::toggle_stop_button);
     connect(ui->stop_timer_button, &QPushButton::clicked, ui->view->lcd_timer, &clock::toggle_timer);
@@ -65,6 +91,7 @@ void MainWindow::init_scene()
     connect(scene, &graphic_scene::circle_unclicked, progress_scene, &progress_bar::reset_path);
 
     connect(ui->view->lcd_timer, &clock::propagade_clock, progress_scene, &progress_bar::sync_self_clock);
+    connect(ui->view->lcd_timer, &clock::start_new_line, scene, &graphic_scene::generate_new_connection);
 
     connect(scene, &graphic_scene::road_clicked, this, &MainWindow::set_active_road);
 
@@ -72,13 +99,11 @@ void MainWindow::init_scene()
 
 void MainWindow::zoom_in()
 {
-    //ui->view->scale(1.25,1.25);
     ui->view->slider->setSliderPosition(ui->view->slider->value()*1.25);
 }
 
 void MainWindow::zoom_out()
 {
-    //ui->view->scale(0.8,0.8);
     ui->view->slider->setSliderPosition(ui->view->slider->value()/1.25);
 }
 
@@ -120,11 +145,28 @@ void MainWindow::close_active_road()
         active_line->closed == true  ? qDebug() << active_line->pos << "opened" : qDebug() << active_line->pos << "closed";
         active_line->closed == true  ? active_line->closed = false : active_line->closed = true;
         active_line->closed == false ? ui->close_road->setText("close road") : ui->close_road->setText("open road");
-        //ui->view->lcd_timer->toggle_timer();
-        //scene->toggle_timers();
         scene->line_selecting_for_close == false ? scene->line_selecting_for_close = true : scene->line_selecting_for_close = false;
 
     }
+}
+
+void MainWindow::load_layout(QString name)
+{
+    scene->reset_scene();
+    ui->view->lcd_timer->reset_click();
+    //ui->menubar->clear();
+    if(parser != nullptr){
+        parser->disconnect();
+        delete(parser);
+    }
+    parser = new file_parser(this,name);
+    connect(parser, &file_parser::create_street, scene, &graphic_scene::create_street);
+    connect(parser, &file_parser::create_station, scene, &graphic_scene::create_station);
+    connect(parser, &file_parser::create_route, scene, &graphic_scene::create_route);
+    connect(parser, &file_parser::create_timetable, ui->view->lcd_timer, &clock::add_timetable);
+    connect(parser, &file_parser::create_label_text, scene, &graphic_scene::create_text);
+    parser->parse_start();
+    ui->view->lcd_timer->check_the_start_timetables();
 }
 
 void MainWindow::set_active_road(custom_line *road)
@@ -140,15 +182,10 @@ void MainWindow::set_active_road(custom_line *road)
 
 void MainWindow::wheelEvent(QWheelEvent *event)
 {
-    if(event->delta() > 0)
-        {
-            //qDebug() << "zoom in" << ui->zoom_slider->value();
+    if(event->delta() > 0){
             ui->view->slider->setSliderPosition(ui->view->slider->value()+ui->view->slider->singleStep());
         }
-        else
-        {
-
-            //qDebug() << "zoom out" << ui->zoom_slider->value();
+        else{
             ui->view->slider->setSliderPosition(ui->view->slider->value()-ui->view->slider->singleStep());
         }
 }

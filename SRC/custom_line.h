@@ -31,6 +31,8 @@ public:
     void inc_traffic();
     void dec_traffic();
     bool closed{false};
+    QString name;
+    QString value();
 
 protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
