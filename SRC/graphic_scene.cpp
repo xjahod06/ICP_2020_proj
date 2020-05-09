@@ -111,7 +111,6 @@ void graphic_scene::create_street(int street_id, QPointF start_p, QPointF end_p,
     st_dict[street_id]->name = street_name;
     addItem(st_dict[street_id]);
     connect(st_dict[street_id], &custom_line::line_selected, this, &graphic_scene::select_line);
-    qDebug() << street_id << st_dict[street_id]->line().angle();
 }
 
 void graphic_scene::create_station(int street_id, qreal position)
@@ -163,7 +162,6 @@ void graphic_scene::create_text(QString content, QPointF point, int font_size)
     QFont font_to_change = text->font();
     font_to_change.setPointSize(font_size);
     text->setFont(font_to_change);
-    qDebug() << text->pos() << text->textWidth() << content.length();
 }
 
 void graphic_scene::generate_new_connection(int pos, int min, int hour)
@@ -196,6 +194,7 @@ void graphic_scene::reset_click_on_lines(int pos)
             if(vehicle_dict[i]->cliked == true){
                 foreach (auto road, path_dict[i]->st_dict) {
                     road->setPen(QPen({def_road_color},3));
+                    road->selected_in_path = false;
                 }
                 vehicle_dict[i]->cliked = false;
             }
@@ -213,6 +212,9 @@ void graphic_scene::check_clicked(int pos)
             if(road->selected == true){
                 road->selected = false;
             }
+            if(std::find(path_dict[pos]->stations.begin(),path_dict[pos]->stations.end(), road->pos) != path_dict[pos]->stations.end()){
+                road->selected_in_path = true;
+            }
         }
         emit circle_clicked(path_dict[pos]);
     }
@@ -220,6 +222,7 @@ void graphic_scene::check_clicked(int pos)
     {
         foreach (auto road, path_dict[pos]->st_dict) {
             road->setPen(road->m_pen);
+            road->selected_in_path = false;
         }
         emit circle_unclicked();
     }
