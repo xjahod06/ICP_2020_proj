@@ -142,6 +142,8 @@ void MainWindow::dec_traffic_on_road()
 void MainWindow::close_active_road()
 {
     if(active_line != nullptr){
+        //toggle_stop_button();
+        emit ui->stop_timer_button->clicked();
         active_line->closed == true  ? qDebug() << active_line->pos << "opened" : qDebug() << active_line->pos << "closed";
         active_line->closed == true  ? active_line->closed = false : active_line->closed = true;
         active_line->closed == false ? ui->close_road->setText("close road") : ui->close_road->setText("open road");

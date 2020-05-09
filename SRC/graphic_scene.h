@@ -42,7 +42,8 @@ private:
     int is_in_map(QMap<int, custom_line*> map, custom_line* value);
     QMap<int, custom_line *> alternate_route;
     custom_line *selected_line;
-    bool line_subsequent(QLineF l1, QLineF l2);
+    bool line_subsequent(QLineF l1, QLineF l2, int *direction);
+    QStringList print_street_id(QMap<int, custom_line*> map);
 
 private slots:
     void start_all_paths();

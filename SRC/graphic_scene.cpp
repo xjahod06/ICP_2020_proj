@@ -252,12 +252,8 @@ void graphic_scene::select_line(custom_line *road)
             pos_in_alternate_route++;
         }
         if(alternate_route.count() > 1){
-            /*
-            foreach (auto st, alternate_route) {
-                qDebug() << st->pos;
-            }
-            */
-            if(line_subsequent(alternate_route[alternate_route.count()-1]->line(),selected_line->line())){
+            int direction;
+            if(line_subsequent(alternate_route[alternate_route.count()-1]->line(),selected_line->line(),&direction)){
                 /*
                 pos = is_in_map(path_dict[2]->st_dict,selected_line);
                 remove_from_map(&path_dict[2]->st_dict,pos);
@@ -268,8 +264,26 @@ void graphic_scene::select_line(custom_line *road)
                 path_dict[1]->find_corr_way();
                 */
                 qDebug() << "path" << selected_line->pos << "closed";
-                qDebug() << "objizdna trasa je:" << alternate_route.keys(); //<<<<fuck this line !!!!!!!!!!!!!!
-                qDebug() << "actual:" << path_dict[0]->st_dict.keys();
+                qDebug() << "objizdna trasa je:" << print_street_id(alternate_route);
+                qDebug() << "actual:" << print_street_id(path_dict[0]->st_dict);
+                qDebug() << defined_path.count();
+                foreach (auto path, defined_path) {
+                    auto pos = is_in_map(path->st_dict,selected_line);
+                    if(pos != -1){
+                        qDebug() << "before insert:" << print_street_id(path->st_dict);
+                        remove_from_map(&(path->st_dict),pos);
+                        foreach (auto road, alternate_route) {
+                            insert_into_map(&(path->st_dict),pos++,road);
+                        }
+                        qDebug() << "after insert:" << print_street_id(path->st_dict);
+                    }
+                }
+                foreach (auto path, path_dict) {
+                    auto pos = is_in_map(path->st_dict,selected_line);
+                    if(pos != -1){
+                        qDebug() << "actual: " << path_dict.key(path) << pos;
+                    }
+                }
 
             }
         }
@@ -326,20 +340,31 @@ int graphic_scene::is_in_map(QMap<int, custom_line *> map, custom_line *value)
     return -1;
 }
 
-bool graphic_scene::line_subsequent(QLineF l1, QLineF l2)
+bool graphic_scene::line_subsequent(QLineF l1, QLineF l2,int *direction)
 {
-    if(l1.p1() == l2.p1() || l1.p1() == l2.p2())
+    if(l1.p1() == l2.p1() || l1.p2() == l2.p1())
     {
-        qDebug() << "navazuje";
+        *direction = 1;
+        qDebug() << "navazuje" << *direction;
         return true;
-    }else if(l1.p2() == l2.p1() || l1.p2() == l2.p2())
+    }else if(l1.p1() == l2.p2() || l1.p2() == l2.p2())
     {
-        qDebug() << "navazuje";
+        *direction = -1;
+        qDebug() << "navazuje" << *direction;
         return true;
     }else
     {
         return false;
     }
+}
+
+QStringList graphic_scene::print_street_id(QMap<int, custom_line *> map)
+{
+    QStringList list;
+    foreach (auto road, map) {
+        list.push_back(QString::number(road->pos));
+    }
+    return list;
 }
 
 void graphic_scene::start_all_paths()
