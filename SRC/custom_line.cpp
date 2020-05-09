@@ -48,6 +48,11 @@ void custom_line::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
     painter->setPen(QPen({Qt::black},5));
     if(station != -1)
     {
+        if(selected_in_path == true){
+            painter->setPen(QPen(pen().color(),6));
+            painter->drawEllipse(line().pointAt(station),5,5);
+            painter->setPen(QPen({Qt::black},5));
+        }
         painter->drawEllipse(line().pointAt(station),2,2);
     }
     if(anim_set == false)
@@ -57,10 +62,20 @@ void custom_line::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
     }
     if(station != -1 and station_time != ""){
         painter->drawText(line().pointAt(station).x(),line().pointAt(station).y()-5,station_time);
+        painter->save();
+        if(station_delay == "00:00"){
+            painter->setPen(QPen(QColor(0,145,17),3));
+        }else if(station_delay.at(0) != "+"){
+            station_delay = "+"+station_delay;
+            painter->setPen(QPen({Qt::red},3));
+        }else{
+            painter->setPen(QPen({Qt::red},3));
+        }
+        painter->drawText(line().pointAt(station).x(),line().pointAt(station).y()+15,station_delay);
+        painter->restore();
     }
-    auto point = QPointF(line().pointAt(0.5).x(),line().pointAt(0.5).y());
     painter->save();
-    painter->translate(point);
+    painter->translate(line().pointAt(0.5));
     //painter->rotate(-line().angle());
     if(0 < line().angle() && line().angle() < 90){
         painter->rotate(line().angle());
@@ -73,6 +88,7 @@ void custom_line::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
     }
 
     painter->drawText(+5,-5,name);
+    //painter->drawText(0,+10,QString::number(pos));
     painter->restore();
     //painter->drawEllipse(line().pointAt(1),2,2);
 }
@@ -108,7 +124,7 @@ void custom_line::remove_vehicle(int pos)
 void custom_line::set_anim()
 {
     anim_set = true;
-    duration = line().length()*31;
+    duration = line().length()*40;
     //set_direction();
 }
 

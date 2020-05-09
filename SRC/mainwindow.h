@@ -6,6 +6,7 @@
 #include "custom_line.h"
 #include "graphic_scene.h"
 #include "file_parser.h"
+#include <QMenu>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -24,6 +25,7 @@ private slots:
     void dec_traffic_on_road();
     void close_active_road();
     void load_layout(QString name);
+    void browse();
 
 public:
     MainWindow(QWidget *parent = nullptr);
@@ -40,6 +42,7 @@ private:
     Ui::MainWindow *ui;
     custom_line *active_line{nullptr};
     file_parser *parser{nullptr};
+    QMenu *layouts;
 
 protected:
     virtual void wheelEvent(QWheelEvent *event) override;

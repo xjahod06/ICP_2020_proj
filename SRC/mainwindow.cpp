@@ -11,6 +11,7 @@
 #include <fstream>
 #include <QDir>
 #include "menu_button.h"
+#include <QFileDialog>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -27,10 +28,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->traffic_level_up, &QPushButton::clicked, this, &MainWindow::inc_traffic_on_road);
     connect(ui->traffic_level_down, &QPushButton::clicked, this, &MainWindow::dec_traffic_on_road);
 
-    connect(ui->close_road, &QPushButton::clicked, this, &MainWindow::close_active_road);
+    //connect(ui->close_road, &QPushButton::clicked, this, &MainWindow::close_active_road);
 
     //connect(this, &QMainWindow::, this, &MainWindow::resized);
-    parser = new file_parser(this,"../ICP_2020_proj/Example/welcome.txt");
+    parser = new file_parser(this,":/welcome.txt");
     connect(parser, &file_parser::create_street, scene, &graphic_scene::create_street);
     connect(parser, &file_parser::create_label_text, scene, &graphic_scene::create_text);
     parser->parse_start();
@@ -38,18 +39,22 @@ MainWindow::MainWindow(QWidget *parent)
     //ui->view->lcd_timer->timer->start();
 
     QDir directory("../ICP_2020_proj/Example");
-    QStringList list = directory.entryList(QStringList(),QDir::Files);
-    qDebug() << directory << list;
-    auto filemenu = ui->menubar->addMenu("examples");
-    foreach (auto file_name, list) {
-        menu_button *map_layout = new menu_button(filemenu);
-        filemenu->addAction(map_layout );
-        map_layout ->setText(file_name);
-        connect(map_layout ,&menu_button::triggered, map_layout , &menu_button::clicked);
-        connect(map_layout ,&menu_button::load_layout, this, &MainWindow::load_layout);
-        map_layout ->path = directory.filePath(file_name);
+    QStringList list = directory.entryList(QStringList() << "*.txt" << "*.TXT",QDir::Files);
+    qDebug() << directory.dirName();
+    layouts = ui->menubar->addMenu("layouts");
+    auto browse_dir = layouts->addAction("find my directory");
+    connect(browse_dir,&QAction::triggered, this, &MainWindow::browse);
+    if(list.count() != 0){
+        auto filemenu = layouts->addMenu(directory.dirName());
+        foreach (auto file_name, list) {
+            menu_button *map_layout = new menu_button(filemenu);
+            filemenu->addAction(map_layout );
+            map_layout ->setText(file_name);
+            connect(map_layout ,&menu_button::triggered, map_layout , &menu_button::clicked);
+            connect(map_layout ,&menu_button::load_layout, this, &MainWindow::load_layout);
+            map_layout ->path = directory.filePath(file_name);
+        }
     }
-
 }
 
 void MainWindow::resizeEvent(QResizeEvent* event)
@@ -142,6 +147,8 @@ void MainWindow::dec_traffic_on_road()
 void MainWindow::close_active_road()
 {
     if(active_line != nullptr){
+        //toggle_stop_button();
+        emit ui->stop_timer_button->clicked();
         active_line->closed == true  ? qDebug() << active_line->pos << "opened" : qDebug() << active_line->pos << "closed";
         active_line->closed == true  ? active_line->closed = false : active_line->closed = true;
         active_line->closed == false ? ui->close_road->setText("close road") : ui->close_road->setText("open road");
@@ -167,6 +174,29 @@ void MainWindow::load_layout(QString name)
     connect(parser, &file_parser::create_label_text, scene, &graphic_scene::create_text);
     parser->parse_start();
     ui->view->lcd_timer->check_the_start_timetables();
+}
+
+void MainWindow::browse()
+{
+    QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
+                                                 "/home",
+                                                 QFileDialog::ShowDirsOnly
+                                                 | QFileDialog::DontResolveSymlinks);
+    QDir directory(dir);
+    QStringList list = directory.entryList(QStringList() << "*.txt" << "*.TXT",QDir::Files);
+    qDebug() << list.count() << list;
+    if(list.count() == 0){
+        return;
+    }
+    auto filemenu = layouts->addMenu(directory.dirName());
+    foreach (auto file_name, list) {
+        menu_button *map_layout = new menu_button(filemenu);
+        filemenu->addAction(map_layout );
+        map_layout ->setText(file_name);
+        connect(map_layout ,&menu_button::triggered, map_layout , &menu_button::clicked);
+        connect(map_layout ,&menu_button::load_layout, this, &MainWindow::load_layout);
+        map_layout ->path = directory.filePath(file_name);
+    }
 }
 
 void MainWindow::set_active_road(custom_line *road)

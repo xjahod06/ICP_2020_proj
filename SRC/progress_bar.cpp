@@ -168,45 +168,62 @@ int progress_bar::time_to_ms(int hour, int min)
 void progress_bar::delay_to_station(bool forward)
 {
     int total_duration = time_to_ms(def_hour,def_minute);
+    int total_delay = 0;
     ///qDebug() << total_duration;
     if(forward == true)
     {
         st_dict[0]->station_time = convert_to_time(total_duration/1000);
         total_duration += pause;
-        total_duration += (1 - st_dict[0]->station)*(st_dict[0]->duration + st_dict[0]->delay);
+        total_duration += (1 - st_dict[0]->station)*st_dict[0]->duration;
+        total_delay += (1 - st_dict[0]->station)*st_dict[0]->delay;
 
         for (int i = 1 ;i < st_dict.count()-1;i++) {
             if((st_dict[i]->station != -1) && (std::find(stations.begin(),stations.end(), st_dict[i]->pos) != stations.end())){
                 total_duration += pause;
-                st_dict[i]->station_time = convert_to_time((total_duration + (st_dict[i]->station * (st_dict[i]->duration + st_dict[i]->delay))) / 1000);
+                st_dict[i]->station_time = convert_to_time((total_duration + (st_dict[i]->station * st_dict[i]->duration)) / 1000);
+                st_dict[i]->station_delay = convert_to_time((total_delay + (st_dict[i]->station * st_dict[i]->delay)) / 1000);
             }
-            total_duration += st_dict[i]->duration + st_dict[i]->delay + 20;
+            total_duration += st_dict[i]->duration + 20;
+            total_delay += st_dict[i]->delay;
         }
-        total_duration += st_dict[st_dict.count()-1]->station * (st_dict[st_dict.count()-1]->duration + st_dict[st_dict.count()-1]->delay);
+        total_duration += st_dict[st_dict.count()-1]->station * st_dict[st_dict.count()-1]->duration;
+        total_delay += st_dict[st_dict.count()-1]->station * st_dict[st_dict.count()-1]->delay;
         st_dict[st_dict.count()-1]->station_time = convert_to_time(total_duration/1000);
+        st_dict[st_dict.count()-1]->station_delay = convert_to_time(total_delay/1000);
     }
     else
     {
         foreach (auto road, st_dict) {
-            total_duration += road->duration + road->delay +20;
+            total_duration += road->duration +20;
+            total_delay += road->delay;
             if((road->station != -1) && (std::find(stations.begin(),stations.end(), road->pos) != stations.end())){
                 total_duration += pause;
             }
         }
-        total_duration -= (1 - st_dict[st_dict.count()-1]->station) * (st_dict[st_dict.count()-1]->duration+st_dict[st_dict.count()-1]->delay);
-        total_duration -= (st_dict[0]->station) * (st_dict[0]->duration + st_dict[0]->delay);
+        total_duration -= (1 - st_dict[st_dict.count()-1]->station) * st_dict[st_dict.count()-1]->duration;
+        total_delay -= (1 - st_dict[st_dict.count()-1]->station) * st_dict[st_dict.count()-1]->delay;
+
+        total_duration -= (st_dict[0]->station) * st_dict[0]->duration;
+        total_delay -= (st_dict[0]->station) * st_dict[0]->delay;
+
         st_dict[st_dict.count()-1]->station_time = convert_to_time(total_duration/1000);
         total_duration += pause;
-        total_duration += st_dict[st_dict.count()-1]->station*(st_dict[st_dict.count()-1]->duration + st_dict[st_dict.count()-1]->delay);
+        total_duration += st_dict[st_dict.count()-1]->station * st_dict[st_dict.count()-1]->duration;
+        total_delay += st_dict[st_dict.count()-1]->station *  st_dict[st_dict.count()-1]->delay;
+
         for (int i = st_dict.count()-2 ;i > 0;i--) {
             if((st_dict[i]->station != -1) && (std::find(stations.begin(),stations.end(), st_dict[i]->pos) != stations.end())){
                 total_duration += pause;
-                st_dict[i]->station_time = convert_to_time((total_duration + ((1-st_dict[i]->station) * (st_dict[i]->duration + st_dict[i]->delay))) / 1000);
+                st_dict[i]->station_time = convert_to_time((total_duration + ((1-st_dict[i]->station) * st_dict[i]->duration)) / 1000);
+                st_dict[i]->station_delay = convert_to_time((total_delay + ((1-st_dict[i]->station) * st_dict[i]->delay)) / 1000);
             }
-            total_duration += st_dict[i]->duration + st_dict[i]->delay + 20;
+            total_duration += st_dict[i]->duration + 20;
+            total_delay += st_dict[i]->delay;
         }
-        total_duration += (1-st_dict[0]->station) * (st_dict[0]->duration + st_dict[0]->delay);
-        st_dict[0]->station_time = convert_to_time(total_duration/1000);
+        total_duration += (1-st_dict[0]->station) * st_dict[st_dict.count()-1]->duration;
+        total_delay += (1-st_dict[0]->station) * st_dict[st_dict.count()-1]->delay;
+        st_dict[st_dict.count()-1]->station_time = convert_to_time(total_duration/1000);
+        st_dict[st_dict.count()-1]->station_delay = convert_to_time(total_delay/1000);
     }
 
 }
