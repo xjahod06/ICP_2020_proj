@@ -164,7 +164,7 @@
          <bool>false</bool>
         </property>
         <property name="text">
-         <string>close road</string>
+         <string/>
         </property>
         <property name="flat">
          <bool>true</bool>

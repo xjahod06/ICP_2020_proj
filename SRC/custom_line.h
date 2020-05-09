@@ -24,6 +24,7 @@ public:
     QVariantAnimation *anim{nullptr};
     qreal move{0.0};
     QString station_time{""};
+    QString station_delay{"00:00"};
     void set_anim();
     bool selected{false};
     int pos;

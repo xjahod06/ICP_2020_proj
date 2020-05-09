@@ -57,6 +57,17 @@ void custom_line::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
     }
     if(station != -1 and station_time != ""){
         painter->drawText(line().pointAt(station).x(),line().pointAt(station).y()-5,station_time);
+        painter->save();
+        if(station_delay == "00:00"){
+            painter->setPen(QPen({Qt::green},3));
+        }else if(station_delay.at(0) != "+"){
+            station_delay = "+"+station_delay;
+            painter->setPen(QPen({Qt::red},3));
+        }else{
+            painter->setPen(QPen({Qt::red},3));
+        }
+        painter->drawText(line().pointAt(station).x(),line().pointAt(station).y()+15,station_delay);
+        painter->restore();
     }
     auto point = QPointF(line().pointAt(0.5).x(),line().pointAt(0.5).y());
     painter->save();
