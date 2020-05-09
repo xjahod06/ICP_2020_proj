@@ -13,7 +13,9 @@ timetable::timetable(QObject *parent, int ID, int s_hour, int s_min, int inter, 
         interval = 1;
         qDebug() << "correcting interval";
     }
+    /*
     if(start_min > 1 && start_hour == 0){
         start_min--;
     }
+    */
 }

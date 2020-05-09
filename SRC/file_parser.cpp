@@ -40,6 +40,8 @@ void file_parser::process_line(QString line)
         process_route(list);
     }else if(list.at(0) == "timetable"){
         process_timetable(list);
+    }else if(list.at(0) == "text"){
+        process_text(list);
     }else{
         qDebug() << "identifikator not recognised";
     }
@@ -50,11 +52,19 @@ void file_parser::process_street(QStringList list)
     int street_id;
     QPointF start_p;
     QPointF end_p;
+    QString street_name;
     list.removeAt(0);
     street_id = list.at(0).toInt();
     start_p = get_point_from_string(list.at(1));
     end_p = get_point_from_string(list.at(2));
-    emit create_street(street_id,start_p,end_p);
+
+    if(list.count() == 4){
+        street_name = list.at(3);
+    }else{
+        street_name = "";
+    }
+
+    emit create_street(street_id,start_p,end_p,street_name);
 }
 
 QPointF file_parser::get_point_from_string(QString point)
@@ -122,4 +132,17 @@ void file_parser::split_hour_and_minute_from_string(int *hour, int *min, QString
         *hour = list.at(0).toInt();
         *min = list.at(1).toInt();
     }
+}
+
+void file_parser::process_text(QStringList list)
+{
+    QString content;
+    QPointF point;
+    int font_size;
+    list.removeAt(0);
+    content = list.at(0);
+    point = get_point_from_string(list.at(1));
+    font_size = list.at(2).toInt();
+    emit create_label_text(content,point,font_size);
+
 }

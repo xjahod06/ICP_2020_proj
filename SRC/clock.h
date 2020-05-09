@@ -21,11 +21,12 @@ public:
     void reset_time();
     QString convert_time(int min, int hour);
     QMap<int, timetable*> timetables;
-    void check_the_start_timetables();
 
 public slots:
+    void check_the_start_timetables();
     void toggle_timer();
     void add_timetable(int ID,int start_hour, int start_min, int end_hour, int end_min, int interval);
+    void reset_click();
 
 private:
     QString separator{":"};

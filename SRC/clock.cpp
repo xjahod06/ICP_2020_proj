@@ -35,7 +35,9 @@ void clock::reset_time()
     hour = 0;
     display("00:00");
     timer->setInterval(1000);
-    timer->start();
+    foreach (auto table, timetables) {
+        table->active = false;
+    }
 }
 
 QString clock::convert_time(int min, int hour)
@@ -61,15 +63,21 @@ QString clock::convert_time(int min, int hour)
 void clock::add_timetable(int ID, int start_hour, int start_min, int end_hour, int end_min, int interval)
 {
     timetables[timetables.count()] = new timetable(this,ID,start_hour,start_min,interval,end_hour,end_min);
+
 }
 
+void clock::reset_click()
+{
+    timetables.clear();
+    reset_time();
+}
 void clock::check_the_start_timetables()
 {
+    timer->start();
     foreach (auto table, timetables) {
         if(table->start_hour == hour && table->start_min == minute && table->active == false){
             emit start_new_line(table->path_id,minute,hour);
             table->active = true;
-            continue;
         }
     }
 }
@@ -92,6 +100,7 @@ void clock::time_up()
     }*/
     display(convert_time(minute,hour));
     emit propagade_clock(hour,minute);
+    minute++;
     foreach (auto table, timetables) {
         if(table->start_hour == hour && table->start_min == minute && table->active == false){
             emit start_new_line(table->path_id,minute,hour);
@@ -104,9 +113,10 @@ void clock::time_up()
         }
         if(table->active == true){
             if((minute - table->start_min) % table->interval == 0){
-                emit start_new_line(table->path_id,minute,hour);
+                emit start_new_line(table->path_id,minute+1,hour);
             }
         }
     }
+    minute--;
 
 }

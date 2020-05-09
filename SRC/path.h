@@ -32,12 +32,13 @@ public:
     int start_min{0};
     int start_hour{0};
     bool end_me{false};
+    bool station_in_timer{false};
+    int pause{1000};
 
 public slots:
     void start_this();
 
 private:
-    int pause{1000};
     void reset_colors();
     int is_connected(QLineF l1,QLineF l2);
     QLineF reverse_line(QLineF line);

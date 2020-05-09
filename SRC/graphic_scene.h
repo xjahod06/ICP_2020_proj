@@ -20,9 +20,11 @@ public slots:
     void speed_change(int val);
     void timer_reset();
     void toggle_timers();
-    void create_street(int street_id,QPointF start_p,QPointF end_p);
+    void create_street(int street_id,QPointF start_p,QPointF end_p,QString street_name);
     void create_station(int street_id,qreal position);
     void create_route(int route_id,QList<int> streets,QList<int> stations,QColor color);
+    void reset_scene();
+    void create_text(QString content,QPointF point,int font_size);
 
 private:
     QMap<int, path*> defined_path;
@@ -40,7 +42,8 @@ private:
     int is_in_map(QMap<int, custom_line*> map, custom_line* value);
     QMap<int, custom_line *> alternate_route;
     custom_line *selected_line;
-    bool line_subsequent(QLineF l1, QLineF l2);
+    bool line_subsequent(QLineF l1, QLineF l2, int *direction);
+    QStringList print_street_id(QMap<int, custom_line*> map);
 
 private slots:
     void start_all_paths();
@@ -50,6 +53,7 @@ signals:
     void circle_clicked(path *path);
     void circle_unclicked();
     void road_clicked(custom_line *road);
+    void reseted();
 };
 
 #endif // GRAPHIC_SCENE_H

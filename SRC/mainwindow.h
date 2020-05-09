@@ -23,6 +23,7 @@ private slots:
     void inc_traffic_on_road();
     void dec_traffic_on_road();
     void close_active_road();
+    void load_layout(QString name);
 
 public:
     MainWindow(QWidget *parent = nullptr);
