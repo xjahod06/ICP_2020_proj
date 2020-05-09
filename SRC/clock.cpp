@@ -112,8 +112,10 @@ void clock::time_up()
             continue;
         }
         if(table->active == true){
-            if((minute - table->start_min) % table->interval == 0){
-                emit start_new_line(table->path_id,minute+1,hour);
+            if((minute - table->start_min) != 0){
+                if((minute - table->start_min) % table->interval == 0){
+                    emit start_new_line(table->path_id,minute+1,hour);
+                }
             }
         }
     }

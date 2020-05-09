@@ -74,9 +74,8 @@ void custom_line::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
         painter->drawText(line().pointAt(station).x(),line().pointAt(station).y()+15,station_delay);
         painter->restore();
     }
-    auto point = QPointF(line().pointAt(0.5).x(),line().pointAt(0.5).y());
     painter->save();
-    painter->translate(point);
+    painter->translate(line().pointAt(0.5));
     //painter->rotate(-line().angle());
     if(0 < line().angle() && line().angle() < 90){
         painter->rotate(line().angle());
@@ -89,7 +88,7 @@ void custom_line::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
     }
 
     painter->drawText(+5,-5,name);
-    //painter->drawText(0,-5,QString::number(pos));
+    //painter->drawText(0,+10,QString::number(pos));
     painter->restore();
     //painter->drawEllipse(line().pointAt(1),2,2);
 }

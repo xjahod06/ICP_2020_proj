@@ -31,7 +31,7 @@ MainWindow::MainWindow(QWidget *parent)
     //connect(ui->close_road, &QPushButton::clicked, this, &MainWindow::close_active_road);
 
     //connect(this, &QMainWindow::, this, &MainWindow::resized);
-    parser = new file_parser(this,"../ICP_2020_proj/Example/welcome.txt");
+    parser = new file_parser(this,":/welcome.txt");
     connect(parser, &file_parser::create_street, scene, &graphic_scene::create_street);
     connect(parser, &file_parser::create_label_text, scene, &graphic_scene::create_text);
     parser->parse_start();
@@ -39,21 +39,22 @@ MainWindow::MainWindow(QWidget *parent)
     //ui->view->lcd_timer->timer->start();
 
     QDir directory("../ICP_2020_proj/Example");
-    QStringList list = directory.entryList(QStringList(),QDir::Files);
+    QStringList list = directory.entryList(QStringList() << "*.txt" << "*.TXT",QDir::Files);
     qDebug() << directory.dirName();
     layouts = ui->menubar->addMenu("layouts");
     auto browse_dir = layouts->addAction("find my directory");
     connect(browse_dir,&QAction::triggered, this, &MainWindow::browse);
-    auto filemenu = layouts->addMenu(directory.dirName());
-    foreach (auto file_name, list) {
-        menu_button *map_layout = new menu_button(filemenu);
-        filemenu->addAction(map_layout );
-        map_layout ->setText(file_name);
-        connect(map_layout ,&menu_button::triggered, map_layout , &menu_button::clicked);
-        connect(map_layout ,&menu_button::load_layout, this, &MainWindow::load_layout);
-        map_layout ->path = directory.filePath(file_name);
+    if(list.count() != 0){
+        auto filemenu = layouts->addMenu(directory.dirName());
+        foreach (auto file_name, list) {
+            menu_button *map_layout = new menu_button(filemenu);
+            filemenu->addAction(map_layout );
+            map_layout ->setText(file_name);
+            connect(map_layout ,&menu_button::triggered, map_layout , &menu_button::clicked);
+            connect(map_layout ,&menu_button::load_layout, this, &MainWindow::load_layout);
+            map_layout ->path = directory.filePath(file_name);
+        }
     }
-
 }
 
 void MainWindow::resizeEvent(QResizeEvent* event)
