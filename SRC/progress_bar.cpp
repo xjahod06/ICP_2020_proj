@@ -1,3 +1,9 @@
+/** ICP Project 2020 transport map
+ * @file progress_bar.cpp
+ * @brief graficka scena pro vykresleni prubehu cesty spoje
+ * @author Vojtěch Jahoda (xjahod06)
+ * @author Silvie Němcová (xnemco06)
+ */
 #include "progress_bar.h"
 #include <QDebug>
 #include "custom_line.h"
@@ -12,15 +18,6 @@ void progress_bar::sync_self_clock(int hour, int min)
 {
     m_hour = hour;
     m_minute = min;
-    /*
-    auto time = convert_time(m_hour,m_minute);
-    if(m_connected == true){
-        foreach (auto road, st_dict) {
-             road->station_time = time;
-        }
-        update();
-    }
-    */
 
 }
 

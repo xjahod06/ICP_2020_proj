@@ -1,3 +1,9 @@
+/** ICP Project 2020 transport map
+ * @file path.cpp
+ * @brief object pro uchovani a rizeni spoje
+ * @author Vojtěch Jahoda (xjahod06)
+ * @author Silvie Němcová (xnemco06)
+ */
 #include "path.h"
 #include <QTimer>
 #include  <QDebug>
@@ -30,6 +36,9 @@ void path::find_corr_way()
         }else if(decision == 3){
             wrong_direction_dict.push_back(i-1);
             wrong_direction_dict.push_back(i);
+        }else if(decision == -1){
+            active = false;
+            fprintf(stderr,"wrong connection");
         }
 
     }
@@ -42,15 +51,15 @@ int path::is_connected(QLineF l1, QLineF l2)
         return 0; //all ok
     }else if(l1.p1() == l2.p1())
     {
-        return 1; //correct 1
+        return 1; //wrong 1
     }
     else if(l1.p2() == l2.p2())
     {
-        return 2; //correct 2
+        return 2; //wrong 2
     }
     else if(l1.p1() == l2.p2())
     {
-        return 3; //correct both
+        return 3; //wrong both
     }
     else{
         return -1; //not connected
@@ -60,11 +69,6 @@ int path::is_connected(QLineF l1, QLineF l2)
 QLineF path::reverse_line(QLineF line)
 {
     return QLineF(line.p2(),line.p1());
-}
-
-void path::start_this()
-{
-    timer->start();
 }
 
 void path::reset_colors()
@@ -127,7 +131,6 @@ void path::move()
         m_vehicle->anim->setEndValue(line->station);
         timer->setInterval((((line->duration + line->delay) * (std::abs(tmp_start - line->station))) + pause) * speed);
         m_vehicle->anim->setDuration(((line->duration + line->delay) * (std::abs(tmp_start - line->station))) * speed);
-        station_in_timer = true;
         if(line->pos == stations.back() && (forward == true))
         {
             forward = false;
@@ -155,7 +158,6 @@ void path::move()
         timer->setInterval((((line->duration + line->delay) - ((line->duration + line->delay) * (std::abs(tmp_start - line->station)))) + 20) * speed);
         m_vehicle->anim->setDuration(((line->duration + line->delay) - ((line->duration + line->delay) * (std::abs(tmp_start - line->station)))) * speed);
         same = false;
-        station_in_timer = false;
     }
 
     m_vehicle->active = true;

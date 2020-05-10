@@ -1,3 +1,10 @@
+/** ICP Project 2020 transport map
+ * @file graphic_scene.cpp
+ * @brief object ve kterém se vykresluje mapa
+ * @author Vojtěch Jahoda (xjahod06)
+ * @author Silvie Němcová (xnemco06)
+ */
+
 #include "graphic_scene.h"
 #include "custom_line.h"
 #include "path.h"
@@ -17,7 +24,6 @@ graphic_scene::graphic_scene(QObject *parent) :
 void graphic_scene::speed_change(int val)
 {
     speed = abs(val-25)/15.0;
-    qDebug() << "speed" << speed << abs(val-25);
     foreach (auto path, path_dict) {
        if(path->active == false){
            continue;
@@ -32,11 +38,6 @@ void graphic_scene::speed_change(int val)
            path->m_vehicle->anim->setStartValue(path->m_vehicle->position);
            path->m_vehicle->anim->setDuration(rem_anim_time*path->speed);
            path->m_vehicle->anim->start();
-           //qDebug() << path->m_vehicle->anim->startValue().toDouble() << path->m_vehicle->anim->endValue().toDouble() << path->m_vehicle->anim->duration();
-           if(speed == 1.0){
-             qDebug() << path->m_vehicle->anim->duration() << path->anim_duration;
-           }
-           //qDebug() << "_____________________________________________________________________________";
            path->timer->stop();
            if(path->station_in_timer == true){
                path->timer->setInterval( path->m_vehicle->anim->duration()+(path->pause*speed));
@@ -82,7 +83,6 @@ void graphic_scene::toggle_timers()
                 continue;
             }
             path->rem_duration = path->timer->remainingTime();
-            qDebug() << path->rem_duration;
             path->timer->stop();
             path->m_vehicle->anim->pause();
             //qDebug() << path->m_vehicle->anim->state();
@@ -151,8 +151,6 @@ void graphic_scene::reset_scene()
     vehicle_dict.clear();
     defined_path.clear();
     st_dict.clear();
-    //emit road_clicked(nullptr);
-    //emit circle_unclicked();
 }
 
 void graphic_scene::create_text(QString content, QPointF point, int font_size)
@@ -178,16 +176,14 @@ void graphic_scene::generate_new_connection(int pos, int min, int hour)
     path_dict[inserted_pos]->m_vehicle->setRect(0,0,0,0);
     path_dict[inserted_pos]->m_vehicle->pos_in_dict = inserted_pos;
     addItem(path_dict[inserted_pos]->m_vehicle);
-    connect(path_dict[inserted_pos]->m_vehicle, &vehicle::circle_clicked, this, &graphic_scene::check_clicked);
+    connect(path_dict[inserted_pos]->m_vehicle, &vehicle::circle_clicked, this, &graphic_scene::vehicle_clicked);
     path_dict[inserted_pos]->timer->start();
-    connect(path_dict[inserted_pos], &path::delete_me, this, &graphic_scene::delete_path);
     path_dict[inserted_pos]->start_min = min;
     path_dict[inserted_pos]->start_hour = hour;
     path_dict[inserted_pos]->speed = speed;
-    //qDebug() << hour << min;
 }
 
-void graphic_scene::reset_click_on_lines(int pos)
+void graphic_scene::reset_click_on_vehicle(int pos)
 {
     for (int i = 0; i < vehicle_dict.count(); i++) {
         if (i != pos){
@@ -202,9 +198,9 @@ void graphic_scene::reset_click_on_lines(int pos)
     }
 }
 
-void graphic_scene::check_clicked(int pos)
+void graphic_scene::vehicle_clicked(int pos)
 {
-    reset_click_on_lines(pos);
+    reset_click_on_vehicle(pos);
     if(vehicle_dict[pos]->cliked == true)
     {
         foreach (auto road, path_dict[pos]->st_dict) {
@@ -226,7 +222,6 @@ void graphic_scene::check_clicked(int pos)
         }
         emit circle_unclicked();
     }
-    //qDebug() << pos;
 }
 
 void graphic_scene::select_line(custom_line *road)
@@ -235,56 +230,31 @@ void graphic_scene::select_line(custom_line *road)
     if(line_selecting_for_close == false){
         if(road->selected == true){
             reset_line_selection(road->pos);
-            qDebug() << "clicked";
             emit road_clicked(road);
             selected_line = road;
 
         }else{
             emit road_clicked(nullptr);
-            qDebug() << "unclicked";
         }
     }else{
         int pos = is_in_map(alternate_route,road);
         if(pos != -1){
-            qDebug() << road->pos << "removed";
             remove_from_map(&alternate_route,pos);
             pos_in_alternate_route--;
         }else{
-            qDebug() << road->pos << "added";
             alternate_route[pos_in_alternate_route] = road;
             pos_in_alternate_route++;
         }
         if(alternate_route.count() > 1){
             int direction;
             if(line_subsequent(alternate_route[alternate_route.count()-1]->line(),selected_line->line(),&direction)){
-                /*
-                pos = is_in_map(path_dict[2]->st_dict,selected_line);
-                remove_from_map(&path_dict[2]->st_dict,pos);
-                int i = pos;
-                foreach (auto insert_road, alternate_route) {
-                    insert_into_map(&path_dict[2]->st_dict,i++,insert_road);
-                }
-                path_dict[1]->find_corr_way();
-                */
-                qDebug() << "path" << selected_line->pos << "closed";
-                qDebug() << "objizdna trasa je:" << print_street_id(alternate_route);
-                qDebug() << "actual:" << print_street_id(path_dict[0]->st_dict);
-                qDebug() << defined_path.count();
                 foreach (auto path, defined_path) {
                     auto pos = is_in_map(path->st_dict,selected_line);
                     if(pos != -1){
-                        qDebug() << "before insert:" << print_street_id(path->st_dict);
                         remove_from_map(&(path->st_dict),pos);
                         foreach (auto road, alternate_route) {
                             insert_into_map(&(path->st_dict),pos++,road);
                         }
-                        qDebug() << "after insert:" << print_street_id(path->st_dict);
-                    }
-                }
-                foreach (auto path, path_dict) {
-                    auto pos = is_in_map(path->st_dict,selected_line);
-                    if(pos != -1){
-                        qDebug() << "actual: " << path_dict.key(path) << pos;
                     }
                 }
 
@@ -299,8 +269,6 @@ void graphic_scene::reset_line_selection(int pos)
     for (int i = 0; i < st_dict.count();i++) {
         if(i != pos){
             if(st_dict[i]->selected == true){
-                qDebug() << "reseted:" << i;
-                //st_dict[i]->setPen(st_dict[i]->m_pen);
                 st_dict[i]->selected = false;
                 break;
             }
@@ -324,7 +292,6 @@ QMap<int, custom_line *> graphic_scene::insert_into_map(QMap<int, custom_line *>
 
 QMap<int, custom_line *> graphic_scene::remove_from_map(QMap<int, custom_line *> *map, int index)
 {
-    //map.remove(index);
     for (int i = index; i < map->count()-1; i++) {
         (*map)[i] = (*map)[i+1];
     }
@@ -335,7 +302,6 @@ QMap<int, custom_line *> graphic_scene::remove_from_map(QMap<int, custom_line *>
 int graphic_scene::is_in_map(QMap<int, custom_line *> map, custom_line *value)
 {
     for (int i = 0; i < map.count();i++) {
-        //qDebug() << value->pos << map[i]->pos;
         if(value->pos == map[i]->pos){
             return i;
         }
@@ -348,12 +314,10 @@ bool graphic_scene::line_subsequent(QLineF l1, QLineF l2,int *direction)
     if(l1.p1() == l2.p1() || l1.p2() == l2.p1())
     {
         *direction = 1;
-        qDebug() << "navazuje" << *direction;
         return true;
     }else if(l1.p1() == l2.p2() || l1.p2() == l2.p2())
     {
         *direction = -1;
-        qDebug() << "navazuje" << *direction;
         return true;
     }else
     {
@@ -368,24 +332,4 @@ QStringList graphic_scene::print_street_id(QMap<int, custom_line *> map)
         list.push_back(QString::number(road->pos));
     }
     return list;
-}
-
-void graphic_scene::start_all_paths()
-{
-    foreach (auto path, path_dict) {
-        if(path->active == false){
-            continue;
-        }
-        path->timer->start();
-    }
-}
-
-void graphic_scene::delete_path(int pos)
-{
-    vehicle_dict.remove(pos);
-    path_dict.remove(pos);
-    for(int i = pos; i < path_dict.count()+1;i++){
-        path_dict[i] = path_dict[i+1];
-        vehicle_dict[i] = vehicle_dict[i+1];
-    }
 }

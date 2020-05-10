@@ -1,3 +1,9 @@
+/** ICP Project 2020 transport map
+ * @file vehicle.cpp
+ * @brief vozidlo na mapě
+ * @author Vojtěch Jahoda (xjahod06)
+ * @author Silvie Němcová (xnemco06)
+ */
 #include "vehicle.h"
 #include "custom_line.h"
 #include <QDebug>
@@ -15,11 +21,9 @@ vehicle::vehicle(QGraphicsItem *parent) :
 
 void vehicle::move_yourself_lazy_circle(QPointF paint_point)
 {
-    //qDebug() << "inside:" << paint_point;
     center = paint_point;
     setRect(center.x()-size,center.y()-size,size*2,size*2);
     update();
-    //qDebug() << "updated" << center << isVisible();
 }
 
 void vehicle::mousePressEvent(QGraphicsSceneMouseEvent *event)

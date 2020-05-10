@@ -1,3 +1,9 @@
+/** ICP Project 2020 transport map
+ * @file custom_graphics_view.cpp
+ * @brief graphics view na definovani UI
+ * @author Vojtěch Jahoda (xjahod06)
+ * @author Silvie Němcová (xnemco06)
+ */
 #include "custom_graphics_view.h"
 #include <QBoxLayout>
 #include "mainwindow.h"
@@ -60,9 +66,4 @@ void custom_graphics_view::program_rdy_scene()
     horizontalLayout->addItem(verticalLayout);
 
     setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
-}
-
-void custom_graphics_view::startup_scene()
-{
-
 }

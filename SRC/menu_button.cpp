@@ -1,3 +1,9 @@
+/** ICP Project 2020 transport map
+ * @file menu_button.cpp
+ * @brief tlacitka pro nacteni souboru
+ * @author Vojtěch Jahoda (xjahod06)
+ * @author Silvie Němcová (xnemco06)
+ */
 #include "menu_button.h"
 #include <QDebug>
 #include <QObject>

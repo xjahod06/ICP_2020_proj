@@ -1,3 +1,9 @@
+/** ICP Project 2020 transport map
+ * @file custom_line.cpp
+ * @brief object ulice na mapě
+ * @author Vojtěch Jahoda (xjahod06)
+ * @author Silvie Němcová (xnemco06)
+ */
 #include "custom_line.h"
 #include <QDebug>
 #include <QGraphicsSceneMouseEvent>
@@ -87,19 +93,15 @@ void custom_line::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
         painter->rotate(-line().angle());
     }
 
-    //painter->drawText(+5,-5,name);
-    painter->drawText(0,+10,QString::number(pos));
+    painter->drawText(+5,-5,name);
+    //painter->drawText(0,+10,QString::number(pos));
     painter->restore();
-    //painter->drawEllipse(line().pointAt(1),2,2);
 }
 
 QRectF custom_line::boundingRect() const
 {
     QPainterPath pp;
     pp.addRect(QGraphicsLineItem::boundingRect());
-    /*foreach (auto m_vehicle, vehicle_dict) {
-        pp.addEllipse(line().pointAt(m_vehicle->position),m_vehicle->size+5,m_vehicle->size+5);
-    }*/
     return pp.boundingRect();
 }
 
@@ -116,7 +118,6 @@ void custom_line::add_vehicle(vehicle *new_vehicle, int pos)
 
 void custom_line::remove_vehicle(int pos)
 {
-    //disconnect(vehicle_dict[pos]->anim);
     this->disconnect(vehicle_dict[pos]->anim);
     vehicle_dict.remove(pos);
 }
@@ -125,7 +126,6 @@ void custom_line::set_anim()
 {
     anim_set = true;
     duration = line().length()*40;
-    //set_direction();
 }
 
 void custom_line::inc_traffic()
@@ -171,33 +171,4 @@ void custom_line::test_anim(QVariantAnimation *animation, bool *active_anim, qre
     {
         veh->move_yourself_lazy_circle(line().pointAt(veh->position));
     }
-}
-
-void custom_line::set_direction()
-{
-    auto decision_point = line().p1() - line().p2();
-    if(decision_point.x() == 0){
-        if(decision_point.y() < 0)
-        {
-            direction = "down";
-        }else{
-            direction = "up";
-        }
-    }else if(decision_point.y() == 0){
-        if(decision_point.x() > 0)
-        {
-            direction = "LR";
-        }else{
-            direction = "RL";
-        }
-    }else if(decision_point.x() < 0){
-        direction = "RL";
-    }else if(decision_point.x() > 0){
-        direction = "LR";
-    }
-}
-
-QString custom_line::value()
-{
-    return QString(pos);
 }

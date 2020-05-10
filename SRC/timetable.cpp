@@ -1,3 +1,9 @@
+/** ICP Project 2020 transport map
+ * @file timetable.cpp
+ * @brief jízdní řád spoje
+ * @author Vojtěch Jahoda (xjahod06)
+ * @author Silvie Němcová (xnemco06)
+ */
 #include "timetable.h"
 #include <QDebug>
 
@@ -13,9 +19,4 @@ timetable::timetable(QObject *parent, int ID, int s_hour, int s_min, int inter, 
         interval = 1;
         qDebug() << "correcting interval";
     }
-    /*
-    if(start_min > 1 && start_hour == 0){
-        start_min--;
-    }
-    */
 }
