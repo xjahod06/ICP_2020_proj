@@ -23,26 +23,26 @@ street|20|300,400|0,300
 street|21|-50,100|-50,50
 street|22|0,0|-50,50
 #identifikator|route id|percent position on line (0.0-1.0)
-station|0|0.8
-station|1|0.35
-station|3|0.123
-station|4|0.1
-station|5|0.75
-station|6|0.35
-station|7|0.9
-station|8|0.0
-station|9|0.4236
-station|12|0.5
-station|14|0.6
-station|16|0.123
-station|18|0.3
-station|20|0.5
-station|21|0.2
+station|0|0.64
+station|1|0.31
+station|3|0.18
+station|4|0.52
+station|5|0.73
+station|6|0.96
+station|7|0.14
+station|8|0.8
+station|9|0.92
+station|12|0.0
+station|14|0.35
+station|16|0.72
+station|18|0.49
+station|20|0.94
+station|21|0.79
 #identifikator|id|streets id on route|stations to stop|route color
 route|0|0,1,2,3,4,17,18,20,9|0,1,4,18,20,9|#75aaff
 route|1|6,14,16,4,19,20,13,12,11,10,21|6,14,16,4,20,12,21|#e070ff
 route|2|7,4,15,5,8,0,22,21|7,4,5,8,21|#9ba343
 #identifikator|id|start time|end time(-1 for infinite generation)|interval of generating (in sec)
 timetable|0|00:00|-1|10
-timetable|1|00:02|01:00|15
+timetable|1|00:01|01:00|15
 timetable|2|00:03|02:00|20

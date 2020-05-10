@@ -71,6 +71,7 @@ void path::reset_colors()
 {
     foreach (auto road, st_dict) {
         road->setPen(QPen({road->m_pen.color()},3));
+        road->selected_in_path = false;
     }
 }
 

@@ -61,7 +61,7 @@ void custom_line::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
         //qDebug() << line();
     }
     if(station != -1 and station_time != ""){
-        painter->drawText(line().pointAt(station).x(),line().pointAt(station).y()-5,station_time);
+        painter->drawText(line().pointAt(station).x()-5,line().pointAt(station).y()-5,station_time);
         painter->save();
         if(station_delay == "00:00"){
             painter->setPen(QPen(QColor(0,145,17),3));
@@ -71,7 +71,7 @@ void custom_line::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
         }else{
             painter->setPen(QPen({Qt::red},3));
         }
-        painter->drawText(line().pointAt(station).x(),line().pointAt(station).y()+15,station_delay);
+        painter->drawText(line().pointAt(station).x()-5,line().pointAt(station).y()+15,station_delay);
         painter->restore();
     }
     painter->save();
@@ -87,8 +87,8 @@ void custom_line::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
         painter->rotate(-line().angle());
     }
 
-    painter->drawText(+5,-5,name);
-    //painter->drawText(0,+10,QString::number(pos));
+    //painter->drawText(+5,-5,name);
+    painter->drawText(0,+10,QString::number(pos));
     painter->restore();
     //painter->drawEllipse(line().pointAt(1),2,2);
 }
