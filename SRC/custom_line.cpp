@@ -87,8 +87,8 @@ void custom_line::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
         painter->rotate(-line().angle());
     }
 
-    //painter->drawText(+5,-5,name);
-    painter->drawText(0,+10,QString::number(pos));
+    painter->drawText(+5,-5,name);
+    //painter->drawText(0,+10,QString::number(pos));
     painter->restore();
     //painter->drawEllipse(line().pointAt(1),2,2);
 }
