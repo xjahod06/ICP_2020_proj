@@ -1,3 +1,9 @@
+/** ICP Project 2020 transport map
+ * @file vehicle.cpp
+ * @brief vozidlo na mapě
+ * @author Vojtěch Jahoda (xjahod06)
+ * @author Silvie Němcová (xnemco06)
+ */
 #include "vehicle.h"
 #include "custom_line.h"
 #include <QDebug>

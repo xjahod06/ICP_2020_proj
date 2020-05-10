@@ -1,3 +1,10 @@
+/** ICP Project 2020 transport map
+ * @file graphic_scene.cpp
+ * @brief object ve kterém se vykresluje mapa
+ * @author Vojtěch Jahoda (xjahod06)
+ * @author Silvie Němcová (xnemco06)
+ */
+
 #include "graphic_scene.h"
 #include "custom_line.h"
 #include "path.h"

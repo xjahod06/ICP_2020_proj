@@ -1,3 +1,9 @@
+/** ICP Project 2020 transport map
+ * @file path.h
+ * @brief object pro uchovani a rizeni spoje hlavička
+ * @author Vojtěch Jahoda (xjahod06)
+ * @author Silvie Němcová (xnemco06)
+ */
 #ifndef PATH_H
 #define PATH_H
 

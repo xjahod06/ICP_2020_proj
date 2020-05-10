@@ -1,3 +1,9 @@
+/** ICP Project 2020 transport map
+ * @file graphic_scene.h
+ * @brief object ve kterém se vykresluje mapa hlavička
+ * @author Vojtěch Jahoda (xjahod06)
+ * @author Silvie Němcová (xnemco06)
+ */
 #ifndef GRAPHIC_SCENE_H
 #define GRAPHIC_SCENE_H
 

@@ -1,3 +1,9 @@
+/** ICP Project 2020 transport map
+ * @file mainwindow.cpp
+ * @brief hlavní okno programu
+ * @author Vojtěch Jahoda (xjahod06)
+ * @author Silvie Němcová (xnemco06)
+ */
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QDebug>
@@ -160,7 +166,7 @@ void MainWindow::close_active_road()
 void MainWindow::load_layout(QString name)
 {
     scene->reset_scene();
-    ui->view->lcd_timer->reset_click();
+    ui->view->lcd_timer->reset_timetables();
     //ui->menubar->clear();
     if(parser != nullptr){
         parser->disconnect();

@@ -1,3 +1,9 @@
+/** ICP Project 2020 transport map
+ * @file vehicle.h
+ * @brief vozidlo na mapě hlavička
+ * @author Vojtěch Jahoda (xjahod06)
+ * @author Silvie Němcová (xnemco06)
+ */
 #ifndef VEHICLE_H
 #define VEHICLE_H
 

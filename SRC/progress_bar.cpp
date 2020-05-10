@@ -1,3 +1,9 @@
+/** ICP Project 2020 transport map
+ * @file progress_bar.cpp
+ * @brief graficka scena pro vykresleni prubehu cesty spoje
+ * @author Vojtěch Jahoda (xjahod06)
+ * @author Silvie Němcová (xnemco06)
+ */
 #include "progress_bar.h"
 #include <QDebug>
 #include "custom_line.h"

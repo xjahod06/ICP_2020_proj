@@ -1,3 +1,9 @@
+/** ICP Project 2020 transport map
+ * @file file_parser.cpp
+ * @brief object na extrakci dat ze souboru
+ * @author Vojtěch Jahoda (xjahod06)
+ * @author Silvie Němcová (xnemco06)
+ */
 #include "file_parser.h"
 #include <QFile>
 #include <QDebug>
@@ -31,7 +37,6 @@ void file_parser::process_line(QString line)
         return;
     }
     auto list = line.split('|');
-    //qDebug() << list << list.at(0);
     if(list.at(0) == "street"){
         process_street(list);
     }else if(list.at(0) == "station"){

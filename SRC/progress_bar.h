@@ -1,3 +1,9 @@
+/** ICP Project 2020 transport map
+ * @file progress_bar.h
+ * @brief graficka scena pro vykresleni prubehu cesty spoje hlavička
+ * @author Vojtěch Jahoda (xjahod06)
+ * @author Silvie Němcová (xnemco06)
+ */
 #ifndef PROGRESS_BAR_H
 #define PROGRESS_BAR_H
 

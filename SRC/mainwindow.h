@@ -1,3 +1,9 @@
+/** ICP Project 2020 transport map
+ * @file mainwindow.h
+ * @brief hlavní okno programu hlavička
+ * @author Vojtěch Jahoda (xjahod06)
+ * @author Silvie Němcová (xnemco06)
+ */
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 

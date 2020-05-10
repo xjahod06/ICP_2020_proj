@@ -1,3 +1,9 @@
+/** ICP Project 2020 transport map
+ * @file path.cpp
+ * @brief object pro uchovani a rizeni spoje
+ * @author Vojtěch Jahoda (xjahod06)
+ * @author Silvie Němcová (xnemco06)
+ */
 #include "path.h"
 #include <QTimer>
 #include  <QDebug>
