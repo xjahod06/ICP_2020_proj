@@ -8,18 +8,22 @@ make: qMakefile
 	make -f qMakefile --directory=build/
 	mv build/ICP_2020_proj ./
 
-qMakefile:
+qMakefile: clean_build
 	qmake -o build/qMakefile src/ICP_2020_proj.pro
 
-doxygen:
+doxygen: clean_doc
 	doxygen doxyfile
 
-clean:
+clean: clean_build clean_doc
 	rm -f *.zip
-	rm -r build/
-	rm -r doc/
-	mkdir doc/
-	mkdir build/
 	
+clean_build:
+	rm -f -r build/
+	mkdir -p build/
+
+clean_doc:
+	rm -f -r doc/
+	mkdir -p doc/
+
 pack:
 	zip -r xjahod06_xnemco06.zip src/ doc/ example/ build/ Makefile doxyfile
