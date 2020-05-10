@@ -34,8 +34,18 @@ void custom_graphics_view::program_rdy_scene()
     slider->setMinimum(25);
     slider->setMaximum(150);
     slider->setSliderPosition(50);
-    //buttonPlus->setText("+");
-    //buttonMinus->setText("-");
+    buttonPlus->setText("+");
+
+    QFont font_to_change = buttonPlus->font();
+    font_to_change.setPointSize(13);
+    buttonPlus->setFont(font_to_change);
+
+    buttonPlus->setMaximumWidth(30);
+    buttonMinus->setText("-");
+    buttonMinus->setFont(font_to_change);
+    buttonMinus->setMaximumWidth(30);
+
+    lcd_timer->setFrameShape(QFrame::NoFrame);
 
     verticalLayout->addSpacerItem(new QSpacerItem(1, 1, QSizePolicy::Minimum, QSizePolicy::Expanding));
     verticalLayout->addWidget(slider);
