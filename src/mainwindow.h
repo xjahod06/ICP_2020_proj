@@ -1,3 +1,8 @@
+/**
+ * @mainpage ICP-2020
+ * @author Vojtěch Jahoda (xjahod06)
+ * @author Silvie Němcová (xnemco06)
+ */
 /** ICP Project 2020 transport map
  * @file mainwindow.h
  * @brief hlavní okno programu hlavička
