@@ -12,6 +12,7 @@
 #include "custom_line.h"
 #include "vehicle.h"
 
+//object na uchování informací o spoji a pohybu vozidla po spoji
 class path : public QObject
 {
     Q_OBJECT

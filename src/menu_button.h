@@ -11,6 +11,7 @@
 #include <QAction>
 #include <QDir>
 
+//tlačítko pro výběr map layoutu
 class menu_button : public QAction
 {
     Q_OBJECT

@@ -12,6 +12,7 @@
 #include <QVariantAnimation>
 #include <QGraphicsEllipseItem>
 
+//vozidlo na mapě
 class vehicle : public QObject, public QGraphicsEllipseItem
 {
     Q_OBJECT
