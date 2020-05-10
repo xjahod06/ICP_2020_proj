@@ -19,6 +19,7 @@ class clock : public QLCDNumber
     Q_OBJECT
 public:
     /**
+    * @brief constructor objektu
     */
     explicit clock(QWidget *parent = nullptr);
     /**
