@@ -34,15 +34,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->traffic_level_up, &QPushButton::clicked, this, &MainWindow::inc_traffic_on_road);
     connect(ui->traffic_level_down, &QPushButton::clicked, this, &MainWindow::dec_traffic_on_road);
 
-    //connect(ui->close_road, &QPushButton::clicked, this, &MainWindow::close_active_road);
-
-    //connect(this, &QMainWindow::, this, &MainWindow::resized);
-    parser = new file_parser(this,":/welcome.txt");
+    parser = new file_parser(this,":/welcome.txt"); //načtení základní obrazovky
     connect(parser, &file_parser::create_street, scene, &graphic_scene::create_street);
     connect(parser, &file_parser::create_label_text, scene, &graphic_scene::create_text);
     parser->parse_start();
-    //ui->view->lcd_timer->check_the_start_timetables();
-    //ui->view->lcd_timer->timer->start();
 
     QDir directory("../ICP_2020_proj/Example");
     QStringList list = directory.entryList(QStringList() << "*.txt" << "*.TXT",QDir::Files);
@@ -153,7 +148,6 @@ void MainWindow::dec_traffic_on_road()
 void MainWindow::close_active_road()
 {
     if(active_line != nullptr){
-        //toggle_stop_button();
         emit ui->stop_timer_button->clicked();
         active_line->closed == true  ? qDebug() << active_line->pos << "opened" : qDebug() << active_line->pos << "closed";
         active_line->closed == true  ? active_line->closed = false : active_line->closed = true;
@@ -167,7 +161,6 @@ void MainWindow::load_layout(QString name)
 {
     scene->reset_scene();
     ui->view->lcd_timer->reset_timetables();
-    //ui->menubar->clear();
     if(parser != nullptr){
         parser->disconnect();
         delete(parser);

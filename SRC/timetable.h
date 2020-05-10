@@ -13,9 +13,7 @@ class timetable : public QObject
 {
     Q_OBJECT
 public:
-    /**
-    * @brief constructor objektu
-    */
+    /// konstruktor
     explicit timetable(QObject *parent = nullptr, int ID = -1, int s_hour = 0, int s_min = 0, int inter = 0, int e_hour = -1, int e_min = -1);
     int interval{1}; ///< interval v sekundách pro generování spojů
     int path_id{-1}; ///< ID linky které se daný jízdní řád týka

@@ -21,11 +21,9 @@ vehicle::vehicle(QGraphicsItem *parent) :
 
 void vehicle::move_yourself_lazy_circle(QPointF paint_point)
 {
-    //qDebug() << "inside:" << paint_point;
     center = paint_point;
     setRect(center.x()-size,center.y()-size,size*2,size*2);
     update();
-    //qDebug() << "updated" << center << isVisible();
 }
 
 void vehicle::mousePressEvent(QGraphicsSceneMouseEvent *event)

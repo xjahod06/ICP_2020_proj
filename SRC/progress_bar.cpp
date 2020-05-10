@@ -18,15 +18,6 @@ void progress_bar::sync_self_clock(int hour, int min)
 {
     m_hour = hour;
     m_minute = min;
-    /*
-    auto time = convert_time(m_hour,m_minute);
-    if(m_connected == true){
-        foreach (auto road, st_dict) {
-             road->station_time = time;
-        }
-        update();
-    }
-    */
 
 }
 

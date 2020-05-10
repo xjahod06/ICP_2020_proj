@@ -15,13 +15,21 @@ class menu_button : public QAction
 {
     Q_OBJECT
 public:
+    /// konstruktor
     explicit menu_button(QObject *parent = nullptr);
-    QString path;
+    QString path; ///< cesta k souboru s daty
 
 public slots:
+    /**
+     * @brief vyslání signálu #load_layout s cestou k soubrou
+     */
     void clicked();
 
 signals:
+    /**
+     * @brief propagace cesty k generování mapy
+     * @param name cesta k souboru
+     */
     void load_layout(QString name);
 };
 
