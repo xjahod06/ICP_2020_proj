@@ -27,10 +27,10 @@ Formát souboru umožňuje jednořádkové komentáře, které začínají znake
 
 
 ## Makefile
-`make`         -> přeloží soubor do složky `build/`  
-`make doxygen` -> vytvoří doxygen dokumentaci do složky `doc/`  
-`make pack`    -> vytvoří .zip archiv pro všechny soubory projektu  
-`make clean`   -> smaže všechny produkty příkazů make (`build/`,`doc/`,`.zip`)
+`make`         -> přeloží soubor do složky `build/`<br>
+`make doxygen` -> vytvoří doxygen dokumentaci do složky `doc/`<br>
+`make pack`    -> vytvoří .zip archiv pro všechny soubory projektu<br>
+`make clean`   -> smaže všechny produkty příkazů make (`build/`,`doc/`,`.zip`)<br>
  
 
 ## Seznam souborů
