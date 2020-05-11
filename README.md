@@ -34,7 +34,7 @@ Formát souboru umožňuje jednořádkové komentáře, které začínají znake
  
 
 ## Seznam souborů
-1. src/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(zdrojové soubory)
+1. src/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(zdrojové soubory)
 2. example/ &nbsp;&nbsp;&nbsp;(příklady soubrů pro vstup)
 3. doxyfile &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(konfigurační soubor pro doxygen dokumentaci)
 4. Makefile
