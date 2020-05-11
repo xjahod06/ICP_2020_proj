@@ -39,7 +39,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(parser, &file_parser::create_label_text, scene, &graphic_scene::create_text);
     parser->parse_start();
 
-    QDir directory("../example");
+    QDir directory("./example");
     QStringList list = directory.entryList(QStringList() << "*.txt" << "*.TXT",QDir::Files);
     qDebug() << directory.dirName();
     layouts = ui->menubar->addMenu("layouts");
