@@ -26,4 +26,4 @@ clean_doc:
 	mkdir -p doc/
 
 pack:
-	zip -r xjahod06_xnemco06.zip src/ doc/ example/ build/ Makefile doxyfile
+	zip -r xjahod06_xnemco06.zip src/ doc/ example/ build/ Makefile doxyfile README.md
