@@ -25,10 +25,10 @@ Formát souboru umožňuje jednořádkové komentáře, které začínají znake
 
 ## Makefile
 
-`make`<pre>         </pre>-> přeloží soubor do složky `build/`  
+`make`<pre style="display: inline;margin: 0;">         </pre>-> přeloží soubor do složky `build/`  
 `make doxygen` -> vytvoří doxygen dokumentaci do složky `doc/`  
-`make pack`<pre>    </pre>-> vytvoří .zip archiv pro všechny soubory projektu  
-`make clena`<pre>   </pre>-> smaže všechny produkty příkazů make (`build/`,`doc/`,`.zip`)
+`make pack`<pre style="display: inline;margin: 0;">    </pre>-> vytvoří .zip archiv pro všechny soubory projektu  
+`make clena`<pre style="display: inline;margin: 0;">   </pre>-> smaže všechny produkty příkazů make (`build/`,`doc/`,`.zip`)
  
 
 ## Seznam souborů
