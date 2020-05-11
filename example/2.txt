@@ -1,4 +1,4 @@
-#identifikator|ID|start coord|end coord
+#identifikator|ID|start coord|end coord|street name
 street|0|10,0|30,0
 street|1|10,0|10,300
 street|2|30,0|30,150
