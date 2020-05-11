@@ -10,27 +10,34 @@ Program se spustí příkazem `./ICP_2020_proj`. Po spuštění se program snaž
 
 ## Formát souboru
 Program načítá ze souboru mapový podklad, jízdní řády a mapy linek. Správné příklady vstupu jsou uvedeny ve složce `example/`.
-Formát souboru umožňuje jednořádkové komentáře, které začínají znakem `#`, který ale můsí být uveden na začátku řádku. řádky souboru se načítají postupně a jednotlivé informace na řádku jsou odsebe oddělena znakem `|`. Po načtení řádku se hledají klíčová slova na začátku jako `street`,`station`,`route`,`timetable` a případně `text`. Každé z těchto slov určuje význam dalších informací a to ve formátech:  
-`street` >> -> `street|unikátní ID ulice|počáteční souřadnice ve tvaru "x,y"|konečné souřadnice ve tvaru "x,y"|jméno ulice (nepovinné)`  
-příklad&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-> `street|0|200,-50|0,0|Božětěchova`  
-`station`&nbsp;&nbsp;&nbsp;-> `station|ID ulice na které se stanice objevuje|relativní souřadnice na ulici v rozmezí 0.0 - 1.0 (0.0 je počáteční souřadnice)`  
-příklad&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-> `station|0|0.64`  
-`route`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-> `route|unikátní ID linky|ID ulic po kterých linka jede oddělené ","|ID stanic ve kterých má linka zastavit oddělené ","|barva spoje na mapě`  
-příklad&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-> `route|0|0,1,2,3,4,17,18,20,9|0,1,4,18,20,9|#75aaff`  
-`timetable`&nbsp;-> `timetable|ID linky na kterou se JŘ vztahuje|začátek platnosti JŘ ve formátu "hh:mm"|konec platnosti JŘ ve formátu "hh:mm" (-1 = nikdy neskončí)|interval v sekundách po kterém vyjede další spoj`  
-příklad&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-> `timetable|0|00:00|-1|10`  
+Formát souboru umožňuje jednořádkové komentáře, které začínají znakem `#`, který ale můsí být uveden na začátku řádku. řádky souboru se načítají postupně a jednotlivé informace na řádku jsou odsebe oddělena znakem `|`. Po načtení řádku se hledají klíčová slova na začátku jako `street`,`station`,`route`,`timetable` a případně `text`. Každé z těchto slov určuje význam dalších informací a to ve formátech:
+<pre>
+`street`    -> `street|unikátní ID ulice|počáteční souřadnice ve tvaru "x,y"|konečné souřadnice ve tvaru "x,y"|jméno ulice (nepovinné)`  
+příklad     -> `street|0|200,-50|0,0|Božětěchova`  
+`station`   -> `station|ID ulice na které se stanice objevuje|relativní souřadnice na ulici v rozmezí 0.0 - 1.0 (0.0 je počáteční souřadnice)`  
+příklad     -> `station|0|0.64`  
+`route`     -> `route|unikátní ID linky|ID ulic po kterých linka jede oddělené ","|ID stanic ve kterých má linka zastavit oddělené ","|barva spoje na mapě`  
+příklad     -> `route|0|0,1,2,3,4,17,18,20,9|0,1,4,18,20,9|#75aaff`  
+`timetable` -> `timetable|ID linky na kterou se JŘ vztahuje|začátek platnosti JŘ ve formátu "hh:mm"|konec platnosti JŘ ve formátu "hh:mm" (-1 = nikdy neskončí)
+               |interval v sekundách po kterém vyjede další spoj`  
+příklad     -> `timetable|0|00:00|-1|10`
+</pre>
 
 ## Makefile
-`make`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-> přeloží soubor do složky `build/`  
-`make doxygen`&nbsp;-> vytvoří doxygen dokumentaci do složky `doc/`  
-`make pack`&nbsp;&nbsp;&nbsp;&nbsp;-> vytvoří .zip archiv pro všechny soubory projektu  
-`make clena`&nbsp;&nbsp;&nbsp;-> smaže všechny produkty příkazů make (`build/`,`doc/`,`.zip`)  
+<pre>
+`make`         -> přeloží soubor do složky `build/`  
+`make doxygen` -> vytvoří doxygen dokumentaci do složky `doc/`  
+`make pack`    -> vytvoří .zip archiv pro všechny soubory projektu  
+`make clena`   -> smaže všechny produkty příkazů make (`build/`,`doc/`,`.zip`)
+</pre>  
 
 ## Seznam souborů
-1. src/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(zdrojové soubory)
-2. example/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(příklady soubrů pro vstup)
-3. doxyfile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(konfigurační soubor pro doxygen dokumentaci)
+<pre>
+1. src/          (zdrojové soubory)
+2. example/      (příklady soubrů pro vstup)
+3. doxyfile      (konfigurační soubor pro doxygen dokumentaci)
 4. Makefile
 5. README.md
-6. build/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(složka pro přeložení programu)
-7. doc/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(složka pro vygenerování dokumentace)
+6. build/        (složka pro přeložení programu)
+7. doc/          (složka pro vygenerování dokumentace)
+</pre>
