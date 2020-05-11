@@ -13,21 +13,24 @@ Program načítá ze souboru mapový podklad, jízdní řády a mapy linek. Spr�
 Formát souboru umožňuje jednořádkové komentáře, které začínají znakem `#`, který ale můsí být uveden na začátku řádku. řádky souboru se načítají postupně a jednotlivé informace na řádku jsou odsebe oddělena znakem `|`. Po načtení řádku se hledají klíčová slova na začátku jako `street`,`station`,`route`,`timetable` a případně `text`. Každé z těchto slov určuje význam dalších informací a to ve formátech:
 
 `street`    -> `street|unikátní ID ulice|počáteční souřadnice ve tvaru "x,y"|konečné souřadnice ve tvaru "x,y"|jméno ulice (nepovinné)`  
-	        -> `street|0|200,-50|0,0|Božětěchova`  
+>	        -> street|0|200,-50|0,0|Božětěchova
+
 `station`   -> `station|ID ulice na které se stanice objevuje|relativní souřadnice na ulici v rozmezí 0.0 - 1.0 (0.0 je počáteční souřadnice)`  
-            -> `station|0|0.64`  
+>            -> station|0|0.64
+
 `route`     -> `route|unikátní ID linky|ID ulic po kterých linka jede oddělené ","|ID stanic ve kterých má linka zastavit oddělené ","|barva spoje na mapě`  
-            -> `route|0|0,1,2,3,4,17,18,20,9|0,1,4,18,20,9|#75aaff`  
+>            -> route|0|0,1,2,3,4,17,18,20,9|0,1,4,18,20,9|#75aaff 
+
 `timetable` -> `timetable|ID linky na kterou se JŘ vztahuje|začátek platnosti JŘ ve formátu "hh:mm"|konec platnosti JŘ ve formátu "hh:mm" (-1 = nikdy neskončí)
                |interval v sekundách po kterém vyjede další spoj`  
-            -> `timetable|0|00:00|-1|10`
+>            -> timetable|0|00:00|-1|10
 
 
 ## Makefile
 `make`         -> přeloží soubor do složky `build/`  
 `make doxygen` -> vytvoří doxygen dokumentaci do složky `doc/`  
 `make pack`    -> vytvoří .zip archiv pro všechny soubory projektu  
-`make clena`   -> smaže všechny produkty příkazů make (`build/`,`doc/`,`.zip`)
+`make clean`   -> smaže všechny produkty příkazů make (`build/`,`doc/`,`.zip`)
  
 
 ## Seznam souborů
