@@ -11,7 +11,7 @@ Program se spustí příkazem `./ICP_2020_proj`. Po spuštění se program snaž
 ## Formát souboru
 Program načítá ze souboru mapový podklad, jízdní řády a mapy linek. Správné příklady vstupu jsou uvedeny ve složce `example/`.
 Formát souboru umožňuje jednořádkové komentáře, které začínají znakem `#`, který ale můsí být uveden na začátku řádku. řádky souboru se načítají postupně a jednotlivé informace na řádku jsou odsebe oddělena znakem `|`. Po načtení řádku se hledají klíčová slova na začátku jako `street`,`station`,`route`,`timetable` a případně `text`. Každé z těchto slov určuje význam dalších informací a to ve formátech:  
-`street`&nbsp;&nbsp;&nbsp;&nbsp;-> `street|unikátní ID ulice|počáteční souřadnice ve tvaru "x,y"|konečné souřadnice ve tvaru "x,y"|jméno ulice (nepovinné)`  
+`street` >> -> `street|unikátní ID ulice|počáteční souřadnice ve tvaru "x,y"|konečné souřadnice ve tvaru "x,y"|jméno ulice (nepovinné)`  
 příklad&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-> `street|0|200,-50|0,0|Božětěchova`  
 `station`&nbsp;&nbsp;&nbsp;-> `station|ID ulice na které se stanice objevuje|relativní souřadnice na ulici v rozmezí 0.0 - 1.0 (0.0 je počáteční souřadnice)`  
 příklad&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-> `station|0|0.64`  
@@ -27,8 +27,8 @@ příklad&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-> `timetable|0|00:00|-1|10`
 `make clena`&nbsp;&nbsp;&nbsp;-> smaže všechny produkty příkazů make (`build/`,`doc/`,`.zip`)  
 
 ## Seznam souborů
-1. src/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(zdrojové soubory)
-2. example/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(příklady soubrů pro vstup)
+1. src/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(zdrojové soubory)
+2. example/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(příklady soubrů pro vstup)
 3. doxyfile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(konfigurační soubor pro doxygen dokumentaci)
 4. Makefile
 5. README.md
