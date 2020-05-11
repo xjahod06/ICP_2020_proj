@@ -17,21 +17,20 @@ příklad&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-> `street|0|200,-50|0,0|Božětěchova`
 příklad&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-> `station|0|0.64`  
 `route`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-> `route|unikátní ID linky|ID ulic po kterých linka jede oddělené ","|ID stanic ve kterých má linka zastavit oddělené ","|barva spoje na mapě`  
 příklad&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-> `route|0|0,1,2,3,4,17,18,20,9|0,1,4,18,20,9|#75aaff`  
-`timetable`&nbsp;-> `timetable|ID linky na kterou se JŘ vztahuje|začátek platnosti JŘ ve formátu "hh:mm"|konec platnosti JŘ ve formátu "hh:mm" (-1 = nikdy neskončí)
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|interval v sekundách po kterém vyjede další spoj`  
+`timetable`&nbsp;-> `timetable|ID linky na kterou se JŘ vztahuje|začátek platnosti JŘ ve formátu "hh:mm"|konec platnosti JŘ ve formátu "hh:mm" (-1 = nikdy neskončí)|interval v sekundách po kterém vyjede další spoj`  
 příklad&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-> `timetable|0|00:00|-1|10`  
 
 ## Makefile
-`make`         -> přeloží soubor do složky `build/`  
-`make doxygen` -> vytvoří doxygen dokumentaci do složky `doc/`  
-`make pack`    -> vytvoří .zip archiv pro všechny soubory projektu  
-`make clena`   -> smaže všechny produkty příkazů make (`build/`,`doc/`,`.zip`)  
+`make`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-> přeloží soubor do složky `build/`  
+`make doxygen`&nbsp;-> vytvoří doxygen dokumentaci do složky `doc/`  
+`make pack`&nbsp;&nbsp;&nbsp;&nbsp;-> vytvoří .zip archiv pro všechny soubory projektu  
+`make clena`&nbsp;&nbsp;&nbsp;-> smaže všechny produkty příkazů make (`build/`,`doc/`,`.zip`)  
 
 ## Seznam souborů
-1. src/          (zdrojové soubory)
-2. example/      (příklady soubrů pro vstup)
-3. doxyfile      (konfigurační soubor pro doxygen dokumentaci)
+1. src/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(zdrojové soubory)
+2. example/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(příklady soubrů pro vstup)
+3. doxyfile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(konfigurační soubor pro doxygen dokumentaci)
 4. Makefile
 5. README.md
-6. build/        (složka pro přeložení programu)
-7. doc/          (složka pro vygenerování dokumentace)
+6. build/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(složka pro přeložení programu)
+7. doc/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(složka pro vygenerování dokumentace)
