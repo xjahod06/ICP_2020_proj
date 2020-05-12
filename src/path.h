@@ -1,6 +1,6 @@
 /** ICP Project 2020 transport map
  * @file path.h
- * @brief object pro uchovani a rizeni spoje hlavička
+ * @brief Objekt pro uchování a řízení spoje
  * @author Vojtěch Jahoda (xjahod06)
  * @author Silvie Němcová (xnemco06)
  */
@@ -12,63 +12,63 @@
 #include "custom_line.h"
 #include "vehicle.h"
 
-//object na uchování informací o spoji a pohybu vozidla po spoji
+/// Objekt na uchování informací o spoji a pohybu vozidla po spoji
 class path : public QObject
 {
     Q_OBJECT
 public:
-    /// konstruktor
+    /// Konstruktor
     explicit path(QObject *parent = nullptr);
     /**
-     * @brief najde cestu přes pole #st_dict
-     * @details porovná sousedící ulice a zjistí jestli některá z nich není špatně otočená, pokud je přidá ji do #wrong_direction_dict
+     * @brief Najde cestu přes pole #st_dict
+     * @details Porovná sousedící ulice a zjistí jestli některá z nich není špatně otočená, pokud je přidá ji do #wrong_direction_dict
      */
     void find_corr_way();
-    QMap<int, custom_line*> st_dict; ///< seznam ulic přes které spoj projíždí
-    QList<int> wrong_direction_dict; ///< seznam ulic které mají obrácený smět než je směr jízdy
-    std::list<int> stations; ///< seznam ulic, na kterých má spoj očekávat stanici
-    vehicle *m_vehicle{nullptr}; ///< vozidlo spoje
-    QTimer *timer; ///< interní časovač spoje pro animaci
-    qreal speed{1.0}; ///< rychlost spoje
-    bool same{true}; ///< proměnná na určení jestli se vozidlo pohybuje po stejné cestě
-    bool forward{true}; ///< směr pohybu vozidla po stoji
-    qreal start{0.0}; ///< relativní startovní souřadnice na ulici
-    qreal end{1.0}; ///< relativní cílová souřadnici na ulici
-    int active_line{0}; ///< pozici aktuální ulice ze seznamu #st_dict
-    int prev_line{-1}; ///< pozice přechozí pozice ulice
-    int rem_duration{0}; ///< zbývající čas na časovači
-    int anim_duration; ///< trvani aniamce
-    int timer_duration; ///< trvaní časovače
-    bool active{true}; ///< určí jestli je spoj aktivní
-    int start_min{0}; ///< minuta ve které spoj vyrazil
-    int start_hour{0}; ///< hodiny ve kterou spoj vyrazil
-    bool end_me{false}; ///< detekce ukončení spoje
-    bool station_in_timer{false}; ///< proměnná na určení jestli je spoj ve stanici či nikoliv
-    int pause{1000}; ///< pauza spoje na stanici
+    QMap<int, custom_line*> st_dict; ///< Seznam ulic přes které spoj projíždí
+    QList<int> wrong_direction_dict; ///< Seznam ulic které mají obrácený směr než je směr jízdy
+    std::list<int> stations; ///< Seznam ulic, na kterých má spoj očekávat stanici
+    vehicle *m_vehicle{nullptr}; ///< Vozidlo spoje
+    QTimer *timer; ///< Interní časovač spoje pro animaci
+    qreal speed{1.0}; ///< Rychlost spoje
+    bool same{true}; ///< Proměnná na určení jestli se vozidlo pohybuje po stejné cestě
+    bool forward{true}; ///< Směr pohybu vozidla po stoji
+    qreal start{0.0}; ///< Relativní startovní souřadnice na ulici
+    qreal end{1.0}; ///< Relativní cílová souřadnici na ulici
+    int active_line{0}; ///< Pozici aktuální ulice ze seznamu #st_dict
+    int prev_line{-1}; ///< Pozice přechozí pozice ulice
+    int rem_duration{0}; ///< Zbývající čas na časovači
+    int anim_duration; ///< Trvání aniamce
+    int timer_duration; ///< Trvaní časovače
+    bool active{true}; ///< Určí jestli je spoj aktivní
+    int start_min{0}; ///< Minuta ve které spoj vyrazil
+    int start_hour{0}; ///< Hodiny ve kterou spoj vyrazil
+    bool end_me{false}; ///< Detekce ukončení spoje
+    bool station_in_timer{false}; ///< Proměnná určující zda-li je spoj ve stanici či nikoliv
+    int pause{1000}; ///< Pauza spoje na stanici
 
 private:
     /**
-     * @brief vrátí silnici po vizualni strance do zakladniho stavu
+     * @brief Vrátí silnici po vizuální stránce do základního stavu
      */
     void reset_colors();
     /**
-     * @brief zjistí jestli jsou 2 linie spojené
-     * @param l1 linie 1
-     * @param l2 linie 2
-     * @return vrati které z ulic se musí otočit
+     * @brief Zjistí jestli jsou 2 linie spojené
+     * @param l1 Linie 1
+     * @param l2 Linie 2
+     * @return Vrátí, kterou z ulic je potřeba otočit
      */
     int is_connected(QLineF l1,QLineF l2);
     /**
-     * @brief obrati startovni a konečný bod linie
-     * @param line linie na obrácení
-     * @return linie s obrácenným směrem
+     * @brief Obrátí startovní a konečný bod linie
+     * @param line Linie na obrácení
+     * @return Linie s obráceným směrem
      */
     QLineF reverse_line(QLineF line);
 
 private slots:
     /**
-     * @brief řízení pohybu vozidla po spoji
-     * @details Funkce kontroluje začíteční a koncovou relativní souřadnici spoje na ulici, kontroluje pohyb vozidla po ulici a následné stavení ve stanici.
+     * @brief Řízení pohybu vozidla po spoji
+     * @details Funkce kontroluje začáteční a koncovou relativní souřadnici spoje na ulici, kontroluje pohyb vozidla po ulici a následné stavení ve stanici.
      */
     void move();
 

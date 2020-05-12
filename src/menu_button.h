@@ -1,6 +1,6 @@
 /** ICP Project 2020 transport map
  * @file menu_button.h
- * @brief tlacitka pro nacteni souboru hlavička
+ * @brief Objekt tlačítka pro načtení souboru
  * @author Vojtěch Jahoda (xjahod06)
  * @author Silvie Němcová (xnemco06)
  */
@@ -11,25 +11,25 @@
 #include <QAction>
 #include <QDir>
 
-//tlačítko pro výběr map layoutu
+/// Tlačítko pro výběr map layoutu
 class menu_button : public QAction
 {
     Q_OBJECT
 public:
-    /// konstruktor
+    /// Konstruktor
     explicit menu_button(QObject *parent = nullptr);
     QString path; ///< cesta k souboru s daty
 
 public slots:
     /**
-     * @brief vyslání signálu #load_layout s cestou k soubrou
+     * @brief Vyslání signálu #load_layout s cestou k soubrou
      */
     void clicked();
 
 signals:
     /**
-     * @brief propagace cesty k generování mapy
-     * @param name cesta k souboru
+     * @brief Propagace cesty k generování mapy
+     * @param name Cesta k souboru
      */
     void load_layout(QString name);
 };

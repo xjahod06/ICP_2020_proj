@@ -1,6 +1,6 @@
 /** ICP Project 2020 transport map
  * @file mainwindow.h
- * @brief hlavní okno programu hlavička
+ * @brief Hlavní okno programu
  * @author Vojtěch Jahoda (xjahod06)
  * @author Silvie Němcová (xnemco06)
  */
@@ -18,85 +18,85 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
-//hlavni okno programu
+/// Hlavní okno programu
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 private slots:
     /**
-     * @brief zvětšení mapy
+     * @brief Zvětšení mapy
      */
     void zoom_in();
     /**
-     * @brief zmenšení mapy
+     * @brief Zmenšení mapy
      */
     void zoom_out();
     /**
-     * @brief zmenšení/zvětšení mapy, dle pohybu na slideru
-     * @param val aktuální hodnota slideru
+     * @brief Zmenšení/zvětšení mapy, dle pohybu na posuvníku
+     * @param val Aktuální hodnota slideru
      */
     void zoom_slide(int val);
     /**
-     * @brief zastaví pohyb na mapě
+     * @brief Zastaví pohyb na mapě
      */
     void toggle_stop_button();
     /**
-     * @brief zvýší provoz na vybrané ulici
+     * @brief Zvýší provoz na vybrané ulici
      */
     void inc_traffic_on_road();
     /**
-     * @brief sníží provoz na vybrané ulici
+     * @brief Sníží provoz na vybrané ulici
      */
     void dec_traffic_on_road();
     /**
-     * @brief pozustatek po pokusu o uzavření ulice
+     * @brief Pozůstatek po pokusu o uzavření ulice
      */
     void close_active_road();
     /**
-     * @brief načte rozložení mapy a spoje ze souboru
-     * @param name jméno souboru k načtení
+     * @brief Načte rozložení mapy a spoje ze souboru
+     * @param name Jméno souboru k načtení
      */
     void load_layout(QString name);
     /**
-     * @brief spustí prohlížeč souborů
+     * @brief Spustí prohlížeč souborů
      */
     void browse();
 
 public:
-    /// hlavní okno programu
+    /// Hlavní okno programu
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
 
 public slots:
     /**
-     * @brief nastaví aktivní silnice
-     * @param road ukazatel na vybranou silnici
+     * @brief Nastaví aktivní silnice
+     * @param road Ukazatel na vybranou silnici
      */
     void set_active_road(custom_line *road);
 
 private:
     /**
-     * @brief inicializuje grafické scény
+     * @brief Inicializuje grafické scény
      */
     void init_scene();
-    progress_bar *progress_scene; ///< grafické scéna pro znároznění pohybu vozidla @see progress_bar
-    graphic_scene *scene; ///< grafická scéna na znároznění pohybu na mapě @see graphic_scene
-    Ui::MainWindow *ui; ///< všechny prvky co se ukážou na hlavní obrazovce programu
-    custom_line *active_line{nullptr}; ///< ukazatel na vybraou ulici @see custom_line
-    file_parser *parser{nullptr}; ///< ukazatel na objekt na parsování informaci ze soubroů @see file_parser
-    QMenu *layouts; ///< položka menu na výběr layoutu map
+    progress_bar *progress_scene; ///< Grafické scéna pro znároznění pohybu vozidla @see progress_bar
+    graphic_scene *scene; ///< Grafická scéna pro znároznění pohybu na mapě @see graphic_scene
+    Ui::MainWindow *ui; ///< Všechny prvky, které se ukážou na hlavní obrazovce programu
+    custom_line *active_line{nullptr}; ///< Ukazatel na vybranou ulici @see custom_line
+    file_parser *parser{nullptr}; ///< Ukazatel na objekt analyzující informace ze souborů @see file_parser
+    QMenu *layouts; ///< Položka menu na výběr map
 
 protected:
     /**
-     * @brief qt funkce na detekci kolečka myši
-     * @details tato fuknce slouží na virtuální pohyb zoom slideru a tím pádem na přiblížení či oddálení obrazu
+     * @brief Qt funkce detekující pohyb kolečka myši
+     * @details Tato funkce slouží na virtuální pohyb posuvníku, který přibližuje/oddaluje mapu
      */
     virtual void wheelEvent(QWheelEvent *event) override;
     /**
-     * @brief qt funkce na detekci změny velikosti okna
-     * slouží pro roznoměrné zvetšení či zmenšení grafické scény @link progress_bar @endlink
+     * @brief Qt funkce detekující změnu velikosti okna
+     * Slouží pro roznoměrné zvetšení či zmenšení grafické scény @link progress_bar @endlink
      */
     virtual void resizeEvent(QResizeEvent* event) override;
 
